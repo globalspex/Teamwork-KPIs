@@ -1,0 +1,40 @@
+name: Sync Teamwork KPIs
+
+on:
+  schedule:
+    # 11:00 UTC daily ~= 5-6am Central depending on DST. Adjust as you like --
+    # this just needs to run sometime before the morning dashboard check.
+    - cron: '0 11 * * *'
+  workflow_dispatch: {}   # lets you trigger it manually from the Actions tab
+
+permissions:
+  contents: write   # needed so the workflow can commit the updated data file
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run Teamwork sync
+        env:
+          TEAMWORK_USERNAME: ${{ secrets.TEAMWORK_USERNAME }}
+          TEAMWORK_PASSWORD: ${{ secrets.TEAMWORK_PASSWORD }}
+          TEAMWORK_SITE: globalspex
+          TEAMWORK_TIMEZONE: America/Chicago
+        run: python scripts/sync_teamwork.py
+
+      - name: Commit updated data file
+        run: |
+          git config user.name "teamwork-kpi-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/teamwork-live.json
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+          git commit -m "Daily Teamwork KPI sync: $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push
