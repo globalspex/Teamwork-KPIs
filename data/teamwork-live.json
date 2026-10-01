@@ -1,17 +1,61 @@
 {
-  "generated_at": "2026-10-01T18:51:02.402061-05:00",
+  "generated_at": "2026-10-01T18:57:25.713727-05:00",
   "timezone": "America/Chicago",
-  "company": {},
-  "people": {},
-  "errors": [
-    "company-wide pull failed: Teamwork API error 401 on https://globalspex.teamwork.com/projects/api/v3/tasks.json?page=1&pageSize=200&completed=false: {\"errors\":[{\"id\":\"Self=1-6abef1e6-59e123b45cec8a0810aeb8bb;1-6abef1e6-7e6684711ae47b4860809080\",\"title\":\"unexpected error\",\"detail\":\"401: Not authorized\"}]}\n",
-    "Christina Hawkins pull failed: Teamwork API error 401 on https://globalspex.teamwork.com/projects/api/v3/tasks.json?page=1&pageSize=200&completed=false&assignedToUserIds=116205: {\"errors\":[{\"id\":\"Self=1-6abef1e6-367749642bdde4ce1e0a9251;1-6abef1e6-73689dca362b7deb6df7808d\",\"title\":\"unexpected error\",\"detail\":\"401: Not authorized\"}]}\n",
-    "Javier L\u00f3pez pull failed: Teamwork API error 401 on https://globalspex.teamwork.com/projects/api/v3/tasks.json?page=1&pageSize=200&completed=false&assignedToUserIds=273488: {\"errors\":[{\"id\":\"Self=1-6abef1e7-04475d6351e663f50b8b7bdf;1-6abef1e7-03261aba442330cc70c310ae\",\"title\":\"unexpected error\",\"detail\":\"401: Not authorized\"}]}\n",
-    "Jennifer McNinch pull failed: Teamwork API error 401 on https://globalspex.teamwork.com/projects/api/v3/tasks.json?page=1&pageSize=200&completed=false&assignedToUserIds=610482: {\"errors\":[{\"id\":\"Self=1-6abef1e7-3af8ee2f28bb725332a1ac47;1-6abef1e7-4fe8f6fd5904b4c271f155bc\",\"title\":\"unexpected error\",\"detail\":\"401: Not authorized\"}]}\n",
-    "Rebeca Queiroz pull failed: Teamwork API error 401 on https://globalspex.teamwork.com/projects/api/v3/tasks.json?page=1&pageSize=200&completed=false&assignedToUserIds=226032: {\"errors\":[{\"id\":\"Self=1-6abef1e7-3a45c6d6105a813251e64ef1;1-6abef1e7-31627fac457ceff061b31e7b\",\"title\":\"unexpected error\",\"detail\":\"401: Not authorized\"}]}\n",
-    "Juliane Roitmann pull failed: Teamwork API error 401 on https://globalspex.teamwork.com/projects/api/v3/tasks.json?page=1&pageSize=200&completed=false&assignedToUserIds=304707: {\"errors\":[{\"id\":\"Self=1-6abef1e7-4039bc1248270cad7bbf09a4;1-6abef1e7-799203a432304ba179c16c8f\",\"title\":\"unexpected error\",\"detail\":\"401: Not authorized\"}]}\n",
-    "Rebeca Mesquita pull failed: Teamwork API error 401 on https://globalspex.teamwork.com/projects/api/v3/tasks.json?page=1&pageSize=200&completed=false&assignedToUserIds=605403: {\"errors\":[{\"id\":\"Self=1-6abef1e7-28a6b3990689fd5327271011;1-6abef1e7-7ba646ef2cbcf7c90ea8c14a\",\"title\":\"unexpected error\",\"detail\":\"401: Not authorized\"}]}\n",
-    "Aura Celorico pull failed: Teamwork API error 401 on https://globalspex.teamwork.com/projects/api/v3/tasks.json?page=1&pageSize=200&completed=false&assignedToUserIds=296553: {\"errors\":[{\"id\":\"Self=1-6abef1e7-1509cde1741ddd212571daff;1-6abef1e7-49c6c8fb529c2db06863cf4f\",\"title\":\"unexpected error\",\"detail\":\"401: Not authorized\"}]}\n",
-    "Andressa Alves pull failed: Teamwork API error 401 on https://globalspex.teamwork.com/projects/api/v3/tasks.json?page=1&pageSize=200&completed=false&assignedToUserIds=604063: {\"errors\":[{\"id\":\"Self=1-6abef1e7-79d08c275cb1ad6066b40cf2;1-6abef1e7-10a4b23739afd1841e5eb24c\",\"title\":\"unexpected error\",\"detail\":\"401: Not authorized\"}]}\n"
-  ]
+  "company": {
+    "total_open_tasks": 5033,
+    "overdue_tasks": 1088,
+    "due_today": 43,
+    "completed_today": 1308
+  },
+  "people": {
+    "christina": {
+      "name": "Christina Hawkins",
+      "total_open_tasks": 5033,
+      "overdue_tasks": 1088,
+      "due_today": 43
+    },
+    "javier": {
+      "name": "Javier L\u00f3pez",
+      "total_open_tasks": 5033,
+      "overdue_tasks": 1088,
+      "due_today": 43
+    },
+    "jennifer": {
+      "name": "Jennifer McNinch",
+      "total_open_tasks": 5033,
+      "overdue_tasks": 1088,
+      "due_today": 43
+    },
+    "rebecaq": {
+      "name": "Rebeca Queiroz",
+      "total_open_tasks": 5033,
+      "overdue_tasks": 1088,
+      "due_today": 43
+    },
+    "juliane": {
+      "name": "Juliane Roitmann",
+      "total_open_tasks": 5033,
+      "overdue_tasks": 1088,
+      "due_today": 43
+    },
+    "rebecam": {
+      "name": "Rebeca Mesquita",
+      "total_open_tasks": 5033,
+      "overdue_tasks": 1088,
+      "due_today": 43
+    },
+    "aura": {
+      "name": "Aura Celorico",
+      "total_open_tasks": 5033,
+      "overdue_tasks": 1088,
+      "due_today": 43
+    },
+    "andressa": {
+      "name": "Andressa Alves",
+      "total_open_tasks": 5033,
+      "overdue_tasks": 1088,
+      "due_today": 43
+    }
+  },
+  "errors": []
 }
