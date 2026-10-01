@@ -13,9 +13,11 @@ ticket exclusion logic, etc.) -- those still need a human or an assistant
 session with the full Teamwork/Desk toolset to compute. This script is
 deliberately narrow so it's easy to trust and easy to extend later.
 
-Auth: HTTP Basic Auth using TEAMWORK_USERNAME / TEAMWORK_PASSWORD (the same
-login credentials used at teamwork.com), against TEAMWORK_SITE
-(e.g. "globalspex" for https://globalspex.teamwork.com).
+Auth: HTTP Basic Auth using a Teamwork API key (stored in the
+TEAMWORK_PASSWORD secret -- despite the name) as the username, with "x" as
+the password, per Teamwork's documented API auth convention. This also
+works when the account has 2FA enabled, unlike plain login/password auth.
+Site is TEAMWORK_SITE (e.g. "globalspex" for https://globalspex.teamwork.com).
 
 Task overdue/due-today status is computed client-side from each task's
 dueDate field compared to "today" in TEAMWORK_TIMEZONE, rather than relying
@@ -33,8 +35,7 @@ import base64
 from zoneinfo import ZoneInfo
 
 SITE = os.environ.get("TEAMWORK_SITE", "globalspex")
-USERNAME = os.environ["TEAMWORK_USERNAME"]
-PASSWORD = os.environ["TEAMWORK_PASSWORD"]
+API_KEY = os.environ["TEAMWORK_PASSWORD"]  # repo secret now holds the Teamwork API key, not a login password
 TZ = os.environ.get("TEAMWORK_TIMEZONE", "America/Chicago")
 BASE_URL = f"https://{SITE}.teamwork.com"
 
@@ -53,7 +54,11 @@ PEOPLE = {
 
 
 def auth_header():
-    token = base64.b64encode(f"{USERNAME}:{PASSWORD}".encode("utf-8")).decode("ascii")
+    # Teamwork's REST API authenticates via Basic Auth using the API key as
+    # the username and any non-empty string as the password -- this is
+    # their documented convention, and it's required when the account has
+    # 2FA enabled, which also blocks plain login/password auth entirely.
+    token = base64.b64encode(f"{API_KEY}:x".encode("utf-8")).decode("ascii")
     return {"Authorization": f"Basic {token}", "Content-Type": "application/json"}
 
 
