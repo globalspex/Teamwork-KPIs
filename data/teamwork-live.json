@@ -1,61 +1,52 @@
 {
-  "generated_at": "2026-10-01T18:57:25.713727-05:00",
+  "generated_at": "2026-10-02T06:13:11.508846-05:00",
   "timezone": "America/Chicago",
   "company": {
-    "total_open_tasks": 5033,
-    "overdue_tasks": 1088,
-    "due_today": 43,
-    "completed_today": 1308
+    "total_open_tasks": 5065,
+    "overdue_tasks": 1131,
+    "due_today": 278,
+    "completed_today": 0
   },
   "people": {
     "christina": {
       "name": "Christina Hawkins",
-      "total_open_tasks": 5033,
-      "overdue_tasks": 1088,
-      "due_today": 43
+      "total_open_tasks": 5065,
+      "overdue_tasks": 1131,
+      "due_today": 278
     },
     "javier": {
       "name": "Javier L\u00f3pez",
-      "total_open_tasks": 5033,
-      "overdue_tasks": 1088,
-      "due_today": 43
+      "total_open_tasks": 5065,
+      "overdue_tasks": 1131,
+      "due_today": 278
     },
     "jennifer": {
       "name": "Jennifer McNinch",
-      "total_open_tasks": 5033,
-      "overdue_tasks": 1088,
-      "due_today": 43
+      "total_open_tasks": 5065,
+      "overdue_tasks": 1131,
+      "due_today": 278
     },
     "rebecaq": {
       "name": "Rebeca Queiroz",
-      "total_open_tasks": 5033,
-      "overdue_tasks": 1088,
-      "due_today": 43
+      "total_open_tasks": 5065,
+      "overdue_tasks": 1131,
+      "due_today": 278
     },
     "juliane": {
       "name": "Juliane Roitmann",
-      "total_open_tasks": 5033,
-      "overdue_tasks": 1088,
-      "due_today": 43
+      "total_open_tasks": 5065,
+      "overdue_tasks": 1131,
+      "due_today": 278
     },
     "rebecam": {
       "name": "Rebeca Mesquita",
-      "total_open_tasks": 5033,
-      "overdue_tasks": 1088,
-      "due_today": 43
-    },
-    "aura": {
-      "name": "Aura Celorico",
-      "total_open_tasks": 5033,
-      "overdue_tasks": 1088,
-      "due_today": 43
-    },
-    "andressa": {
-      "name": "Andressa Alves",
-      "total_open_tasks": 5033,
-      "overdue_tasks": 1088,
-      "due_today": 43
+      "total_open_tasks": 5065,
+      "overdue_tasks": 1131,
+      "due_today": 278
     }
   },
-  "errors": []
+  "errors": [
+    "Aura Celorico pull failed: Teamwork API error 429 on https://globalspex.teamwork.com/projects/api/v3/tasks.json?page=25&pageSize=200&completed=false&assignedToUserIds=296553: Too Many Requests",
+    "Andressa Alves pull failed: Teamwork API error 429 on https://globalspex.teamwork.com/projects/api/v3/tasks.json?page=1&pageSize=200&completed=false&assignedToUserIds=604063: Too Many Requests"
+  ]
 }
