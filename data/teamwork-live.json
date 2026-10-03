@@ -1,11 +1,13 @@
 {
-  "generated_at": "2026-10-03T13:27:09.829874-05:00",
+  "generated_at": "2026-10-03T13:49:49.115879-05:00",
   "timezone": "America/Chicago",
   "company": {
-    "total_open_tasks": 5763,
-    "overdue_tasks": 1131,
+    "total_open_tasks": 5762,
+    "overdue_tasks": 1130,
     "due_today": 0,
-    "completed_today": 21
+    "due_this_week": 685,
+    "week_ends": "2026-10-09",
+    "completed_today": 22
   },
   "people": {
     "christina": {
@@ -13,6 +15,7 @@
       "total_open_tasks": 1321,
       "overdue_tasks": 539,
       "due_today": 0,
+      "due_this_week": 42,
       "total_incomplete_milestones": 4,
       "late_milestones": 1,
       "active_projects_owned": 5,
@@ -21,9 +24,10 @@
     },
     "javier": {
       "name": "Javier L\u00f3pez",
-      "total_open_tasks": 348,
-      "overdue_tasks": 77,
+      "total_open_tasks": 347,
+      "overdue_tasks": 76,
       "due_today": 0,
+      "due_this_week": 96,
       "total_incomplete_milestones": 12,
       "late_milestones": 3,
       "active_projects_owned": 18,
@@ -35,6 +39,7 @@
       "total_open_tasks": 47,
       "overdue_tasks": 11,
       "due_today": 0,
+      "due_this_week": 7,
       "total_incomplete_milestones": 22,
       "late_milestones": 10,
       "active_projects_owned": 3,
@@ -46,6 +51,7 @@
       "total_open_tasks": 332,
       "overdue_tasks": 113,
       "due_today": 0,
+      "due_this_week": 64,
       "total_incomplete_milestones": 0,
       "late_milestones": 0,
       "active_projects_owned": 5,
@@ -57,6 +63,7 @@
       "total_open_tasks": 705,
       "overdue_tasks": 98,
       "due_today": 0,
+      "due_this_week": 85,
       "total_incomplete_milestones": 0,
       "late_milestones": 0,
       "active_projects_owned": 0,
@@ -68,6 +75,7 @@
       "total_open_tasks": 41,
       "overdue_tasks": 7,
       "due_today": 0,
+      "due_this_week": 1,
       "total_incomplete_milestones": 0,
       "late_milestones": 0,
       "active_projects_owned": 0,
@@ -79,6 +87,7 @@
       "total_open_tasks": 429,
       "overdue_tasks": 42,
       "due_today": 0,
+      "due_this_week": 50,
       "total_incomplete_milestones": 0,
       "late_milestones": 0,
       "active_projects_owned": 0,
@@ -90,11 +99,12 @@
       "total_open_tasks": 220,
       "overdue_tasks": 51,
       "due_today": 0,
+      "due_this_week": 29,
       "total_incomplete_milestones": 0,
       "late_milestones": 0,
       "active_projects_owned": 3,
-      "project_tasks_total": 649,
-      "project_tasks_late": 132
+      "project_tasks_total": 648,
+      "project_tasks_late": 131
     }
   },
   "errors": []
