@@ -30,11 +30,21 @@ jobs:
           TEAMWORK_TIMEZONE: America/Chicago
         run: python scripts/sync_teamwork.py
 
-      - name: Commit updated data file
+      - name: Run HighLevel sync
+        # If HighLevel fails, still commit the Teamwork numbers below.
+        continue-on-error: true
+        env:
+          HIGHLEVEL_TOKEN: ${{ secrets.HIGHLEVEL_TOKEN }}
+          HIGHLEVEL_LOCATION_ID: rPYX5zSqcTbMLPgErcSD
+          HIGHLEVEL_TIMEZONE: America/Chicago
+        run: python scripts/sync_highlevel.py
+
+      - name: Commit updated data files
+        if: always()
         run: |
           git config user.name "teamwork-kpi-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add data/teamwork-live.json
+          git add data/
           git diff --cached --quiet && echo "No changes to commit" && exit 0
-          git commit -m "Daily Teamwork KPI sync: $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git commit -m "Daily KPI sync: $(date -u +'%Y-%m-%d %H:%M UTC')"
           git push
