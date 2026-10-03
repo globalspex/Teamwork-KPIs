@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-10-03T14:32:08.217858-05:00",
+  "generated_at": "2026-10-03T14:35:03.733169-05:00",
   "errors": [],
   "company": {
-    "open_tickets": 46,
+    "open_tickets": 47,
     "new_today": 7,
     "waiting_on_customer": 19,
     "waiting_no_update_2d": 10,
@@ -394,7 +394,7 @@
     {
       "date": "2026-10-03",
       "aging": 18,
-      "open": 46,
+      "open": 47,
       "waiting": 19,
       "waiting_stale": 10,
       "on_hold": 11
