@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-02T21:47:56.563263-05:00",
+  "generated_at": "2026-10-02T21:49:07.823191-05:00",
   "timezone": "America/Chicago",
   "company": {
     "total_open_tasks": 5387,
@@ -73,97 +73,5 @@
       "late_milestones": 0
     }
   },
-  "errors": [],
-  "debug": {
-    "sample_milestone": {
-      "id": 674192,
-      "name": "Meta Ad Kickoff",
-      "description": "$750/month meta ad budget",
-      "descriptionHTML": "<p>$750/month meta ad budget</p>\n",
-      "deadline": "2026-05-01T00:00:00Z",
-      "originalDueDate": "2026-05-01T00:00:00Z",
-      "completed": false,
-      "projectId": 515468,
-      "project": {
-        "id": 515468,
-        "type": "projects"
-      },
-      "createdOn": "2026-04-06T16:51:31Z",
-      "lastChangedOn": "2026-04-06T16:51:32Z",
-      "updatedBy": 116205,
-      "creatorUserId": 116205,
-      "createdBy": 0,
-      "reminder": false,
-      "private": false,
-      "status": "late",
-      "userFollowingComments": false,
-      "userFollowingChanges": false,
-      "userFollowingComplete": false,
-      "isDeleted": false,
-      "deletedOn": null,
-      "canEdit": true,
-      "canComplete": true,
-      "responsiblePartyIds": [
-        116205
-      ],
-      "responsibleParties": [
-        {
-          "id": 116205,
-          "type": "users"
-        }
-      ],
-      "commentsCount": 0
-    },
-    "sample_role_assigned_milestone": {
-      "id": 681243,
-      "name": "Admin",
-      "description": "**ADD**\n* Task Lists to Add or Change\n* Project Setup\n* Kick Off Meeting\n**Milestone Start**: Day of contract sign\n**Milestone Duration**: 7 Days",
-      "descriptionHTML": "<p><strong>ADD</strong></p>\n\n<ul>\n<li>Task Lists to Add or Change<br /></li>\n<li>Project Setup<br /></li>\n<li>Kick Off Meeting<br />\n<strong>Milestone Start</strong>: Day of contract sign<br />\n<strong>Milestone Duration</strong>: 7 Days<br /></li>\n</ul>\n",
-      "deadline": "2026-09-17T00:00:00Z",
-      "originalDueDate": "2026-09-02T00:00:00Z",
-      "completed": false,
-      "projectId": 518524,
-      "project": {
-        "id": 518524,
-        "type": "projects"
-      },
-      "createdOn": "2026-08-25T17:47:21Z",
-      "lastChangedOn": "2026-09-14T14:43:40Z",
-      "updatedBy": 273488,
-      "creatorUserId": 273488,
-      "createdBy": 0,
-      "reminder": false,
-      "private": false,
-      "status": "late",
-      "userFollowingComments": false,
-      "userFollowingChanges": false,
-      "userFollowingComplete": false,
-      "isDeleted": false,
-      "deletedOn": null,
-      "canEdit": true,
-      "canComplete": true,
-      "responsibleParties": [
-        {
-          "id": 43743,
-          "type": "teams"
-        }
-      ],
-      "commentsCount": 0,
-      "tasklistIds": [
-        2118707,
-        2118727
-      ],
-      "tasklists": [
-        {
-          "id": 2118707,
-          "type": "tasklists"
-        },
-        {
-          "id": 2118727,
-          "type": "tasklists"
-        }
-      ]
-    },
-    "role_assigned_milestone_count": 4
-  }
+  "errors": []
 }
