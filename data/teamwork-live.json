@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-10-02T22:03:07.951678-05:00",
+  "generated_at": "2026-10-02T23:06:01.995283-05:00",
   "timezone": "America/Chicago",
   "company": {
-    "total_open_tasks": 5387,
+    "total_open_tasks": 5391,
     "overdue_tasks": 1013,
     "due_today": 118,
     "completed_today": 957
@@ -93,7 +93,7 @@
       "total_incomplete_milestones": 0,
       "late_milestones": 0,
       "active_projects_owned": 3,
-      "project_tasks_total": 274,
+      "project_tasks_total": 278,
       "project_tasks_late": 99
     }
   },
