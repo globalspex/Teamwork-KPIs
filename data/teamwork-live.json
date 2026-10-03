@@ -1,42 +1,42 @@
 {
-  "generated_at": "2026-10-02T23:06:01.995283-05:00",
+  "generated_at": "2026-10-03T06:24:49.017314-05:00",
   "timezone": "America/Chicago",
   "company": {
-    "total_open_tasks": 5391,
-    "overdue_tasks": 1013,
-    "due_today": 118,
-    "completed_today": 957
+    "total_open_tasks": 5633,
+    "overdue_tasks": 1131,
+    "due_today": 0,
+    "completed_today": 21
   },
   "people": {
     "christina": {
       "name": "Christina Hawkins",
       "total_open_tasks": 1321,
-      "overdue_tasks": 523,
-      "due_today": 16,
+      "overdue_tasks": 539,
+      "due_today": 0,
       "total_incomplete_milestones": 4,
       "late_milestones": 1,
       "active_projects_owned": 5,
       "project_tasks_total": 1465,
-      "project_tasks_late": 202
+      "project_tasks_late": 225
     },
     "javier": {
       "name": "Javier L\u00f3pez",
       "total_open_tasks": 348,
-      "overdue_tasks": 46,
-      "due_today": 31,
+      "overdue_tasks": 77,
+      "due_today": 0,
       "total_incomplete_milestones": 12,
-      "late_milestones": 2,
+      "late_milestones": 3,
       "active_projects_owned": 18,
       "project_tasks_total": 2574,
-      "project_tasks_late": 606
+      "project_tasks_late": 665
     },
     "jennifer": {
       "name": "Jennifer McNinch",
       "total_open_tasks": 47,
-      "overdue_tasks": 9,
-      "due_today": 2,
+      "overdue_tasks": 11,
+      "due_today": 0,
       "total_incomplete_milestones": 22,
-      "late_milestones": 9,
+      "late_milestones": 10,
       "active_projects_owned": 3,
       "project_tasks_total": 921,
       "project_tasks_late": 45
@@ -44,19 +44,19 @@
     "rebecaq": {
       "name": "Rebeca Queiroz",
       "total_open_tasks": 331,
-      "overdue_tasks": 99,
-      "due_today": 14,
+      "overdue_tasks": 113,
+      "due_today": 0,
       "total_incomplete_milestones": 0,
       "late_milestones": 0,
       "active_projects_owned": 5,
       "project_tasks_total": 153,
-      "project_tasks_late": 61
+      "project_tasks_late": 64
     },
     "juliane": {
       "name": "Juliane Roitmann",
       "total_open_tasks": 705,
-      "overdue_tasks": 93,
-      "due_today": 5,
+      "overdue_tasks": 98,
+      "due_today": 0,
       "total_incomplete_milestones": 0,
       "late_milestones": 0,
       "active_projects_owned": 0,
@@ -77,8 +77,8 @@
     "aura": {
       "name": "Aura Celorico",
       "total_open_tasks": 429,
-      "overdue_tasks": 31,
-      "due_today": 11,
+      "overdue_tasks": 42,
+      "due_today": 0,
       "total_incomplete_milestones": 0,
       "late_milestones": 0,
       "active_projects_owned": 0,
@@ -88,13 +88,13 @@
     "andressa": {
       "name": "Andressa Alves",
       "total_open_tasks": 220,
-      "overdue_tasks": 37,
-      "due_today": 14,
+      "overdue_tasks": 51,
+      "due_today": 0,
       "total_incomplete_milestones": 0,
       "late_milestones": 0,
       "active_projects_owned": 3,
-      "project_tasks_total": 278,
-      "project_tasks_late": 99
+      "project_tasks_total": 520,
+      "project_tasks_late": 132
     }
   },
   "errors": []
