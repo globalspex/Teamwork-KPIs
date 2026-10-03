@@ -708,6 +708,8 @@
 
   var salesPeriod = 'month', salesErrorsShown = false;
   try { salesPeriod = localStorage.getItem('salesPeriod') || 'month'; } catch(e){}
+  function rate(a, b){ return b ? Math.round(a/b*100) : null; }
+  function pctTag(v){ return v===null ? '' : ' <span class="value-pct">'+v+'%</span>'; }
   function renderSalesCards(){
     var c = HL && HL.christina;
     if(!c || !c.monthly_summary){ put('live-christina-sales', card('HighLevel', '&mdash;', 'No HighLevel data yet', '<span class="badge gray">Needs Data</span>')); return; }
@@ -730,7 +732,9 @@
       put('live-christina-sales',
         card('Leads '+Y+' to Date', num(yl), 'Goal: 48 per year &middot; Pace for today: '+bl[1]+' &middot; Last 12 months: '+num(L.last_12_months), bl[0]) +
         card('Proposals Sent '+Y+' to Date', num(yp), 'Accepted + lost &middot; Goal: 12 per year &middot; Pace for today: '+bp[1]+' &middot; Last 12 months: '+num(P.last_12_months), bp[0]) +
-        card('Converted '+Y+' to Date', num(yc), 'Last 12 months: '+num(V.last_12_months), '<span class="badge gray">Tracking</span>'));
+        card('Converted '+Y+' to Date', num(yc)+pctTag(rate(yc, yp)),
+          (rate(yc,yp)===null?'':rate(yc,yp)+'% of proposals sent &middot; ')+(rate(yc,yl)===null?'':rate(yc,yl)+'% of leads &middot; ')+'Last 12 months: '+num(V.last_12_months),
+          '<span class="badge gray">Tracking</span>'));
     } else {
     put('live-christina-sales',
       card('Leads This Month', num(L.this_month),
@@ -739,8 +743,8 @@
       card('Proposals Sent This Month', num(P.this_month),
         'Accepted + lost, by date created &middot; Goal: 1 per month &middot; Last month: '+num(P.last_month)+' &middot; Last 12 months: '+num(P.last_12_months),
         monthBadge(P.this_month, 1)) +
-      card('Converted This Month', num(V.this_month),
-        'Onboarding &middot; Last month: '+num(V.last_month)+' &middot; Last 12 months: '+num(V.last_12_months),
+      card('Converted This Month', num(V.this_month)+pctTag(rate(V.this_month, P.this_month)),
+        'Close rate vs. proposals sent: '+(rate(V.this_month,P.this_month)===null?'&mdash;':rate(V.this_month,P.this_month)+'%')+' this month, '+(rate(V.last_month,P.last_month)===null?'&mdash;':rate(V.last_month,P.last_month)+'%')+' last month, '+(rate(V.last_12_months,P.last_12_months)===null?'&mdash;':rate(V.last_12_months,P.last_12_months)+'%')+' over 12 months',
         '<span class="badge gray">Tracking</span>'));
     }
     if(HL.errors && HL.errors.length && !salesErrorsShown){
