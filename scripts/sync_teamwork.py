@@ -362,6 +362,70 @@ def fetch_all_open_tasks(active_project_ids, status_field_id):
     return kept
 
 
+def milestone_assignee_ids(m):
+    """Returns the set of user IDs directly assigned to this milestone."""
+    ids = set()
+    for key in ("assigneeUserIds", "responsiblePartyIds"):
+        val = m.get(key)
+        if isinstance(val, list):
+            for v in val:
+                try:
+                    ids.add(int(v))
+                except (TypeError, ValueError):
+                    pass
+    return ids
+
+
+def milestone_role_team_company_ids(m):
+    """Returns (companyIds, jobRoleIds, teamIds) sets found directly on a milestone."""
+    def _ids(key):
+        val = m.get(key)
+        out = set()
+        if isinstance(val, list):
+            for v in val:
+                try:
+                    out.add(int(v["id"] if isinstance(v, dict) else v))
+                except (TypeError, ValueError, KeyError):
+                    pass
+        return out
+
+    return (
+        _ids("assigneeCompanyIds"),
+        _ids("assigneeJobRoleIds"),
+        _ids("assigneeTeamIds"),
+    )
+
+
+def fetch_incomplete_milestones():
+    """
+    Fetches every incomplete milestone company-wide. Verified definition
+    (against a real CSV export, exact match for one person: 12 total, 2-3
+    late depending on cutoff): a milestone counts for a person if they're
+    DIRECTLY assigned OR assigned via a role/team/company they belong to --
+    same pattern as tasks. Field names are a best guess by analogy to the
+    tasks endpoint (not independently confirmed); if counts come out wrong,
+    check result['debug']['sample_milestone'] in the output JSON for the
+    actual field names Teamwork returns here.
+    """
+    milestones = []
+    page = 1
+    page_size = 200
+    while True:
+        params = {"page": page, "pageSize": page_size, "completed": "false"}
+        data = api_get("/projects/api/v3/milestones.json", params)
+        batch = data.get("milestones", [])
+        milestones.extend(batch)
+        meta = data.get("meta", {}).get("page", {})
+        total_pages = meta.get("pageCount") or meta.get("pages")
+        if not batch or (total_pages and page >= total_pages) or len(batch) < page_size:
+            break
+        page += 1
+        if page > 20:
+            break
+    print(f"Fetched {len(milestones)} incomplete milestones company-wide.")
+    return milestones
+
+
 def classify_tasks(tasks, today_str):
     """Given a list of open tasks, return (total, overdue, due_today) counts."""
     total = len(tasks)
@@ -472,16 +536,46 @@ def main():
             print(f"WARNING: {warning}", file=sys.stderr)
             result["errors"].append(warning)
 
+        # ---- Milestones (same direct + role/team/company matching as tasks) ----
+        all_milestones = fetch_incomplete_milestones()
+        milestones_by_assignee = {}
+        for m in all_milestones:
+            direct_ids = milestone_assignee_ids(m)
+            m_company_ids, m_role_ids, m_team_ids = milestone_role_team_company_ids(m)
+            for uid in direct_ids:
+                milestones_by_assignee.setdefault(uid, []).append(m)
+            if m_company_ids or m_role_ids or m_team_ids:
+                for uid, prof in profiles.items():
+                    if uid in direct_ids:
+                        continue
+                    matched = (
+                        (prof["companyIds"] & m_company_ids)
+                        or (prof["jobRoleIds"] & m_role_ids)
+                        or (prof["teamIds"] & m_team_ids)
+                    )
+                    if matched:
+                        milestones_by_assignee.setdefault(uid, []).append(m)
+
+        if all_milestones:
+            result["debug"] = {"sample_milestone": all_milestones[0]}
+
         for key, info in PEOPLE.items():
             tasks = by_assignee.get(info["user_id"], [])
             p_total, p_overdue, p_due_today = classify_tasks(tasks, today_str)
+
+            m_list = milestones_by_assignee.get(info["user_id"], [])
+            m_total = len(m_list)
+            m_late = sum(1 for m in m_list if (m.get("dueDate") or "")[:10] and (m.get("dueDate") or "")[:10] < today_str)
+
             result["people"][key] = {
                 "name": info["name"],
                 "total_open_tasks": p_total,
                 "overdue_tasks": p_overdue,
                 "due_today": p_due_today,
+                "total_incomplete_milestones": m_total,
+                "late_milestones": m_late,
             }
-            print(f"  {info['name']}: total={p_total} overdue={p_overdue} due_today={p_due_today}")
+            print(f"  {info['name']}: total={p_total} overdue={p_overdue} due_today={p_due_today} milestones={m_total} late_milestones={m_late}")
 
     except Exception as e:
         msg = f"task pull/classification failed: {e}"
