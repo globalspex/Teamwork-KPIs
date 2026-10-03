@@ -98,12 +98,28 @@ def fetch_person_profiles(user_ids):
     page = 1
     page_size = 200
     people_by_id = {}
+    included_jobroles = {}
+    use_include = True
     while True:
         params = {"page": page, "pageSize": page_size}
-        data = api_get("/projects/api/v3/people.json", params)
+        if use_include:
+            params["include"] = "jobRoles,teams"
+        try:
+            data = api_get("/projects/api/v3/people.json", params)
+        except RuntimeError as e:
+            if use_include:
+                print(f"NOTE: people.json with include=jobRoles,teams failed ({e}); retrying without it.", file=sys.stderr)
+                use_include = False
+                continue
+            raise
         batch = data.get("people", [])
         for p in batch:
             people_by_id[int(p["id"])] = p
+        included = data.get("included", {})
+        if isinstance(included, dict):
+            for key in ("jobroles", "jobRoles"):
+                if key in included:
+                    included_jobroles.update(included[key] or {})
         meta = data.get("meta", {}).get("page", {})
         total_pages = meta.get("pageCount") or meta.get("pages")
         if not batch or (total_pages and page >= total_pages) or len(batch) < page_size:
@@ -111,6 +127,19 @@ def fetch_person_profiles(user_ids):
         page += 1
         if page > 20:
             break
+
+    # Diagnostic: dump Javier's complete raw record once, so if the field
+    # guesses below are still wrong, the actual field names are visible in
+    # the log instead of needing another guess-and-check round.
+    diagnostic_target = people_by_id.get(273488)
+    if diagnostic_target:
+        print("DIAGNOSTIC -- full raw record for user 273488 (Javier):")
+        print(json.dumps(diagnostic_target, indent=2))
+        if included_jobroles:
+            print("DIAGNOSTIC -- included jobRoles data found:")
+            print(json.dumps(included_jobroles, indent=2))
+        else:
+            print("DIAGNOSTIC -- no included jobRoles data came back at all.")
 
     for uid in user_ids:
         p = people_by_id.get(uid)
