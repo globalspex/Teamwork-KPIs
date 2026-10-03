@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-02T20:22:11.758410-05:00",
+  "generated_at": "2026-10-02T20:38:57.719233-05:00",
   "timezone": "America/Chicago",
   "company": {
     "total_open_tasks": 5466,
@@ -10,50 +10,50 @@
   "people": {
     "christina": {
       "name": "Christina Hawkins",
-      "total_open_tasks": 1343,
-      "overdue_tasks": 530,
+      "total_open_tasks": 1346,
+      "overdue_tasks": 531,
       "due_today": 16
     },
     "javier": {
       "name": "Javier L\u00f3pez",
-      "total_open_tasks": 327,
-      "overdue_tasks": 44,
+      "total_open_tasks": 330,
+      "overdue_tasks": 45,
       "due_today": 30
     },
     "jennifer": {
       "name": "Jennifer McNinch",
-      "total_open_tasks": 20,
-      "overdue_tasks": 6,
+      "total_open_tasks": 23,
+      "overdue_tasks": 7,
       "due_today": 1
     },
     "rebecaq": {
       "name": "Rebeca Queiroz",
-      "total_open_tasks": 276,
-      "overdue_tasks": 98,
+      "total_open_tasks": 279,
+      "overdue_tasks": 99,
       "due_today": 14
     },
     "juliane": {
       "name": "Juliane Roitmann",
-      "total_open_tasks": 654,
-      "overdue_tasks": 94,
+      "total_open_tasks": 657,
+      "overdue_tasks": 95,
       "due_today": 5
     },
     "rebecam": {
       "name": "Rebeca Mesquita",
-      "total_open_tasks": 39,
-      "overdue_tasks": 6,
+      "total_open_tasks": 42,
+      "overdue_tasks": 7,
       "due_today": 0
     },
     "aura": {
       "name": "Aura Celorico",
-      "total_open_tasks": 470,
-      "overdue_tasks": 43,
+      "total_open_tasks": 473,
+      "overdue_tasks": 44,
       "due_today": 11
     },
     "andressa": {
       "name": "Andressa Alves",
-      "total_open_tasks": 217,
-      "overdue_tasks": 36,
+      "total_open_tasks": 220,
+      "overdue_tasks": 37,
       "due_today": 14
     }
   },
