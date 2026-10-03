@@ -2,7 +2,7 @@
 name: Desk probe (temporary)
 on:
   push:
-    paths: ['scripts/desk_probe.py']
+    paths: ['scripts/desk_probe.py', '.github/workflows/desk-probe.yml']
   workflow_dispatch: {}
 permissions:
   contents: write
@@ -23,7 +23,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git pull --rebase
           git add data/desk-probe.json
-          git diff --cached --quiet || git commit -m "Desk probe output"
+          git diff --cached --quiet && exit 0
+          git commit -m "Desk probe output"
+          git pull --rebase
           git push
