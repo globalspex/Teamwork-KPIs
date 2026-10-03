@@ -40,7 +40,7 @@
   h1{font-size:26px; margin:0 0 4px;}
   .meta{color:var(--sub); font-size:14px;}
   .section-title{font-size:15px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; color:var(--sub); margin:36px 0 14px;}
-  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(185px,1fr)); gap:16px;}
   .card{
     background:var(--card); border:1px solid var(--line); border-radius:12px;
     padding:18px 20px; position:relative; overflow:hidden;
@@ -83,7 +83,7 @@
   .person-head{display:flex; align-items:baseline; gap:10px; margin:28px 0 4px; flex-wrap:wrap;}
   .person-head h2{font-size:20px; margin:0;}
   .person-head .role{color:var(--sub); font-size:14px;}
-  .sample-note{color:var(--sub); font-size:12px; margin-top:2px;}
+  .sample-note{color:var(--sub); font-size:12px; margin-top:14px;}
 
   .chart-card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px 20px; margin-top:24px;}
   .chart-card h3{font-size:17px; margin:0 0 14px; color:var(--sub); text-transform:uppercase; letter-spacing:.03em; font-weight:600;}
@@ -514,7 +514,7 @@
       card('Assigned Tasks On Time', tOn===null?'&mdash;':tOn+'%',
         'Goal: 85% &middot; '+num(p.total_open_tasks-p.overdue_tasks)+' of '+num(p.total_open_tasks)+' open tasks not overdue',
         badge(tOn===null?null:tOn>=85)) +
-      card('Team Project Tasks On Time', ptOn===null?'&mdash;':ptOn+'%',
+      card('Project Tasks On Time', ptOn===null?'&mdash;':ptOn+'%',
         'Goal: 85% &middot; '+num(p.project_tasks_total-p.project_tasks_late)+' of '+num(p.project_tasks_total)+' tasks across '+num(p.active_projects_owned)+' active owned projects',
         badge(ptOn===null?null:ptOn>=85));
   }
