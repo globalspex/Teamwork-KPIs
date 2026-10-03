@@ -299,6 +299,38 @@ def task_project_id(task, tasklists_by_id):
     return None
 
 
+EXCLUDED_WORKFLOW_STAGES = {"hold", "done", "waiting for review"}
+
+
+def task_workflow_stage_name(task):
+    """
+    Returns the task's current custom workflow-stage name (e.g. "New",
+    "In Progress", "Hold", "Done"), or None if it can't be determined.
+    Written defensively since the exact shape of 'workflowStages' on a
+    task hasn't been confirmed live -- tries a few plausible shapes:
+    a single dict, a plain string, or a list of stage dicts where one is
+    marked active/selected/current.
+    """
+    val = task.get("workflowStages")
+    if val is None:
+        return None
+    if isinstance(val, str):
+        return val
+    if isinstance(val, dict):
+        return val.get("name")
+    if isinstance(val, list):
+        for stage in val:
+            if not isinstance(stage, dict):
+                continue
+            if stage.get("active") or stage.get("selected") or stage.get("current"):
+                return stage.get("name")
+        # No explicit active flag found -- if there's exactly one entry,
+        # assume that's the current stage rather than finding nothing.
+        if len(val) == 1 and isinstance(val[0], dict):
+            return val[0].get("name")
+    return None
+
+
 def fetch_all_open_tasks(active_project_ids):
     """
     Fetches every incomplete task company-wide, paginating until exhausted,
@@ -355,6 +387,21 @@ def fetch_all_open_tasks(active_project_ids):
         else:
             inactive_project_count += 1
 
+    stage_counts = {}
+    for t in kept:
+        stage = task_workflow_stage_name(t)
+        stage_counts[stage] = stage_counts.get(stage, 0) + 1
+    print(f"Workflow stage breakdown (before Hold/Done exclusion): {stage_counts}")
+
+    excluded_stage_count = sum(
+        1 for t in kept
+        if (task_workflow_stage_name(t) or "").strip().lower() in EXCLUDED_WORKFLOW_STAGES
+    )
+    kept = [
+        t for t in kept
+        if (task_workflow_stage_name(t) or "").strip().lower() not in EXCLUDED_WORKFLOW_STAGES
+    ]
+
     # NOTE: subtasks are intentionally NOT excluded. An earlier version of
     # this script excluded them based on a since-debunked hypothesis (a
     # person's "open tasks" UI view appeared much smaller than the API
@@ -368,8 +415,9 @@ def fetch_all_open_tasks(active_project_ids):
     print(
         f"Raw fetch: {raw_count} tasks. Excluded {deleted_count} soft-deleted, "
         f"{task_archived_count} task-level archived, {inactive_project_count} "
-        f"in inactive/archived projects. {unresolved_project} tasks had an "
-        f"unresolvable project (kept, not excluded). Remaining: {len(kept)}."
+        f"in inactive/archived projects, {excluded_stage_count} with workflow "
+        f"stage Hold/Done. {unresolved_project} tasks had an unresolvable "
+        f"project (kept, not excluded). Remaining: {len(kept)}."
     )
     return kept
 
