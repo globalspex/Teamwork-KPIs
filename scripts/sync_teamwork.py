@@ -485,6 +485,50 @@ def classify_tasks(tasks, today_str):
     return total, overdue, due_today
 
 
+WEEKLY_CAPACITY_HOURS = 40
+UTILIZATION_WEEKS = 6
+
+
+def fetch_time_logs(start_str, end_str):
+    """All time logs company-wide between two dates (inclusive), v3 API.
+    Utilization counts ALL logged hours, billable or not (Christina, Oct 2026)."""
+    logs, page = [], 1
+    while True:
+        data = api_get("/projects/api/v3/time.json", {
+            "startDate": start_str, "endDate": end_str, "pageSize": 500, "page": page})
+        batch = data.get("timelogs") or data.get("timeLogs") or []
+        logs.extend(batch)
+        meta = data.get("meta", {}).get("page", {})
+        if not batch or not meta.get("hasMore", len(batch) >= 500) or page >= 50:
+            break
+        page += 1
+    return logs, (sorted(logs[0].keys()) if logs else [])
+
+
+def _log_user(t):
+    u = t.get("userId")
+    if u is None and isinstance(t.get("user"), dict):
+        u = t["user"].get("id")
+    try:
+        return int(u)
+    except (TypeError, ValueError):
+        return None
+
+
+def _log_minutes(t):
+    m = t.get("minutes")
+    if m is None and t.get("hours") is not None:
+        m = float(t["hours"]) * 60
+    return float(m or 0)
+
+
+def _log_date(t):
+    for k in ("timeLogged", "date", "dateLogged", "loggedAt"):
+        if t.get(k):
+            return str(t[k])[:10]
+    return None
+
+
 def week_end_str(today_str):
     """The Friday that closes the current work week. On Saturday/Sunday,
     that's the coming Friday, so the count stays meaningful on weekends."""
@@ -692,6 +736,27 @@ def main():
         msg = f"task pull/classification failed: {e}"
         print(f"ERROR: {msg}", file=sys.stderr)
         result["errors"].append(msg)
+
+    # ---- Utilization: all logged hours / 40-hr week, last full Mon-Sun weeks ----
+    try:
+        today = datetime.date.fromisoformat(now.strftime("%Y-%m-%d"))
+        this_monday = today - datetime.timedelta(days=today.weekday())
+        week_starts = [this_monday - datetime.timedelta(weeks=i) for i in range(UTILIZATION_WEEKS, 0, -1)]
+        logs, sample_keys = fetch_time_logs(week_starts[0].isoformat(), (this_monday - datetime.timedelta(days=1)).isoformat())
+        result["time_debug"] = {"logs_fetched": len(logs), "fields": sample_keys}
+        for key, info in PEOPLE.items():
+            weeks = []
+            for ws in week_starts:
+                we = ws + datetime.timedelta(days=6)
+                mins = sum(_log_minutes(t) for t in logs
+                           if _log_user(t) == info["user_id"] and _log_date(t) and ws.isoformat() <= _log_date(t) <= we.isoformat())
+                hrs = round(mins / 60, 2)
+                weeks.append({"week": f"{ws.month}/{ws.day}", "range": f"{ws.month}/{ws.day}\u2013{we.month}/{we.day}",
+                              "hours": hrs, "pct": round(hrs / WEEKLY_CAPACITY_HOURS * 100, 1)})
+            if key in result.get("people", {}):
+                result["people"][key]["utilization"] = {"capacity_hours": WEEKLY_CAPACITY_HOURS, "last_week": weeks[-1], "weeks": weeks}
+    except Exception as e:
+        result["errors"].append(f"Utilization: {e}")
 
     # Daily snapshot log: Teamwork only reports CURRENT state, so company
     # totals are saved once per day to build trend charts going forward.
