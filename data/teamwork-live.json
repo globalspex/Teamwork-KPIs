@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-10-02T19:17:40.336691-05:00",
+  "generated_at": "2026-10-02T19:33:21.806646-05:00",
   "timezone": "America/Chicago",
   "company": {
-    "total_open_tasks": 5480,
+    "total_open_tasks": 5466,
     "overdue_tasks": 1038,
     "due_today": 118,
     "completed_today": 957
@@ -46,7 +46,7 @@
     },
     "aura": {
       "name": "Aura Celorico",
-      "total_open_tasks": 483,
+      "total_open_tasks": 470,
       "overdue_tasks": 43,
       "due_today": 11
     },
