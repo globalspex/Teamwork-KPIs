@@ -326,12 +326,31 @@ def fetch_workflow_stage_names():
             continue
         for wf in workflows:
             wf_id = wf.get("id")
+            try:
+                wf_id = int(wf_id)
+            except (TypeError, ValueError):
+                pass
             stages = wf.get("stages", [])
             for stage in stages:
                 if isinstance(stage, dict) and "id" in stage:
-                    lookup[(wf_id, stage["id"])] = stage.get("name")
+                    stage_id = stage["id"]
+                    try:
+                        stage_id = int(stage_id)
+                    except (TypeError, ValueError):
+                        pass
+                    lookup[(wf_id, stage_id)] = stage.get("name")
         if lookup:
             print(f"Resolved {len(lookup)} (workflowId, stageId) -> name pairs from {path}.")
+            # Targeted check: does the known real task's (10690, 0) key match
+            # AT ALL, and if not, is it a type mismatch (str vs int) or is
+            # workflow 10690 just missing entirely from what we fetched?
+            sample_keys = list(lookup.keys())[:5]
+            print(f"DIAGNOSTIC -- sample keys from stage_lookup (showing types): {sample_keys}")
+            print(f"DIAGNOSTIC -- direct lookup of (10690, 0): {lookup.get((10690, 0))!r}")
+            print(f"DIAGNOSTIC -- direct lookup of ('10690', 0): {lookup.get(('10690', 0))!r}")
+            print(f"DIAGNOSTIC -- direct lookup of (10690, '0'): {lookup.get((10690, '0'))!r}")
+            matching_workflow = [k for k in lookup if str(k[0]) == "10690"]
+            print(f"DIAGNOSTIC -- all keys where workflowId==10690 in any type: {matching_workflow}")
             return lookup
     print("WARNING: could not resolve workflow stage names from any known endpoint. "
           "Hold/Done/Waiting-for-Review exclusion will not filter anything this run.", file=sys.stderr)
@@ -346,8 +365,16 @@ def task_workflow_stage_name(task, stage_lookup):
     entry = val[0]
     if not isinstance(entry, dict):
         return None
-    key = (entry.get("workflowId"), entry.get("stageId"))
-    return stage_lookup.get(key)
+    wf_id, stage_id = entry.get("workflowId"), entry.get("stageId")
+    try:
+        wf_id = int(wf_id)
+    except (TypeError, ValueError):
+        pass
+    try:
+        stage_id = int(stage_id)
+    except (TypeError, ValueError):
+        pass
+    return stage_lookup.get((wf_id, stage_id))
 
 
 def fetch_all_open_tasks(active_project_ids, stage_lookup):
