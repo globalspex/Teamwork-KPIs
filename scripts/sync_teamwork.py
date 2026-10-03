@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Pulls core live numbers from Teamwork Projects (and, where noted, Teamwork
-Desk) and writes a single JSON snapshot to data/teamwork-live.json.
+Pulls core live numbers from Teamwork Projects and writes a single JSON
+snapshot to data/teamwork-live.json.
 
 Scope (by design, kept intentionally small):
   - Company-wide: total open tasks, overdue tasks, due today, completed today
@@ -21,19 +21,14 @@ Site is TEAMWORK_SITE (e.g. "globalspex" for https://globalspex.teamwork.com).
 
 Task overdue/due-today status is computed client-side from each task's
 dueDate field compared to "today" in TEAMWORK_TIMEZONE, rather than relying
-on a server-side date filter -- this avoids depending on exact filter
-parameter names that can't be verified without a live test against the API.
+on a server-side date filter.
 
 Per-person filtering is ALSO done client-side: the whole open-task list is
-fetched once, and each task's own assignee data is checked directly,
-rather than trusting a server-side `assignedToUserIds`-style query
-parameter. (An earlier version of this script tried that server-side
-filter and it was silently ignored by the API -- every person came back
-with identical, company-wide numbers. Checking each task's own assignee
-field directly removes that whole class of bug, at the cost of needing to
-know which field(s) Teamwork actually puts assignee data in -- see
-`task_assignee_ids()` below, which tries several plausible shapes and
-prints a warning if none of them match anything.)
+fetched once (with include=assignees), and each task's own assignee data
+(the confirmed-working field is assigneeUserIds) is checked directly,
+rather than trusting a server-side assignedToUserIds-style query parameter
+-- an earlier version tried that and Teamwork silently ignored it, so every
+person came back with identical, company-wide numbers.
 """
 
 import os
@@ -46,7 +41,7 @@ import base64
 from zoneinfo import ZoneInfo
 
 SITE = os.environ.get("TEAMWORK_SITE", "globalspex")
-API_KEY = os.environ["TEAMWORK_PASSWORD"]  # repo secret now holds the Teamwork API key, not a login password
+API_KEY = os.environ["TEAMWORK_PASSWORD"]  # repo secret holds the Teamwork API key, not a login password
 TZ = os.environ.get("TEAMWORK_TIMEZONE", "America/Chicago")
 BASE_URL = f"https://{SITE}.teamwork.com"
 
@@ -65,10 +60,6 @@ PEOPLE = {
 
 
 def auth_header():
-    # Teamwork's REST API authenticates via Basic Auth using the API key as
-    # the username and any non-empty string as the password -- this is
-    # their documented convention, and it's required when the account has
-    # 2FA enabled, which also blocks plain login/password auth entirely.
     token = base64.b64encode(f"{API_KEY}:x".encode("utf-8")).decode("ascii")
     return {"Authorization": f"Basic {token}", "Content-Type": "application/json"}
 
@@ -88,21 +79,18 @@ def api_get(path, params=None):
         raise RuntimeError(f"Teamwork API error {e.code} on {url}: {body[:500]}") from e
 
 
-_ASSIGNEE_FIELD_WARNED = False
-
-
 def task_assignee_ids(task):
     """
-    Returns a set of user IDs assigned to this task, trying several known
-    Teamwork API response shapes since the exact one can't be confirmed
-    without a live test. Logs one warning (not per-task) if nothing
-    recognizable is found anywhere, so a silent "everyone shows 0" bug is
-    at least visible in the Action's log instead of failing quietly.
+    Returns a set of user IDs assigned to this task. The confirmed-working
+    field (verified against a real run) is 'assigneeUserIds', a flat list
+    of ints directly on the task. A couple of alternate shapes are checked
+    too in case Teamwork's response varies by endpoint/version, but a task
+    legitimately having zero assignees is normal and NOT a sign of a bug --
+    see the whole-batch check in main() for the actual "is this field name
+    even right" diagnostic.
     """
-    global _ASSIGNEE_FIELD_WARNED
     ids = set()
 
-    # Shape 1: a flat list of IDs directly on the task.
     for key in ("assigneeUserIds", "assignedToUserIds", "responsiblePartyIds"):
         val = task.get(key)
         if isinstance(val, list):
@@ -112,7 +100,6 @@ def task_assignee_ids(task):
                 except (TypeError, ValueError):
                     pass
 
-    # Shape 2: a list of assignee objects, each with an "id" field.
     val = task.get("assignees")
     if isinstance(val, list):
         for a in val:
@@ -122,7 +109,6 @@ def task_assignee_ids(task):
                 except (TypeError, ValueError):
                     pass
 
-    # Shape 3: JSON:API-style relationships block.
     rel = task.get("relationships", {})
     if isinstance(rel, dict):
         for rel_key in ("assignees", "assignedTo"):
@@ -137,32 +123,13 @@ def task_assignee_ids(task):
                             except (TypeError, ValueError):
                                 pass
 
-    if not ids and not _ASSIGNEE_FIELD_WARNED:
-        _ASSIGNEE_FIELD_WARNED = True
-        sample_keys = sorted(task.keys())
-        warning = (
-            "Could not find assignee data on any task using the known field "
-            f"shapes. Top-level keys on a sample task: {sample_keys}. "
-            "Per-person counts are likely all 0 -- share this message so the "
-            "field name can be corrected."
-        )
-        print(f"WARNING: {warning}", file=sys.stderr)
-        _RESULT_ERRORS_SINK.append(warning)
-
     return ids
-
-
-# Populated by main() with a reference to result["errors"] so
-# task_assignee_ids() can surface its one-time warning into the output JSON
-# too, not just the Action's log (which is easy to not think to check).
-_RESULT_ERRORS_SINK = []
 
 
 def fetch_all_open_tasks():
     """
     Fetches every incomplete task company-wide, paginating until exhausted.
-    Includes assignee relationship data so per-person filtering can be done
-    client-side afterward (see task_assignee_ids()).
+    Includes assignee data so per-person filtering can be done client-side.
     """
     tasks = []
     page = 1
@@ -244,10 +211,7 @@ def main():
         "people": {},
         "errors": [],
     }
-    global _RESULT_ERRORS_SINK
-    _RESULT_ERRORS_SINK = result["errors"]
 
-    # ---- Fetch once, derive both company-wide and per-person from it ----
     try:
         all_open = fetch_all_open_tasks()
         print(f"Fetched {len(all_open)} open tasks company-wide.")
@@ -261,12 +225,25 @@ def main():
             "completed_today": completed_today,
         }
 
-        # Index tasks by assignee once, so each person is just a dict lookup
-        # rather than a fresh filter pass (and definitely not a fresh API call).
         by_assignee = {}
         for t in all_open:
             for uid in task_assignee_ids(t):
                 by_assignee.setdefault(uid, []).append(t)
+
+        # Whole-batch sanity check: if there ARE open tasks but literally none
+        # of them produced any assignee link at all, that's the real signal
+        # the field shape is wrong -- as opposed to any single task simply
+        # being unassigned, which is normal and not worth flagging.
+        total_links = sum(len(v) for v in by_assignee.values())
+        if all_open and total_links == 0:
+            sample_keys = sorted(all_open[0].keys())
+            warning = (
+                "Fetched tasks but found zero assignee links across the "
+                f"entire batch of {len(all_open)} tasks -- the assignee "
+                f"field shape is likely wrong. Sample task keys: {sample_keys}"
+            )
+            print(f"WARNING: {warning}", file=sys.stderr)
+            result["errors"].append(warning)
 
         for key, info in PEOPLE.items():
             tasks = by_assignee.get(info["user_id"], [])
@@ -292,8 +269,6 @@ def main():
 
     if result["errors"]:
         print(f"Completed with {len(result['errors'])} error(s) -- see above.", file=sys.stderr)
-        # Don't fail the whole workflow on partial errors; the JSON still
-        # has whatever succeeded, and the 'errors' list makes gaps visible.
 
 
 if __name__ == "__main__":
