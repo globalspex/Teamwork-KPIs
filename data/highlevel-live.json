@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-03T14:12:48.167953-05:00",
+  "generated_at": "2026-10-03T14:30:54.875136-05:00",
   "timezone": "America/Chicago",
   "christina": {
     "weeks": [
@@ -170,25 +170,10 @@
       0,
       0,
       0,
+      1,
       0,
       0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
+      2,
       0,
       0,
       0,
@@ -198,7 +183,6 @@
       0,
       1,
       0,
-      0,
       1,
       0,
       0,
@@ -206,6 +190,17 @@
       0,
       0,
       0,
+      1,
+      2,
+      0,
+      2,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      2,
       0,
       0,
       0,
@@ -213,10 +208,15 @@
       0,
       0,
       0,
+      1,
+      1,
+      1,
       0,
       0,
       0,
-      0
+      0,
+      2,
+      1
     ],
     "converted": [
       0,
@@ -280,10 +280,10 @@
         "avg_per_week_last_12_weeks": 0.4
       },
       "proposals": {
-        "this_week": 0,
-        "last_week": 0,
-        "last_12_months": 2,
-        "avg_per_week_last_12_weeks": 0.0
+        "this_week": 1,
+        "last_week": 2,
+        "last_12_months": 20,
+        "avg_per_week_last_12_weeks": 0.5
       },
       "converted": {
         "this_week": 3,
@@ -322,30 +322,30 @@
         0
       ],
       "proposals": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
+        1,
+        2,
         1,
         1,
         0,
-        0,
-        0,
-        0
-      ],
-      "converted": [
-        0,
-        0,
-        0,
-        0,
+        6,
         1,
         2,
         0,
+        3,
+        3,
+        0
+      ],
+      "converted": [
+        1,
+        2,
+        1,
         1,
         0,
+        6,
         1,
+        2,
+        0,
+        3,
         3,
         0
       ]
@@ -358,13 +358,13 @@
       },
       "proposals": {
         "this_month": 0,
-        "last_month": 0,
-        "last_12_months": 2
+        "last_month": 3,
+        "last_12_months": 20
       },
       "converted": {
         "this_month": 0,
         "last_month": 3,
-        "last_12_months": 8
+        "last_12_months": 20
       }
     }
   },
