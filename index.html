@@ -158,22 +158,8 @@
         <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
     </div>
 
-    <div class="section-title">Support / Desk <span class="source-tag">Teamwork Desk &middot; Manual</span></div>
-    <div class="grid">
-      <div class="card"><div class="label">Open Tickets</div><div class="value">552</div>
-        <div class="goal">Status: Active</div>
-        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
-      <div class="card"><div class="label">New Tickets Today</div><div class="value">14</div>
-        <div class="goal">Excludes automated alerts (uptime monitor, Wordfence, WP Remote, host/plugin notices) and spam</div>
-        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
-      <div class="card"><div class="label">Waiting on Customer</div><div class="value">29</div>
-        <div class="goal">21 had no follow-up in 2+ days &middot; Goal: zero</div>
-        <span class="badge red">Off Track</span>
-        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
-      <div class="card"><div class="label">On Hold</div><div class="value">10</div>
-        <div class="goal">Status: On-hold</div>
-        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
-    </div>
+    <div class="section-title">Support / Desk <span class="source-tag">Teamwork Desk &middot; Live</span></div>
+    <div class="grid" id="live-desk-company"></div>
   </div>
 
   <!-- ===== Christina ===== -->
@@ -273,12 +259,9 @@
         <div class="goal">Goal: less than 20% &middot; 0 of 94 tasks completed 9/7&ndash;9/13 tagged redo</div>
         <span class="badge green">On Track</span>
         <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
-      <div class="card" data-slot="manual"><div class="label">Ticket Resolution Time</div><div class="value">100%</div>
-        <div class="goal">Goal: 2 days (max) &middot; 2 of 2 qualifying tickets, week of 9/7&ndash;9/13</div>
-        <span class="badge yellow">Thin Sample</span>
-        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
+      <div class="card" id="desk-res-rebecaq"><div class="label">Ticket Resolution Time</div><div class="value">&mdash;</div><div class="goal">Loading&hellip;</div></div>
     </div>
-    <div class="sample-note">Ticket Resolution Time uses the Desk report filter: types Request + Unspecified, statuses Close/FollowUp, Waiting on Customer, On-hold, Solved, Closed. Support columns for 4/17, 6/19, and 6/26 were backfilled from historical Desk data. Late Tasks for those weeks couldn't be, since task lateness only reflects today's state.</div>
+    <div class="sample-note">Ticket Resolution Time is live from Teamwork Desk: Request and Unspecified tickets assigned to her, created last full week, now in Close/FollowUp, Waiting on Customer, On-hold, Solved, or Closed, that got a human reply. On time means resolved within 2 business days. Under 5 tickets is flagged as a thin sample.</div>
 
     <div class="chart-card">
       <h3>Weekly Trend &mdash; Late Task % (Goal: under 10%)</h3>
@@ -302,12 +285,9 @@
         <div class="goal">Goal: less than 20% &middot; 0 of 105 tasks completed 9/7&ndash;9/13 tagged redo</div>
         <span class="badge green">On Track</span>
         <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
-      <div class="card" data-slot="manual"><div class="label">Ticket Resolution Time</div><div class="value">100%</div>
-        <div class="goal">Goal: 2 days (max) &middot; 3 of 3 qualifying tickets, week of 9/7&ndash;9/13</div>
-        <span class="badge yellow">Thin Sample</span>
-        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
+      <div class="card" id="desk-res-juliane"><div class="label">Ticket Resolution Time</div><div class="value">&mdash;</div><div class="goal">Loading&hellip;</div></div>
     </div>
-    <div class="sample-note">Ticket Resolution Time uses the Desk report filter: types Request + Unspecified, statuses Close/FollowUp, Waiting on Customer, On-hold, Solved, Closed.</div>
+    <div class="sample-note">Ticket Resolution Time is live from Teamwork Desk: Request and Unspecified tickets assigned to her, created last full week, now in Close/FollowUp, Waiting on Customer, On-hold, Solved, or Closed, that got a human reply. On time means resolved within 2 business days. Under 5 tickets is flagged as a thin sample.</div>
 
     <div class="chart-card">
       <h3>Weekly Trend &mdash; Late Task % (Goal: under 10%)</h3>
@@ -361,39 +341,27 @@
   <!-- ===== Andressa ===== -->
   <div class="panel" id="panel-andressa">
     <div class="person-head"><h2>Andressa Alves</h2><span class="role">Support Manager</span></div>
-    <div class="role-kpi-tag">Role KPIs &middot; Support Manager</div>
-    <div class="grid">
-      <div class="card"><div class="label">Avg Hours &mdash; Problem Tickets</div><div class="value">14.8 hrs</div>
-        <div class="goal">Week of 9/7&ndash;9/13 &middot; n = 1 ticket &middot; Wordfence/WP Remote/Alert tickets excluded</div>
-        <span class="badge gray">Thin Sample</span>
-        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
-      <div class="card"><div class="label">Avg Hours &mdash; Total Request Tickets</div><div class="value">24.1 hrs</div>
-        <div class="goal">Week of 9/7&ndash;9/13 &middot; n = 1 ticket &middot; Wordfence/WP Remote/Alert tickets excluded</div>
-        <span class="badge gray">Thin Sample</span>
-        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
-      <div class="card"><div class="label">Follow-Up Emails Within 1 Day</div><div class="value">50%</div>
-        <div class="goal">1 of 2 tickets</div>
-        <span class="badge gray">Thin Sample</span>
-        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
-      <div class="card"><div class="label"># Care Plans Over Time</div><div class="value">&mdash;</div>
-        <div class="goal">Source: Airtable &quot;Time by Website &ndash; Last Week&quot; view</div>
-        <span class="badge gray">Needs Data</span></div>
-      <div class="card"><div class="label">Aging Tickets</div><div class="value">12</div>
-        <div class="goal">Request/Problem &middot; Active/Waiting &middot; 30-day lookback &middot; Assigned agent required</div>
-        <span class="badge gray">Tracking</span>
-        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
-    </div>
+    <div class="role-kpi-tag">Role KPIs &middot; Support Manager <span class="source-tag">Teamwork Desk &middot; Live</span></div>
+    <div class="grid" id="live-desk-andressa"></div>
     <div class="section-title">Task Health <span class="source-tag">Teamwork Projects &middot; Live</span></div>
     <div class="grid" id="live-andressa"></div>
-    <div class="sample-note">Ticket KPIs exclude the uptime-monitoring integration, which was auto-creating hundreds of tickets a week. Aging Tickets excludes Question and Marketing/SEO types and unassigned tickets (years of untriaged automated noise).</div>
+    <div class="sample-note">Desk KPIs cover the GlobalSpex Support and Moving Marketing Support inboxes, in business hours, for the last full Monday&ndash;Sunday week. Automated senders (uptime monitors, plugin and host notices) are detected and excluded: any sender with 15+ tickets in six weeks that almost never get a reply. Avg times are first response time for tickets created that week, the same measure as Desk&rsquo;s &ldquo;Avg. first response time (created).&rdquo; Follow-ups counts Problem, Question, Request, and Marketing tickets that got a first reply within one business day (8 hours). Aging Tickets is open or waiting Request/Problem tickets with an assigned agent, created in the last 30 days.</div>
+
+    <div class="table-scroll">
+      <table class="wk nested">
+        <caption>Last 6 Weeks &mdash; Live (Teamwork Desk)</caption>
+        <thead><tr><th>Week</th><th>Tickets</th><th>Avg First Response &mdash; Problem</th><th>Avg First Response &mdash; Request</th><th>Follow-ups &lt;1 Day</th></tr></thead>
+        <tbody id="tbl-desk-andressa"></tbody>
+      </table>
+    </div>
 
     <div class="chart-card">
-      <h3>Weekly Trend &mdash; Avg First-Response Time (minutes)</h3>
+      <h3>Historical &mdash; Avg First-Response Time (minutes, manual tracker)</h3>
       <div class="chart-wrap"><canvas id="chart-andressa"></canvas></div>
     </div>
     <div class="table-scroll">
       <table class="wk nested">
-        <caption>Weekly Breakdown</caption>
+        <caption>Historical Breakdown (manual tracker)</caption>
         <thead><tr><th>Week</th><th>Avg Problem Tickets</th><th>Avg Request Tickets</th><th>NPS</th><th>Follow-ups &lt;1 Day</th><th>Care Plan Overage</th></tr></thead>
         <tbody id="tbl-andressa"></tbody>
       </table>
@@ -401,7 +369,7 @@
   </div>
 
   <div class="footnote">
-    Cards tagged <strong>Live</strong> load from <code>data/teamwork-live.json</code>, which a GitHub Action refreshes every morning from Teamwork Projects. Cards marked <em>Manual snapshot</em> aren't automated yet and show the date they were last pulled. HighLevel cards load from <code>data/highlevel-live.json</code>, refreshed by the same Action. Other weekly charts and tables load from <code>data/weekly-history.json</code> (the 2026 KPI Scorecard plus later live entries). Blank weeks are omitted rather than shown as zero.
+    Cards tagged <strong>Live</strong> load from <code>data/teamwork-live.json</code>, which a GitHub Action refreshes every morning from Teamwork Projects. Cards marked <em>Manual snapshot</em> aren't automated yet and show the date they were last pulled. Desk cards load from <code>data/desk-live.json</code> and HighLevel cards from <code>data/highlevel-live.json</code>, both, refreshed by the same Action. Other weekly charts and tables load from <code>data/weekly-history.json</code> (the 2026 KPI Scorecard plus later live entries). Blank weeks are omitted rather than shown as zero.
   </div>
 
 </div>
@@ -413,7 +381,7 @@
   var LOCAL = 'data/';
   var STALE_HOURS = 30;
 
-  var WK = null, LIVE = null, HL = null, charts = {}, rendered = {};
+  var WK = null, LIVE = null, HL = null, DESK = null, charts = {}, rendered = {};
 
   function getJSON(file){
     var bust = '?t=' + Date.now();
@@ -599,6 +567,48 @@
     }
   }
 
+  function hrs(v){ return (v===null||v===undefined) ? '&mdash;' : v+' hrs'; }
+  function renderDesk(){
+    var D = DESK;
+    if(!D || !D.company){
+      ['live-desk-company','live-desk-andressa'].forEach(function(id){ put(id, card('Teamwork Desk', '&mdash;', 'No Desk data yet', '<span class="badge gray">Needs Data</span>')); });
+      return;
+    }
+    var c = D.company, w = D.last_full_week, wk = 'Week of ' + w.range;
+    put('live-desk-company',
+      card('Open Tickets', num(c.open_tickets), 'Status: Active, automated alerts excluded') +
+      card('New Tickets Today', num(c.new_today), 'Real customer tickets created since midnight') +
+      card('Waiting on Customer', num(c.waiting_on_customer),
+        num(c.waiting_no_update_2d)+' with no update in 2+ days &middot; Goal: zero', badge(c.waiting_no_update_2d===0)) +
+      card('On Hold', num(c.on_hold), 'Status: On-hold'));
+    var f = w.followup_1day;
+    put('live-desk-andressa',
+      card('Avg First Response &mdash; Problem', hrs(w.problem.avg_first_response_hrs), wk+' &middot; n = '+w.problem.n+' ticket'+(w.problem.n===1?'':'s'),
+        w.problem.n<5 ? '<span class="badge yellow">Thin Sample</span>' : '<span class="badge gray">Tracking</span>') +
+      card('Avg First Response &mdash; Request', hrs(w.request.avg_first_response_hrs), wk+' &middot; n = '+w.request.n+' ticket'+(w.request.n===1?'':'s'),
+        w.request.n<5 ? '<span class="badge yellow">Thin Sample</span>' : '<span class="badge gray">Tracking</span>') +
+      card('Follow-Ups Within 1 Day', f.pct===null?'&mdash;':f.pct+'%', wk+' &middot; '+num(f.hit)+' of '+num(f.n)+' tickets got a first reply within 1 business day',
+        '<span class="badge gray">Tracking</span>') +
+      card('Aging Tickets', num(D.andressa.aging_tickets), 'Open or waiting Request/Problem &middot; assigned &middot; created in last 30 days',
+        '<span class="badge gray">Tracking</span>'));
+    var tb = document.getElementById('tbl-desk-andressa');
+    if(tb) tb.innerHTML = D.weeks.slice().reverse().map(function(x){
+      return '<tr><td>'+x.week+'</td><td>'+num(x.tickets)+'</td><td>'+hrs(x.problem.avg_first_response_hrs)+' (n='+x.problem.n+')</td><td>'+hrs(x.request.avg_first_response_hrs)+' (n='+x.request.n+')</td><td>'+(x.followup_1day.pct===null?'&mdash;':x.followup_1day.pct+'%')+' ('+x.followup_1day.hit+'/'+x.followup_1day.n+')</td></tr>';
+    }).join('');
+    ['rebecaq','juliane'].forEach(function(who){
+      var el = document.getElementById('desk-res-'+who); if(!el) return;
+      var r = (w.resolution_by_agent||{})[who];
+      var b = !r ? '<span class="badge gray">No Tickets</span>' : r.n<5 ? '<span class="badge yellow">Thin Sample</span>' : badge(r.pct_on_time>=90);
+      el.innerHTML = '<div class="label">Ticket Resolution Time</div><div class="value">'+(r?r.pct_on_time+'%':'&mdash;')+'</div>' +
+        '<div class="goal">Goal: 2 business days (max) &middot; '+(r?r.on_time+' of '+r.n+' resolved on time, avg '+r.avg_resolution_hrs+' hrs':'no qualifying tickets')+', '+wk.toLowerCase()+'</div>' + b;
+    });
+    if(D.errors && D.errors.length){
+      var e = document.getElementById('banner-err');
+      e.innerHTML += (e.innerHTML ? '<br>' : '') + '<strong>Desk sync issue:</strong> ' + D.errors.map(esc).join(' &middot; ');
+      e.classList.add('show');
+    }
+  }
+
   // ---------- tabs ----------
   var current = 'company';
   document.getElementById('tabs').addEventListener('click', function(e){
@@ -619,6 +629,7 @@
     e.classList.add('show');
     document.getElementById('meta').innerHTML = 'GlobalSpex Internet Marketing &middot; Live data unavailable';
   });
+  getJSON('desk-live.json').then(function(j){ DESK = j; renderDesk(); }).catch(function(){ renderDesk(); });
   getJSON('highlevel-live.json').then(function(j){ HL = j; renderSalesCards(); renderSalesHistory(); }).catch(function(){ renderSalesCards(); });
   getJSON('weekly-history.json').then(function(j){ WK = j; if(current!=='company') renderHistory(current); }).catch(function(){
     document.querySelectorAll('.chart-wrap').forEach(function(w){ w.innerHTML = '<div class="empty-state">Weekly history couldn\'t be loaded.</div>'; });
