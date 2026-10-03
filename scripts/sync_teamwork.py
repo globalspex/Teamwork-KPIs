@@ -302,6 +302,40 @@ def task_project_id(task, tasklists_by_id):
 EXCLUDED_WORKFLOW_STAGES = {"hold", "done", "waiting for review"}
 
 
+def fetch_status_custom_field_id():
+    """
+    Finds the ID of the custom field named 'Status' (the dropdown with
+    New/In Progress/Hold/Done/Stuck/Waiting For Review/Waiting On Client --
+    confirmed via Teamwork's own 'status custom field' feature, found in
+    their public docs, not their native workflow-stages system). Returns
+    None if no field named exactly 'Status' is found, in which case the
+    Hold/Done/Waiting-for-Review exclusion will be skipped entirely rather
+    than silently matching the wrong field.
+    """
+    page = 1
+    page_size = 200
+    while True:
+        try:
+            data = api_get("/projects/api/v3/customfields.json", {"page": page, "pageSize": page_size})
+        except RuntimeError as e:
+            print(f"NOTE: customfields.json failed ({e}); Status-based exclusion will be skipped.", file=sys.stderr)
+            return None
+        fields = data.get("customfields", [])
+        for f in fields:
+            if (f.get("name") or "").strip().lower() == "status":
+                print(f"Found 'Status' custom field: id={f.get('id')}, entity={f.get('entity')}")
+                return f.get("id")
+        meta = data.get("meta", {}).get("page", {})
+        total_pages = meta.get("pageCount") or meta.get("pages")
+        if not fields or (total_pages and page >= total_pages) or len(fields) < page_size:
+            break
+        page += 1
+        if page > 10:
+            break
+    print("NOTE: no custom field named exactly 'Status' was found; Hold/Done/Waiting-for-Review exclusion will be skipped.", file=sys.stderr)
+    return None
+
+
 def fetch_workflow_stage_names():
     """
     Returns {(workflowId, stageId): "stage name"}. A task's own
@@ -377,7 +411,7 @@ def task_workflow_stage_name(task, stage_lookup):
     return stage_lookup.get((wf_id, stage_id))
 
 
-def fetch_all_open_tasks(active_project_ids, stage_lookup):
+def fetch_all_open_tasks(active_project_ids, stage_lookup, status_field_id):
     """
     Fetches every incomplete task company-wide, paginating until exhausted,
     then excludes: soft-deleted tasks, tasks marked isArchived, and --
@@ -389,6 +423,7 @@ def fetch_all_open_tasks(active_project_ids, stage_lookup):
     """
     tasks = []
     tasklists_by_id = {}
+    status_by_task_id = {}
     page = 1
     page_size = 200
     include_custom_fields = True
@@ -412,16 +447,15 @@ def fetch_all_open_tasks(active_project_ids, stage_lookup):
         included = data.get("included", {})
         if isinstance(included, dict):
             tasklists_by_id.update(included.get("tasklists", {}) or {})
-            if page == 1:
-                print(f"DIAGNOSTIC -- all 'included' section keys on this response: {list(included.keys())}")
-                for k in included.keys():
-                    if "custom" in k.lower():
-                        val = included[k]
-                        sample = dict(list(val.items())[:3]) if isinstance(val, dict) else val
-                        print(f"DIAGNOSTIC -- sample from included['{k}']: {json.dumps(sample, indent=2)}")
-                if batch:
-                    print(f"DIAGNOSTIC -- does the first task have a 'customfieldTasks' key now? {'customfieldTasks' in batch[0]}")
-                    print(f"DIAGNOSTIC -- first task's customfieldTasks value: {batch[0].get('customfieldTasks')}")
+            cf_tasks = included.get("customfieldTasks", {}) or {}
+            for entry in cf_tasks.values():
+                if not isinstance(entry, dict):
+                    continue
+                if status_field_id is not None and entry.get("customfieldId") != status_field_id:
+                    continue
+                tid = entry.get("taskId")
+                if tid is not None:
+                    status_by_task_id[tid] = entry.get("value")
         meta = data.get("meta", {}).get("page", {})
         total_pages = meta.get("pageCount") or meta.get("pages")
         if not batch or (total_pages and page >= total_pages) or len(batch) < page_size:
@@ -474,20 +508,17 @@ def fetch_all_open_tasks(active_project_ids, stage_lookup):
     print(f"DIAGNOSTIC -- full breakdown of plain 'status' field across all {len(kept)} tasks: {all_status_values}")
     print(f"DIAGNOSTIC -- all top-level keys on a sample task now (with customFields include): {sorted(kept[0].keys()) if kept else 'N/A'}")
 
-    stage_counts = {}
+    status_counts = {}
     for t in kept:
-        stage = task_workflow_stage_name(t, stage_lookup)
-        stage_counts[stage] = stage_counts.get(stage, 0) + 1
-    print(f"Workflow stage breakdown (before Hold/Done exclusion): {stage_counts}")
+        s = status_by_task_id.get(t.get("id"))
+        status_counts[s] = status_counts.get(s, 0) + 1
+    print(f"Status custom field breakdown (before Hold/Done/Waiting-for-Review exclusion): {status_counts}")
 
-    excluded_stage_count = sum(
-        1 for t in kept
-        if (task_workflow_stage_name(t, stage_lookup) or "").strip().lower() in EXCLUDED_WORKFLOW_STAGES
-    )
-    kept = [
-        t for t in kept
-        if (task_workflow_stage_name(t, stage_lookup) or "").strip().lower() not in EXCLUDED_WORKFLOW_STAGES
-    ]
+    def _status_of(t):
+        return (status_by_task_id.get(t.get("id")) or "").strip().lower()
+
+    excluded_stage_count = sum(1 for t in kept if _status_of(t) in EXCLUDED_WORKFLOW_STAGES)
+    kept = [t for t in kept if _status_of(t) not in EXCLUDED_WORKFLOW_STAGES]
 
     # NOTE: subtasks are intentionally NOT excluded. An earlier version of
     # this script excluded them based on a since-debunked hypothesis (a
@@ -569,7 +600,8 @@ def main():
     try:
         active_project_ids = fetch_active_project_ids()
         stage_lookup = fetch_workflow_stage_names()
-        all_open = fetch_all_open_tasks(active_project_ids, stage_lookup)
+        status_field_id = fetch_status_custom_field_id()
+        all_open = fetch_all_open_tasks(active_project_ids, stage_lookup, status_field_id)
         print(f"Fetched {len(all_open)} open tasks company-wide (active projects only).")
 
         total, overdue, due_today = classify_tasks(all_open, today_str)
