@@ -397,13 +397,13 @@ def fetch_all_open_tasks(active_project_ids, stage_lookup):
             "page": page,
             "pageSize": page_size,
             "completed": "false",
-            "include": "assignees,tasklists,customFields" if include_custom_fields else "assignees,tasklists",
+            "include": "assignees,tasklists,customfieldTasks" if include_custom_fields else "assignees,tasklists",
         }
         try:
             data = api_get("/projects/api/v3/tasks.json", params)
         except RuntimeError as e:
             if include_custom_fields:
-                print(f"NOTE: tasks.json with include=...,customFields failed ({e}); retrying without it.", file=sys.stderr)
+                print(f"NOTE: tasks.json with include=...,customfieldTasks failed ({e}); retrying without it.", file=sys.stderr)
                 include_custom_fields = False
                 continue
             raise
@@ -412,6 +412,16 @@ def fetch_all_open_tasks(active_project_ids, stage_lookup):
         included = data.get("included", {})
         if isinstance(included, dict):
             tasklists_by_id.update(included.get("tasklists", {}) or {})
+            if page == 1:
+                print(f"DIAGNOSTIC -- all 'included' section keys on this response: {list(included.keys())}")
+                for k in included.keys():
+                    if "custom" in k.lower():
+                        val = included[k]
+                        sample = dict(list(val.items())[:3]) if isinstance(val, dict) else val
+                        print(f"DIAGNOSTIC -- sample from included['{k}']: {json.dumps(sample, indent=2)}")
+                if batch:
+                    print(f"DIAGNOSTIC -- does the first task have a 'customfieldTasks' key now? {'customfieldTasks' in batch[0]}")
+                    print(f"DIAGNOSTIC -- first task's customfieldTasks value: {batch[0].get('customfieldTasks')}")
         meta = data.get("meta", {}).get("page", {})
         total_pages = meta.get("pageCount") or meta.get("pages")
         if not batch or (total_pages and page >= total_pages) or len(batch) < page_size:
