@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-02T21:47:24.792292-05:00",
+  "generated_at": "2026-10-02T21:47:56.563263-05:00",
   "timezone": "America/Chicago",
   "company": {
     "total_open_tasks": 5387,
@@ -13,16 +13,16 @@
       "total_open_tasks": 1321,
       "overdue_tasks": 523,
       "due_today": 16,
-      "total_incomplete_milestones": 23,
-      "late_milestones": 0
+      "total_incomplete_milestones": 4,
+      "late_milestones": 1
     },
     "javier": {
       "name": "Javier L\u00f3pez",
       "total_open_tasks": 348,
       "overdue_tasks": 46,
       "due_today": 31,
-      "total_incomplete_milestones": 106,
-      "late_milestones": 0
+      "total_incomplete_milestones": 12,
+      "late_milestones": 2
     },
     "jennifer": {
       "name": "Jennifer McNinch",
@@ -30,14 +30,14 @@
       "overdue_tasks": 9,
       "due_today": 2,
       "total_incomplete_milestones": 22,
-      "late_milestones": 0
+      "late_milestones": 9
     },
     "rebecaq": {
       "name": "Rebeca Queiroz",
       "total_open_tasks": 331,
       "overdue_tasks": 99,
       "due_today": 14,
-      "total_incomplete_milestones": 17,
+      "total_incomplete_milestones": 0,
       "late_milestones": 0
     },
     "juliane": {
@@ -53,7 +53,7 @@
       "total_open_tasks": 41,
       "overdue_tasks": 7,
       "due_today": 0,
-      "total_incomplete_milestones": 2,
+      "total_incomplete_milestones": 0,
       "late_milestones": 0
     },
     "aura": {
@@ -76,35 +76,27 @@
   "errors": [],
   "debug": {
     "sample_milestone": {
-      "id": 171431,
-      "name": "Shut down OilStoneEnergy if not paid",
-      "description": "",
-      "descriptionHTML": "",
-      "deadline": "2015-01-13T00:00:00Z",
-      "originalDueDate": "2015-01-13T00:00:00Z",
-      "completed": true,
-      "projectId": 136325,
+      "id": 674192,
+      "name": "Meta Ad Kickoff",
+      "description": "$750/month meta ad budget",
+      "descriptionHTML": "<p>$750/month meta ad budget</p>\n",
+      "deadline": "2026-05-01T00:00:00Z",
+      "originalDueDate": "2026-05-01T00:00:00Z",
+      "completed": false,
+      "projectId": 515468,
       "project": {
-        "id": 136325,
+        "id": 515468,
         "type": "projects"
       },
-      "createdOn": "2014-12-17T04:29:32Z",
-      "lastChangedOn": "2023-08-07T17:32:12Z",
+      "createdOn": "2026-04-06T16:51:31Z",
+      "lastChangedOn": "2026-04-06T16:51:32Z",
       "updatedBy": 116205,
       "creatorUserId": 116205,
       "createdBy": 0,
-      "reminder": true,
-      "private": true,
-      "lockdownId": 200068,
-      "lockdown": {
-        "id": 200068,
-        "type": "lockdowns"
-      },
-      "status": "completed",
-      "completedOn": "2023-08-07T17:32:11Z",
-      "completerId": 116205,
-      "completedBy": 116205,
-      "userFollowingComments": true,
+      "reminder": false,
+      "private": false,
+      "status": "late",
+      "userFollowingComments": false,
       "userFollowingChanges": false,
       "userFollowingComplete": false,
       "isDeleted": false,
@@ -120,35 +112,58 @@
           "type": "users"
         }
       ],
-      "commentFollowerIds": [
-        116205,
-        127631
-      ],
-      "commentFollowers": [
+      "commentsCount": 0
+    },
+    "sample_role_assigned_milestone": {
+      "id": 681243,
+      "name": "Admin",
+      "description": "**ADD**\n* Task Lists to Add or Change\n* Project Setup\n* Kick Off Meeting\n**Milestone Start**: Day of contract sign\n**Milestone Duration**: 7 Days",
+      "descriptionHTML": "<p><strong>ADD</strong></p>\n\n<ul>\n<li>Task Lists to Add or Change<br /></li>\n<li>Project Setup<br /></li>\n<li>Kick Off Meeting<br />\n<strong>Milestone Start</strong>: Day of contract sign<br />\n<strong>Milestone Duration</strong>: 7 Days<br /></li>\n</ul>\n",
+      "deadline": "2026-09-17T00:00:00Z",
+      "originalDueDate": "2026-09-02T00:00:00Z",
+      "completed": false,
+      "projectId": 518524,
+      "project": {
+        "id": 518524,
+        "type": "projects"
+      },
+      "createdOn": "2026-08-25T17:47:21Z",
+      "lastChangedOn": "2026-09-14T14:43:40Z",
+      "updatedBy": 273488,
+      "creatorUserId": 273488,
+      "createdBy": 0,
+      "reminder": false,
+      "private": false,
+      "status": "late",
+      "userFollowingComments": false,
+      "userFollowingChanges": false,
+      "userFollowingComplete": false,
+      "isDeleted": false,
+      "deletedOn": null,
+      "canEdit": true,
+      "canComplete": true,
+      "responsibleParties": [
         {
-          "id": 116205,
-          "type": "users"
-        },
-        {
-          "id": 127631,
-          "type": "users"
+          "id": 43743,
+          "type": "teams"
         }
       ],
-      "changeFollowerIds": [
-        126957,
-        127631
+      "commentsCount": 0,
+      "tasklistIds": [
+        2118707,
+        2118727
       ],
-      "changeFollowers": [
+      "tasklists": [
         {
-          "id": 126957,
-          "type": "users"
+          "id": 2118707,
+          "type": "tasklists"
         },
         {
-          "id": 127631,
-          "type": "users"
+          "id": 2118727,
+          "type": "tasklists"
         }
-      ],
-      "commentsCount": 5
-    }
+      ]
+    },
+    "role_assigned_milestone_count": 4
   }
 }
