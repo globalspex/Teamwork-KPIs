@@ -30,6 +30,15 @@ jobs:
           TEAMWORK_TIMEZONE: America/Chicago
         run: python scripts/sync_teamwork.py
 
+      - name: Run Teamwork Desk sync
+        # If Desk fails, still commit everything else below.
+        continue-on-error: true
+        env:
+          TEAMWORK_PASSWORD: ${{ secrets.TEAMWORK_PASSWORD }}
+          TEAMWORK_SITE: globalspex
+          TEAMWORK_TIMEZONE: America/Chicago
+        run: python scripts/sync_desk.py
+
       - name: Run HighLevel sync
         # If HighLevel fails, still commit the Teamwork numbers below.
         continue-on-error: true
@@ -47,4 +56,5 @@ jobs:
           git add data/
           git diff --cached --quiet && echo "No changes to commit" && exit 0
           git commit -m "Daily KPI sync: $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase
           git push
