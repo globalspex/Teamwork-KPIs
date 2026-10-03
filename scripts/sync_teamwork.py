@@ -528,13 +528,28 @@ def main():
         for p in all_projects:
             status_counts[p.get("status", "unknown")] = status_counts.get(p.get("status", "unknown"), 0) + 1
         active_project_ids = {int(p["id"]) for p in all_projects if p.get("status") == "active"}
-        print(f"Projects by status: {status_counts}. Active project count: {len(active_project_ids)}.")
+        completed_at_count = sum(1 for p in all_projects if p.get("completedAt"))
+        archived_at_count = sum(1 for p in all_projects if p.get("archivedAt"))
+        deleted_at_count = sum(1 for p in all_projects if p.get("deletedAt"))
+        print(
+            f"Projects by status: {status_counts}. Active project count: {len(active_project_ids)}. "
+            f"Of {len(all_projects)} fetched projects: {completed_at_count} have completedAt set, "
+            f"{archived_at_count} have archivedAt set, {deleted_at_count} have deletedAt set."
+        )
 
         owned_projects_by_user = {}
         for p in all_projects:
             owner_id = project_owner_id(p)
             if owner_id is not None:
                 owned_projects_by_user.setdefault(owner_id, []).append(p)
+
+        result["debug"] = {
+            "total_projects_fetched": len(all_projects),
+            "status_counts": status_counts,
+            "completed_at_count": completed_at_count,
+            "archived_at_count": archived_at_count,
+            "deleted_at_count": deleted_at_count,
+        }
 
         status_field_id = fetch_status_custom_field_id()
         all_open, tasklists_by_id = fetch_all_open_tasks(active_project_ids, status_field_id)
