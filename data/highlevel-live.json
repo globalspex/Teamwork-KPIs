@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-03T14:37:13.549331-05:00",
+  "generated_at": "2026-10-03T14:57:00.105223-05:00",
   "timezone": "America/Chicago",
   "christina": {
     "weeks": [
@@ -368,5 +368,11 @@
       }
     }
   },
-  "errors": []
+  "errors": [],
+  "warnings": [
+    "MMR not included yet: add the HIGHLEVEL_TOKEN_MMR repo secret."
+  ],
+  "sources": [
+    "GlobalSpex"
+  ]
 }
