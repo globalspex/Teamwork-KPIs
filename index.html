@@ -109,6 +109,45 @@
   .loading .value{opacity:.35;}
   .wrap{padding-left:env(safe-area-inset-left,0px); padding-right:env(safe-area-inset-right,0px);}
 </style>
+
+<style>
+  /* ---- Role colors. To add a role: one line here, then data-role="..." on its tab button and panel. ---- */
+  [data-role="company"]   {--role:#475569;}
+  [data-role="leadership"]{--role:#6d28d9;}
+  [data-role="pm"]        {--role:#0f766e;}
+  [data-role="dev"]       {--role:#1d4ed8;}
+  [data-role="design"]    {--role:#be185d;}
+  [data-role="marketing"] {--role:#c2410c;}
+  [data-role="support"]   {--role:#15803d;}
+  [data-role="content"]   {--role:#a16207;}  /* Content Manager (coming soon) */
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) [data-role="company"]   {--role:#94a3b8;}
+    :root:not([data-theme="light"]) [data-role="leadership"]{--role:#a78bfa;}
+    :root:not([data-theme="light"]) [data-role="pm"]        {--role:#2dd4bf;}
+    :root:not([data-theme="light"]) [data-role="dev"]       {--role:#60a5fa;}
+    :root:not([data-theme="light"]) [data-role="design"]    {--role:#f472b6;}
+    :root:not([data-theme="light"]) [data-role="marketing"] {--role:#fb923c;}
+    :root:not([data-theme="light"]) [data-role="support"]   {--role:#4ade80;}
+    :root:not([data-theme="light"]) [data-role="content"]   {--role:#facc15;}
+  }
+
+  .person-head{
+    align-items:center; gap:12px; margin:24px 0 14px; padding:16px 20px;
+    border-radius:14px; border-left:5px solid var(--role, var(--accent));
+    background:color-mix(in srgb, var(--role, var(--accent)) 9%, var(--card, #fff));
+  }
+  .person-head h2{font-size:22px; color:var(--ink);}
+  .person-head .role{
+    color:var(--card); background:var(--role, var(--accent)); font-size:12px; font-weight:600;
+    padding:4px 10px; border-radius:999px; letter-spacing:.02em;
+  }
+  .panel[data-role] .role-kpi-tag{color:var(--role);}
+
+  .tab-btn[data-role]{display:inline-flex; align-items:center; gap:7px;}
+  .tab-btn[data-role]::before{content:""; width:8px; height:8px; border-radius:50%; background:var(--role); flex:none;}
+  .tab-btn[data-role].active{background:var(--role); border-color:var(--role); color:var(--card);}
+  .tab-btn[data-role].active::before{background:var(--card);}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -123,28 +162,29 @@
 
   <nav class="tabs" id="tabs">
     <div class="tab-group"><div class="tab-group-label">Overview</div><div class="tab-row">
-      <button class="tab-btn active" data-tab="company">Company</button>
+      <button class="tab-btn active" data-tab="company" data-role="company">Company</button>
     </div></div>
     <div class="tab-group"><div class="tab-group-label">Leadership</div><div class="tab-row">
-      <button class="tab-btn" data-tab="christina">Christina</button>
+      <button class="tab-btn" data-tab="christina" data-role="leadership">Christina</button>
     </div></div>
     <div class="tab-group"><div class="tab-group-label">Project Managers</div><div class="tab-row">
-      <button class="tab-btn" data-tab="javier">Javier</button>
-      <button class="tab-btn" data-tab="jennifer">Jennifer</button>
+      <button class="tab-btn" data-tab="javier" data-role="pm">Javier</button>
+      <button class="tab-btn" data-tab="jennifer" data-role="pm">Jennifer</button>
     </div></div>
     <div class="tab-group"><div class="tab-group-label">Developers</div><div class="tab-row">
-      <button class="tab-btn" data-tab="rebecaq">Rebeca Q.</button>
-      <button class="tab-btn" data-tab="juliane">Juliane</button>
+      <button class="tab-btn" data-tab="rebecaq" data-role="dev">Rebeca Q.</button>
+      <button class="tab-btn" data-tab="juliane" data-role="dev">Juliane</button>
     </div></div>
     <div class="tab-group"><div class="tab-group-label">Design, Marketing &amp; Support</div><div class="tab-row">
-      <button class="tab-btn" data-tab="rebecam">Rebeca M.</button>
-      <button class="tab-btn" data-tab="aura">Aura</button>
-      <button class="tab-btn" data-tab="andressa">Andressa</button>
+      <button class="tab-btn" data-tab="rebecam" data-role="design">Rebeca M.</button>
+      <button class="tab-btn" data-tab="aura" data-role="marketing">Aura</button>
+      <button class="tab-btn" data-tab="andressa" data-role="support">Andressa</button>
     </div></div>
   </nav>
 
   <!-- ===== Company ===== -->
-  <div class="panel active" id="panel-company">
+  <div class="panel active" id="panel-company" data-role="company">
+    <div class="person-head"><h2>Company Overview</h2><span class="role">All Teams</span></div>
     <div class="section-title">Task Health <span class="source-tag">Teamwork Projects &middot; Live</span></div>
     <div class="grid" id="live-company"></div>
 
@@ -164,7 +204,7 @@
   </div>
 
   <!-- ===== Christina ===== -->
-  <div class="panel" id="panel-christina">
+  <div class="panel" id="panel-christina" data-role="leadership">
     <div class="person-head"><h2>Christina Hawkins</h2><span class="role">CEO &amp; Digital Marketing Consultant</span></div>
     <div class="role-kpi-tag">Role KPIs &middot; CEO <span class="source-tag">HighLevel &middot; Live</span></div>
     <div class="grid" id="live-christina-sales"></div>
@@ -194,7 +234,7 @@
   </div>
 
   <!-- ===== Javier ===== -->
-  <div class="panel" id="panel-javier">
+  <div class="panel" id="panel-javier" data-role="pm">
     <div class="person-head"><h2>Javier L&oacute;pez</h2><span class="role">Project Success Manager</span></div>
     <div class="role-kpi-tag">Role KPIs &middot; Project Manager</div>
     <div class="grid" id="live-javier">
@@ -223,7 +263,7 @@
   </div>
 
   <!-- ===== Jennifer ===== -->
-  <div class="panel" id="panel-jennifer">
+  <div class="panel" id="panel-jennifer" data-role="pm">
     <div class="person-head"><h2>Jennifer McNinch</h2><span class="role">Project Manager</span></div>
     <div class="role-kpi-tag">Role KPIs &middot; Project Manager</div>
     <div class="grid" id="live-jennifer">
@@ -252,7 +292,7 @@
   </div>
 
   <!-- ===== Rebeca Queiroz ===== -->
-  <div class="panel" id="panel-rebecaq">
+  <div class="panel" id="panel-rebecaq" data-role="dev">
     <div class="person-head"><h2>Rebeca Queiroz</h2><span class="role">Lead Developer</span></div>
     <div class="role-kpi-tag">Role KPIs &middot; Developer</div>
     <div class="grid" id="live-rebecaq">
@@ -278,7 +318,7 @@
   </div>
 
   <!-- ===== Juliane ===== -->
-  <div class="panel" id="panel-juliane">
+  <div class="panel" id="panel-juliane" data-role="dev">
     <div class="person-head"><h2>Juliane Roitmann</h2><span class="role">Developer</span></div>
     <div class="role-kpi-tag">Role KPIs &middot; Developer</div>
     <div class="grid" id="live-juliane">
@@ -304,7 +344,7 @@
   </div>
 
   <!-- ===== Rebeca Mesquita ===== -->
-  <div class="panel" id="panel-rebecam">
+  <div class="panel" id="panel-rebecam" data-role="design">
     <div class="person-head"><h2>Rebeca Mesquita</h2><span class="role">Designer</span></div>
     <div class="grid" id="live-rebecam"></div>
 
@@ -322,7 +362,7 @@
   </div>
 
   <!-- ===== Aura ===== -->
-  <div class="panel" id="panel-aura">
+  <div class="panel" id="panel-aura" data-role="marketing">
     <div class="person-head"><h2>Aura Celorico</h2><span class="role">Marketing Assistant</span></div>
     <div class="grid" id="live-aura"></div>
 
@@ -340,7 +380,7 @@
   </div>
 
   <!-- ===== Andressa ===== -->
-  <div class="panel" id="panel-andressa">
+  <div class="panel" id="panel-andressa" data-role="support">
     <div class="person-head"><h2>Andressa Alves</h2><span class="role">Support Manager</span></div>
     <div class="role-kpi-tag">Role KPIs &middot; Support Manager <span class="source-tag">Teamwork Desk &middot; Live</span></div>
     <div class="grid" id="live-desk-andressa"></div>
