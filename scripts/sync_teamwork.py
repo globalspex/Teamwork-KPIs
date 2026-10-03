@@ -96,20 +96,19 @@ def api_get(path, params=None):
         raise RuntimeError(f"Teamwork API error {e.code} on {url}: {body[:500]}") from e
 
 
-def fetch_active_project_ids():
-    """Returns the set of project IDs whose status is 'active'."""
-    active_ids = set()
-    status_counts = {}
+def fetch_all_projects():
+    """
+    Fetches every project company-wide (all statuses), returning the raw
+    list. Used both for the active-project-ID filter and for per-PM
+    project ownership (active-owned / completed-owned counts).
+    """
+    projects = []
     page = 1
     page_size = 200
     while True:
         data = api_get("/projects/api/v3/projects.json", {"page": page, "pageSize": page_size})
         batch = data.get("projects", [])
-        for p in batch:
-            status = p.get("status", "unknown")
-            status_counts[status] = status_counts.get(status, 0) + 1
-            if status == "active":
-                active_ids.add(int(p["id"]))
+        projects.extend(batch)
         meta = data.get("meta", {}).get("page", {})
         total_pages = meta.get("pageCount") or meta.get("pages")
         if not batch or (total_pages and page >= total_pages) or len(batch) < page_size:
@@ -117,8 +116,28 @@ def fetch_active_project_ids():
         page += 1
         if page > 50:
             break
-    print(f"Projects by status: {status_counts}. Active project count: {len(active_ids)}.")
-    return active_ids
+    return projects
+
+
+def project_owner_id(p):
+    """
+    Resolves a project's owner user ID. Field name not yet confirmed --
+    tries a few plausible shapes defensively.
+    """
+    for key in ("ownerId", "projectOwnerId"):
+        val = p.get(key)
+        if val is not None:
+            try:
+                return int(val)
+            except (TypeError, ValueError):
+                pass
+    owner = p.get("owner") or p.get("projectOwner")
+    if isinstance(owner, dict) and "id" in owner:
+        try:
+            return int(owner["id"])
+        except (TypeError, ValueError):
+            pass
+    return None
 
 
 def fetch_status_custom_field_id():
@@ -359,7 +378,7 @@ def fetch_all_open_tasks(active_project_ids, status_field_id):
         f"Hold/Done/Waiting For Review. {unresolved_project} tasks had an "
         f"unresolvable project (kept, not excluded). Remaining: {len(kept)}."
     )
-    return kept
+    return kept, tasklists_by_id
 
 
 def milestone_assignee_ids(m):
@@ -503,9 +522,22 @@ def main():
     }
 
     try:
-        active_project_ids = fetch_active_project_ids()
+        all_projects = fetch_all_projects()
+        status_counts = {}
+        for p in all_projects:
+            status_counts[p.get("status", "unknown")] = status_counts.get(p.get("status", "unknown"), 0) + 1
+        active_project_ids = {int(p["id"]) for p in all_projects if p.get("status") == "active"}
+        print(f"Projects by status: {status_counts}. Active project count: {len(active_project_ids)}.")
+
+        owned_projects_by_user = {}
+        for p in all_projects:
+            owner_id = project_owner_id(p)
+            if owner_id is not None:
+                owned_projects_by_user.setdefault(owner_id, []).append(p)
+        result["debug"] = {"sample_project": all_projects[0] if all_projects else None}
+
         status_field_id = fetch_status_custom_field_id()
-        all_open = fetch_all_open_tasks(active_project_ids, status_field_id)
+        all_open, tasklists_by_id = fetch_all_open_tasks(active_project_ids, status_field_id)
         print(f"Fetched {len(all_open)} open tasks company-wide (active projects only).")
 
         total, overdue, due_today = classify_tasks(all_open, today_str)
@@ -575,6 +607,15 @@ def main():
                     if matched:
                         milestones_by_assignee.setdefault(uid, []).append(m)
 
+        # Index open tasks by project ID once, so each PM's "project tasks"
+        # stat is just a dict lookup across their owned active projects --
+        # no extra API calls beyond what was already fetched for everyone.
+        tasks_by_project_id = {}
+        for t in all_open:
+            pid = task_project_id(t, tasklists_by_id)
+            if pid is not None:
+                tasks_by_project_id.setdefault(pid, []).append(t)
+
         for key, info in PEOPLE.items():
             tasks = by_assignee.get(info["user_id"], [])
             p_total, p_overdue, p_due_today = classify_tasks(tasks, today_str)
@@ -583,6 +624,13 @@ def main():
             m_total = len(m_list)
             m_late = sum(1 for m in m_list if (m.get("deadline") or "")[:10] and (m.get("deadline") or "")[:10] < today_str)
 
+            owned = owned_projects_by_user.get(info["user_id"], [])
+            active_owned = [p for p in owned if p.get("status") == "active"]
+            project_tasks = []
+            for p in active_owned:
+                project_tasks.extend(tasks_by_project_id.get(int(p["id"]), []))
+            proj_total, proj_late, _ = classify_tasks(project_tasks, today_str)
+
             result["people"][key] = {
                 "name": info["name"],
                 "total_open_tasks": p_total,
@@ -590,8 +638,15 @@ def main():
                 "due_today": p_due_today,
                 "total_incomplete_milestones": m_total,
                 "late_milestones": m_late,
+                "active_projects_owned": len(active_owned),
+                "project_tasks_total": proj_total,
+                "project_tasks_late": proj_late,
             }
-            print(f"  {info['name']}: total={p_total} overdue={p_overdue} due_today={p_due_today} milestones={m_total} late_milestones={m_late}")
+            print(
+                f"  {info['name']}: total={p_total} overdue={p_overdue} due_today={p_due_today} "
+                f"milestones={m_total} late_milestones={m_late} active_projects={len(active_owned)} "
+                f"project_tasks={proj_total} project_tasks_late={proj_late}"
+            )
 
     except Exception as e:
         msg = f"task pull/classification failed: {e}"
