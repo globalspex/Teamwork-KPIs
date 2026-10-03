@@ -742,8 +742,8 @@ def main():
         today = datetime.date.fromisoformat(now.strftime("%Y-%m-%d"))
         this_monday = today - datetime.timedelta(days=today.weekday())
         week_starts = [this_monday - datetime.timedelta(weeks=i) for i in range(UTILIZATION_WEEKS, 0, -1)]
-        logs, sample_keys = fetch_time_logs(week_starts[0].isoformat(), (this_monday - datetime.timedelta(days=1)).isoformat())
-        result["time_debug"] = {"logs_fetched": len(logs), "fields": sample_keys}
+        logs, _ = fetch_time_logs(week_starts[0].isoformat(), (this_monday - datetime.timedelta(days=1)).isoformat())
+        logs = [t for t in logs if not t.get("deleted") and not t.get("deletedAt")]
         for key, info in PEOPLE.items():
             weeks = []
             for ws in week_starts:

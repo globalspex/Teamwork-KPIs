@@ -259,12 +259,14 @@
         <div class="goal">Template: 30 days (Goal: 4) &middot; Custom: 8 weeks (varies by complexity)</div>
         <span class="badge yellow">Not Synced Yet</span>
         <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
-      <div class="card" data-slot="manual"><div class="label">Utilization</div><div class="value">83.1%</div>
-        <div class="goal">Goal: 55% &middot; 33.25 hrs logged of 40-hr capacity, week of 9/7&ndash;9/13</div>
-        <span class="badge green">On Track</span>
-        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
+      <div class="card" id="util-javier"><div class="label">Utilization</div><div class="value">&mdash;</div><div class="goal">Loading&hellip;</div></div>
     </div>
-    <div class="sample-note">Milestones On Time counts every incomplete milestone across his owned projects (direct assignment plus role/team membership). Projects Completed isn't synced yet, since the projects endpoint only returns active projects. A per-project breakdown to find the biggest late-task outlier isn't part of the automated pull yet.</div>
+    <div class="sample-note">Utilization is all hours logged in Teamwork (billable or not) divided by a 40-hour week, for the last full Monday&ndash;Sunday week. Milestones On Time counts every incomplete milestone across his owned projects (direct assignment plus role/team membership). Projects Completed isn't synced yet, since the projects endpoint only returns active projects. A per-project breakdown to find the biggest late-task outlier isn't part of the automated pull yet.</div>
+
+    <div class="chart-card">
+      <h3>Utilization &mdash; Hours Logged (live, goal 55% = 22 hrs)</h3>
+      <div class="chart-wrap"><canvas id="chart-util-javier"></canvas></div>
+    </div>
 
     <div class="chart-card">
       <h3>Weekly Trend &mdash; Late Task % (Goal: under 15%)</h3>
@@ -288,12 +290,14 @@
         <div class="goal">Template: 30 days (Goal: 4) &middot; Custom: 8 weeks (varies by complexity)</div>
         <span class="badge yellow">Not Synced Yet</span>
         <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
-      <div class="card" data-slot="manual"><div class="label">Utilization</div><div class="value">10.6%</div>
-        <div class="goal">Goal: 55% &middot; 4.25 hrs logged of 40-hr capacity, week of 9/7&ndash;9/13</div>
-        <span class="badge red">Off Track</span>
-        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
+      <div class="card" id="util-jennifer"><div class="label">Utilization</div><div class="value">&mdash;</div><div class="goal">Loading&hellip;</div></div>
     </div>
-    <div class="sample-note">Milestones On Time counts every incomplete milestone across her owned projects (direct assignment plus role/team membership). When team task completion is strong but milestones lag, that usually points at deadline-setting or milestone tracking rather than overall project health. Low utilization is worth checking against actual workload versus a time-logging gap.</div>
+    <div class="sample-note">Milestones On Time counts every incomplete milestone across her owned projects (direct assignment plus role/team membership). When team task completion is strong but milestones lag, that usually points at deadline-setting or milestone tracking rather than overall project health. Utilization is all hours logged in Teamwork (billable or not) divided by a 40-hour week, for the last full Monday&ndash;Sunday week. Low utilization is worth checking against actual workload versus a time-logging gap.</div>
+
+    <div class="chart-card">
+      <h3>Utilization &mdash; Hours Logged (live, goal 55% = 22 hrs)</h3>
+      <div class="chart-wrap"><canvas id="chart-util-jennifer"></canvas></div>
+    </div>
 
     <div class="chart-card">
       <h3>Weekly Trend &mdash; Late Task % (Goal: under 15%)</h3>
@@ -537,6 +541,15 @@
       card('Completed Today', num(c.completed_today), 'Tasks marked complete since midnight') +
       card('Total Open Tasks', num(c.total_open_tasks), 'Active, uncompleted tasks across all projects'));
 
+    ['javier','jennifer'].forEach(function(who){
+      var el = document.getElementById('util-'+who), u = (P[who]||{}).utilization;
+      if(!el) return;
+      if(!u){ el.innerHTML = '<div class="label">Utilization</div><div class="value">&mdash;</div><div class="goal">No time data</div><span class="badge gray">No Data</span>'; return; }
+      var w = u.last_week;
+      el.innerHTML = '<div class="label">Utilization</div><div class="value">'+w.pct+'%</div>' +
+        '<div class="goal">Goal: 55% &middot; '+w.hours+' hrs logged of '+u.capacity_hours+'-hr capacity, week of '+w.range+'</div>' + badge(w.pct>=55);
+    });
+
     var mo = c.milestones_open, ml = c.milestones_late, mOn = (mo ? Math.round((mo-ml)/mo*1000)/10 : null);
     put('live-company-ms',
       card('Open Milestones', num(mo), 'Not yet completed, across active projects') +
@@ -654,6 +667,11 @@
     if(tab==='christina'){
       fillTable('tbl-christina', d.weeks.map(function(w,i){ return [w, d.proposals[i]]; }).filter(function(r){ return r[1]!==null; }));
         } else if(tab==='javier' || tab==='jennifer'){
+      var U = LIVE && LIVE.people && LIVE.people[tab] && LIVE.people[tab].utilization;
+      if(U) makeComboChart('chart-util-'+tab, U.weeks.map(function(x){ return x.week; }),
+        [['Hours logged', U.weeks.map(function(x){ return x.hours; }), '#5eead4']],
+        [['Goal (22 hrs)', U.weeks.map(function(){ return 22; }), '#9aa4b2', true],
+         ['Capacity (40 hrs)', U.weeks.map(function(){ return 40; }), '#0f766e', true]]);
       makeLineChart('chart-'+tab, d.weeks, [ds('Individual Late %', d.ind_late, R), ds('Project Late %', d.proj_late, Y), goalDs('Goal (15%)', d.weeks.length, 15)]);
       fillTable('tbl-'+tab, d.rows, [7,10]);
     } else if(tab==='rebecaq'){
