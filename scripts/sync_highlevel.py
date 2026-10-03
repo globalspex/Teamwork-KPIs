@@ -42,6 +42,7 @@ ONBOARDING_PIPELINE = "U2rdmyCuXA37fuAV1tP7"
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_FILE = os.path.join(ROOT, "data", "highlevel-live.json")
 PROPOSALS_FILE = os.path.join(ROOT, "data", "proposals.json")
+LOG_FILE = os.path.join(ROOT, "data", "highlevel-proposal-log.json")
 # HighLevel's Onboarding pipeline is the source for Converted from this month on.
 # Before it, Onboarding wasn't used consistently, so accepted proposals stand in.
 CONVERTED_CUTOVER = (2026, 9)
