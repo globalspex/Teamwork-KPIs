@@ -41,6 +41,18 @@ ONBOARDING_PIPELINE = "U2rdmyCuXA37fuAV1tP7"
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_FILE = os.path.join(ROOT, "data", "highlevel-live.json")
+ACCEPTED_FILE = os.path.join(ROOT, "data", "proposals-accepted.json")
+# HighLevel's Onboarding pipeline is the source for Converted from this month on.
+# Before it, Onboarding wasn't used consistently, so accepted proposals stand in.
+CONVERTED_CUTOVER = (2026, 9)
+
+
+def load_accepted_dates():
+    """Signed dates of accepted Better Proposals (manual list for now)."""
+    try:
+        return [datetime.date.fromisoformat(x) for x in json.load(open(ACCEPTED_FILE)).get("signed", [])]
+    except Exception:
+        return []
 LOG_FILE = os.path.join(ROOT, "data", "highlevel-proposal-log.json")
 
 
@@ -105,7 +117,10 @@ def compute(fu_opps, onboarding_opps, log, today):
 
     lead_dates = [local_date(o["createdAt"]) for o in first_per_contact(fu_opps)]
     conv_dates = [local_date(o["createdAt"]) for o in first_per_contact(onboarding_opps)]
-    prop_dates = [datetime.date.fromisoformat(v["entered"]) for v in log.values()]
+    # Proposals = accepted proposals by date signed (Better Proposals), per Christina.
+    # The HighLevel Proposal-stage log above is still kept, but no longer displayed.
+    accepted_dates = load_accepted_dates()
+    prop_dates = accepted_dates
 
     leads, props, conv = bucket(lead_dates, weeks), bucket(prop_dates, weeks), bucket(conv_dates, weeks)
 
@@ -124,7 +139,9 @@ def compute(fu_opps, onboarding_opps, log, today):
                 counts[(d.year, d.month)] += 1
         return [counts[k] for k in months]
 
-    m_leads, m_props, m_conv = mbucket(lead_dates), mbucket(prop_dates), mbucket(conv_dates)
+    m_leads, m_props, m_conv_hl = mbucket(lead_dates), mbucket(prop_dates), mbucket(conv_dates)
+    m_accepted = mbucket(accepted_dates)
+    m_conv = [hl if ym >= CONVERTED_CUTOVER else acc for ym, hl, acc in zip(months, m_conv_hl, m_accepted)]
 
     def msummary(series):
         return {"this_month": series[-1], "last_month": series[-2], "last_12_months": sum(series)}
