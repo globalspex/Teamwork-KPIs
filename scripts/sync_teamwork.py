@@ -302,36 +302,55 @@ def task_project_id(task, tasklists_by_id):
 EXCLUDED_WORKFLOW_STAGES = {"hold", "done", "waiting for review"}
 
 
-def task_workflow_stage_name(task):
+def fetch_workflow_stage_names():
     """
-    Returns the task's current custom workflow-stage name (e.g. "New",
-    "In Progress", "Hold", "Done"), or None if it can't be determined.
-    Written defensively since the exact shape of 'workflowStages' on a
-    task hasn't been confirmed live -- tries a few plausible shapes:
-    a single dict, a plain string, or a list of stage dicts where one is
-    marked active/selected/current.
+    Returns {(workflowId, stageId): "stage name"}. A task's own
+    workflowStages field only carries numeric IDs (confirmed via a real
+    sample: {"workflowId": 10690, "stageId": 0, ...}, no name anywhere) --
+    the readable name lives in a separate workflow-definition endpoint,
+    the same kind of lookup job roles needed. Tries a couple of plausible
+    endpoints/shapes defensively; returns an empty dict (not a crash) if
+    none of them work, in which case Hold/Done/Waiting-for-Review
+    exclusion will just not filter anything that run -- visible in the log
+    rather than silently wrong.
     """
+    lookup = {}
+    for path in ("/projects/api/v3/workflows.json", "/projects/api/v2/workflows.json"):
+        try:
+            data = api_get(path, {"pageSize": 200})
+        except RuntimeError as e:
+            print(f"NOTE: {path} failed ({e}); trying next option.", file=sys.stderr)
+            continue
+        workflows = data.get("workflows", [])
+        if not workflows:
+            continue
+        for wf in workflows:
+            wf_id = wf.get("id")
+            stages = wf.get("stages", [])
+            for stage in stages:
+                if isinstance(stage, dict) and "id" in stage:
+                    lookup[(wf_id, stage["id"])] = stage.get("name")
+        if lookup:
+            print(f"Resolved {len(lookup)} (workflowId, stageId) -> name pairs from {path}.")
+            return lookup
+    print("WARNING: could not resolve workflow stage names from any known endpoint. "
+          "Hold/Done/Waiting-for-Review exclusion will not filter anything this run.", file=sys.stderr)
+    return lookup
+
+
+def task_workflow_stage_name(task, stage_lookup):
+    """Resolves a task's current workflow stage to a readable name via stage_lookup."""
     val = task.get("workflowStages")
-    if val is None:
+    if not isinstance(val, list) or not val:
         return None
-    if isinstance(val, str):
-        return val
-    if isinstance(val, dict):
-        return val.get("name")
-    if isinstance(val, list):
-        for stage in val:
-            if not isinstance(stage, dict):
-                continue
-            if stage.get("active") or stage.get("selected") or stage.get("current"):
-                return stage.get("name")
-        # No explicit active flag found -- if there's exactly one entry,
-        # assume that's the current stage rather than finding nothing.
-        if len(val) == 1 and isinstance(val[0], dict):
-            return val[0].get("name")
-    return None
+    entry = val[0]
+    if not isinstance(entry, dict):
+        return None
+    key = (entry.get("workflowId"), entry.get("stageId"))
+    return stage_lookup.get(key)
 
 
-def fetch_all_open_tasks(active_project_ids):
+def fetch_all_open_tasks(active_project_ids, stage_lookup):
     """
     Fetches every incomplete task company-wide, paginating until exhausted,
     then excludes: soft-deleted tasks, tasks marked isArchived, and --
@@ -397,17 +416,17 @@ def fetch_all_open_tasks(active_project_ids):
 
     stage_counts = {}
     for t in kept:
-        stage = task_workflow_stage_name(t)
+        stage = task_workflow_stage_name(t, stage_lookup)
         stage_counts[stage] = stage_counts.get(stage, 0) + 1
     print(f"Workflow stage breakdown (before Hold/Done exclusion): {stage_counts}")
 
     excluded_stage_count = sum(
         1 for t in kept
-        if (task_workflow_stage_name(t) or "").strip().lower() in EXCLUDED_WORKFLOW_STAGES
+        if (task_workflow_stage_name(t, stage_lookup) or "").strip().lower() in EXCLUDED_WORKFLOW_STAGES
     )
     kept = [
         t for t in kept
-        if (task_workflow_stage_name(t) or "").strip().lower() not in EXCLUDED_WORKFLOW_STAGES
+        if (task_workflow_stage_name(t, stage_lookup) or "").strip().lower() not in EXCLUDED_WORKFLOW_STAGES
     ]
 
     # NOTE: subtasks are intentionally NOT excluded. An earlier version of
@@ -489,7 +508,8 @@ def main():
 
     try:
         active_project_ids = fetch_active_project_ids()
-        all_open = fetch_all_open_tasks(active_project_ids)
+        stage_lookup = fetch_workflow_stage_names()
+        all_open = fetch_all_open_tasks(active_project_ids, stage_lookup)
         print(f"Fetched {len(all_open)} open tasks company-wide (active projects only).")
 
         total, overdue, due_today = classify_tasks(all_open, today_str)
