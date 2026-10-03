@@ -104,6 +104,11 @@
   .banner.show{display:block;}
   .banner.warn{background:var(--yellow-bg); color:var(--yellow);}
   .banner.err{background:var(--red-bg); color:var(--red);}
+  .kpi-tag-row{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .seg{display:inline-flex; border:1px solid var(--role, var(--line)); border-radius:999px; overflow:hidden; margin-left:6px;}
+  .seg button{font:inherit; font-size:11px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; padding:5px 14px;
+    border:0; background:transparent; color:var(--role, var(--sub)); cursor:pointer;}
+  .seg button.on{background:var(--role, var(--accent)); color:var(--card);}
   .value-pct{font-size:.55em; font-weight:600; color:var(--sub); margin-left:6px;}
   .asof{font-size:11px; color:var(--sub); margin-top:6px; order:3; font-style:italic;}
   .loading .value{opacity:.35;}
@@ -215,7 +220,10 @@
   <!-- ===== Christina ===== -->
   <div class="panel" id="panel-christina" data-role="leadership">
     <div class="person-head"><h2>Christina Hawkins</h2><span class="role">CEO &amp; Digital Marketing Consultant</span></div>
-    <div class="role-kpi-tag">Role KPIs &middot; CEO <span class="source-tag">HighLevel &middot; Live</span></div>
+    <div class="role-kpi-tag kpi-tag-row">Role KPIs &middot; CEO <span class="source-tag">HighLevel &middot; Live</span>
+      <span class="seg" id="sales-period" role="group" aria-label="Period">
+        <button type="button" data-period="month" class="on">Month</button><button type="button" data-period="year">Year</button>
+      </span></div>
     <div class="grid" id="live-christina-sales"></div>
     <div class="section-title">Task Health <span class="source-tag">Teamwork Projects &middot; Live</span></div>
     <div class="grid" id="live-christina"></div>
@@ -698,13 +706,32 @@
     fillTable('tbl-christina-sales', c.months.map(function(m,i){ return [m, M.leads[i], M.proposals[i], M.converted[i]]; }));
   }
 
+  var salesPeriod = 'month', salesErrorsShown = false;
+  try { salesPeriod = localStorage.getItem('salesPeriod') || 'month'; } catch(e){}
   function renderSalesCards(){
     var c = HL && HL.christina;
     if(!c || !c.monthly_summary){ put('live-christina-sales', card('HighLevel', '&mdash;', 'No HighLevel data yet', '<span class="badge gray">Needs Data</span>')); return; }
+    document.querySelectorAll('#sales-period button').forEach(function(b){ b.classList.toggle('on', b.dataset.period===salesPeriod); });
     var L=c.monthly_summary.leads, P=c.monthly_summary.proposals, V=c.monthly_summary.converted;
     var monthBadge = function(v, goal){
       return v>=goal ? '<span class="badge green">On Track</span>' : '<span class="badge yellow">In Progress</span>';
     };
+    if(salesPeriod==='year'){
+      var now = new Date(), yy = "'"+String(now.getFullYear()).slice(2);
+      var ytd = function(arr){ return c.months.reduce(function(t,m,i){ return m.slice(-3)===yy ? t+arr[i] : t; }, 0); };
+      var dim = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+      var elapsed = now.getMonth() + now.getDate()/dim;            // months of the year elapsed
+      var paceBadge = function(v, perMonth){
+        var pace = Math.round(perMonth*elapsed*10)/10;
+        return [v>=pace ? '<span class="badge green">On Pace</span>' : '<span class="badge red">Behind Pace</span>', pace];
+      };
+      var yl = ytd(c.monthly.leads), yp = ytd(c.monthly.proposals), yc = ytd(c.monthly.converted);
+      var bl = paceBadge(yl, 4), bp = paceBadge(yp, 1), Y = now.getFullYear();
+      put('live-christina-sales',
+        card('Leads '+Y+' to Date', num(yl), 'Goal: 48 per year &middot; Pace for today: '+bl[1]+' &middot; Last 12 months: '+num(L.last_12_months), bl[0]) +
+        card('Proposals Sent '+Y+' to Date', num(yp), 'Accepted + lost &middot; Goal: 12 per year &middot; Pace for today: '+bp[1]+' &middot; Last 12 months: '+num(P.last_12_months), bp[0]) +
+        card('Converted '+Y+' to Date', num(yc), 'Last 12 months: '+num(V.last_12_months), '<span class="badge gray">Tracking</span>'));
+    } else {
     put('live-christina-sales',
       card('Leads This Month', num(L.this_month),
         'Goal: 4 per month &middot; Last month: '+num(L.last_month)+' &middot; Last 12 months: '+num(L.last_12_months),
@@ -715,7 +742,9 @@
       card('Converted This Month', num(V.this_month),
         'Onboarding &middot; Last month: '+num(V.last_month)+' &middot; Last 12 months: '+num(V.last_12_months),
         '<span class="badge gray">Tracking</span>'));
-    if(HL.errors && HL.errors.length){
+    }
+    if(HL.errors && HL.errors.length && !salesErrorsShown){
+      salesErrorsShown = true;
       var e = document.getElementById('banner-err');
       e.innerHTML += (e.innerHTML ? '<br>' : '') + '<strong>HighLevel sync issue:</strong> ' + HL.errors.map(esc).join(' &middot; ') + ' (showing last good numbers)';
       e.classList.add('show');
@@ -763,6 +792,13 @@
       e.classList.add('show');
     }
   }
+
+  document.getElementById('sales-period').addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    salesPeriod = b.dataset.period;
+    try { localStorage.setItem('salesPeriod', salesPeriod); } catch(err){}
+    salesErrorsShown = true; renderSalesCards();
+  });
 
   // ---------- tabs ----------
   var current = 'company';
