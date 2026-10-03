@@ -1,0 +1,10 @@
+[
+ {
+  "date": "2026-10-03",
+  "aging": 18,
+  "open": 46,
+  "waiting": 19,
+  "waiting_stale": 10,
+  "on_hold": 11
+ }
+]
