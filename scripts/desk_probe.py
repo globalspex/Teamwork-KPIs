@@ -85,38 +85,52 @@ def lookup(path, name_keys=("name", "displayName", "title", "code")):
         out["error"] = d["_error"]
     return out
 
-result = {"auth_results": auth_results, "base_used": BASE.replace(ROOT, ""), "lookups": {}, "tickets": {}}
-for path in ["ticketstatuses.json", "tickettypes.json", "ticketsources.json", "ticketpriorities.json",
-             "inboxes.json", "users.json", "tags.json", "customfields.json"]:
-    result["lookups"][path] = lookup(path)
+result = {"auth_results": auth_results, "base_used": BASE.replace(ROOT, ""), "stage": 2, "list_tests": {}}
 
-# Ticket list: try a few shapes and record what works.
-attempts = {
-    "plain": ("tickets.json", {"pageSize": 5}),
-    "newest": ("tickets.json", {"pageSize": 5, "orderBy": "createdAt", "orderMode": "desc"}),
-    "filter_status1": ("tickets.json", {"pageSize": 5, "filter": json.dumps({"status": {"$in": [1]}})}),
-    "include_all": ("tickets.json", {"pageSize": 3, "orderBy": "createdAt", "orderMode": "desc",
-                                     "includes": "ticketstatuses,tickettypes,ticketsources,users,inboxes,tags,messages"}),
+KEEP = ("id", "createdAt", "updatedAt", "status", "type", "source", "inboxId", "responseTimes", "numThreads")
+def slim(t):
+    out = {k: t.get(k) for k in KEEP if k in t}
+    a = t.get("assignedTo")
+    out["assignedTo"] = a.get("id") if isinstance(a, dict) else a
+    return out
+
+tests = {
+    "list_p1":            ("tickets.json", [("page", 1)]),
+    "list_p2":            ("tickets.json", [("page", 2)]),
+    "list_pageSize":      ("tickets.json", [("pageSize", 100)]),
+    "list_sort":          ("tickets.json", [("sortBy", "createdAt"), ("sortDir", "desc")]),
+    "list_orderBy":       ("tickets.json", [("orderBy", "createdAt"), ("orderMode", "desc")]),
+    "list_status_brackets": ("tickets.json", [("statuses[]", "active")]),
+    "list_status_ids":    ("tickets.json", [("statusIds[]", 1)]),
+    "search_plain":       ("tickets/search.json", []),
+    "search_status":      ("tickets/search.json", [("statuses[]", "active")]),
+    "search_status_id":   ("tickets/search.json", [("statuses[]", 1)]),
+    "search_date":        ("tickets/search.json", [("startDate", "2026-09-28"), ("endDate", "2026-10-03")]),
+    "search_lastUpdated": ("tickets/search.json", [("lastUpdated", "2026-09-28T00:00:00Z")]),
+    "search_sort":        ("tickets/search.json", [("sortBy", "createdAt"), ("sortDir", "desc")]),
+    "search_inbox":       ("tickets/search.json", [("inboxes[]", 699)]),
+    "search_type":        ("tickets/search.json", [("types[]", 9139)]),
+    "search_combo":       ("tickets/search.json", [("statuses[]", "active"), ("inboxes[]", 699), ("sortBy", "createdAt"), ("sortDir", "desc")]),
 }
-for name, (path, params) in attempts.items():
-    status, d = get(path, params)
-    info = {"http": status, "params": params, "top_keys": list(d.keys())}
-    if "_error" in d: info["error"] = d["_error"]
-    if isinstance(d.get("meta"), dict): info["meta"] = redact(d["meta"])
-    if isinstance(d.get("tickets"), list):
-        info["count_returned"] = len(d["tickets"])
-        info["ticket_keys"] = list(d["tickets"][0].keys()) if d["tickets"] else []
-        info["samples"] = [redact(t) for t in d["tickets"][:3]]
-    if isinstance(d.get("included"), dict):
-        info["included_types"] = {k: (list(v[0].keys()) if isinstance(v, list) and v else type(v).__name__)
-                                  for k, v in d["included"].items()}
-    result["tickets"][name] = info
-
-# One ticket in detail (threads / timelogs / first response fields), redacted.
-first = (result["tickets"].get("newest", {}).get("samples") or [{}])[0].get("id")
-if first:
-    status, d = get(f"tickets/{first}.json", {"includes": "messages,timelogs,activities"})
-    result["one_ticket"] = {"http": status, "top_keys": list(d.keys()), "body": redact(d)}
+for name, (path, params) in tests.items():
+    url = f"{BASE}/{path}" + ("?" + urllib.parse.urlencode(params) if params else "")
+    req = urllib.request.Request(url, headers={"Authorization": AUTH, "Accept": "application/json"})
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            d = json.loads(r.read().decode())
+        tk = d.get("tickets") or []
+        result["list_tests"][name] = {
+            "http": 200, "top_keys": list(d.keys()),
+            "count": d.get("count"), "maxPages": d.get("maxPages"), "page": d.get("page"),
+            "meta": d.get("meta") if isinstance(d.get("meta"), dict) else None,
+            "returned": len(tk), "samples": [slim(t) for t in tk[:4]],
+            "status_mix": sorted({t.get("status") for t in tk if isinstance(t.get("status"), str)}),
+            "created_range": [min((t["createdAt"] for t in tk), default=None), max((t["createdAt"] for t in tk), default=None)],
+        }
+    except urllib.error.HTTPError as e:
+        result["list_tests"][name] = {"http": e.code, "error": e.read().decode("utf-8", "replace")[:200]}
+    except Exception as e:
+        result["list_tests"][name] = {"http": 0, "error": str(e)[:200]}
 
 os.makedirs("data", exist_ok=True)
 json.dump(result, open("data/desk-probe.json", "w"), indent=2)
