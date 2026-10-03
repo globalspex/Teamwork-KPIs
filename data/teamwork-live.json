@@ -1,52 +1,63 @@
 {
-  "generated_at": "2026-10-02T06:13:11.508846-05:00",
+  "generated_at": "2026-10-02T19:10:02.412422-05:00",
   "timezone": "America/Chicago",
   "company": {
-    "total_open_tasks": 5065,
-    "overdue_tasks": 1131,
-    "due_today": 278,
-    "completed_today": 0
+    "total_open_tasks": 5480,
+    "overdue_tasks": 1038,
+    "due_today": 118,
+    "completed_today": 957
   },
   "people": {
     "christina": {
       "name": "Christina Hawkins",
-      "total_open_tasks": 5065,
-      "overdue_tasks": 1131,
-      "due_today": 278
+      "total_open_tasks": 1343,
+      "overdue_tasks": 530,
+      "due_today": 16
     },
     "javier": {
       "name": "Javier L\u00f3pez",
-      "total_open_tasks": 5065,
-      "overdue_tasks": 1131,
-      "due_today": 278
+      "total_open_tasks": 327,
+      "overdue_tasks": 44,
+      "due_today": 30
     },
     "jennifer": {
       "name": "Jennifer McNinch",
-      "total_open_tasks": 5065,
-      "overdue_tasks": 1131,
-      "due_today": 278
+      "total_open_tasks": 20,
+      "overdue_tasks": 6,
+      "due_today": 1
     },
     "rebecaq": {
       "name": "Rebeca Queiroz",
-      "total_open_tasks": 5065,
-      "overdue_tasks": 1131,
-      "due_today": 278
+      "total_open_tasks": 276,
+      "overdue_tasks": 98,
+      "due_today": 14
     },
     "juliane": {
       "name": "Juliane Roitmann",
-      "total_open_tasks": 5065,
-      "overdue_tasks": 1131,
-      "due_today": 278
+      "total_open_tasks": 654,
+      "overdue_tasks": 94,
+      "due_today": 5
     },
     "rebecam": {
       "name": "Rebeca Mesquita",
-      "total_open_tasks": 5065,
-      "overdue_tasks": 1131,
-      "due_today": 278
+      "total_open_tasks": 39,
+      "overdue_tasks": 6,
+      "due_today": 0
+    },
+    "aura": {
+      "name": "Aura Celorico",
+      "total_open_tasks": 483,
+      "overdue_tasks": 43,
+      "due_today": 11
+    },
+    "andressa": {
+      "name": "Andressa Alves",
+      "total_open_tasks": 217,
+      "overdue_tasks": 36,
+      "due_today": 14
     }
   },
   "errors": [
-    "Aura Celorico pull failed: Teamwork API error 429 on https://globalspex.teamwork.com/projects/api/v3/tasks.json?page=25&pageSize=200&completed=false&assignedToUserIds=296553: Too Many Requests",
-    "Andressa Alves pull failed: Teamwork API error 429 on https://globalspex.teamwork.com/projects/api/v3/tasks.json?page=1&pageSize=200&completed=false&assignedToUserIds=604063: Too Many Requests"
+    "Could not find assignee data on any task using the known field shapes. Top-level keys on a sample task: ['accumulatedEstimatedMinutes', 'assigneeCompanies', 'assigneeCompanyIds', 'assigneeJobRoleIds', 'assigneeJobRoles', 'assigneeTeamIds', 'assigneeTeams', 'assigneeUserIds', 'assigneeUsers', 'assignees', 'attachments', 'capacities', 'changeFollowers', 'commentFollowers', 'completeFollowers', 'createdAt', 'createdBy', 'createdByUserId', 'crmDealIds', 'dateUpdated', 'decimalDisplayOrder', 'deletedAt', 'deletedBy', 'description', 'descriptionContentType', 'displayOrder', 'dueDate', 'dueDateBase', 'dueDateFromMilestone', 'dueDateOffset', 'estimateMinutes', 'hasDeskTickets', 'id', 'isArchived', 'isPrivate', 'lockdown', 'name', 'notify', 'parentTask', 'parentTaskId', 'priority', 'progress', 'proofs', 'sequence', 'sequenceId', 'startDate', 'startDateOffset', 'status', 'tagIds', 'tags', 'tasklist', 'tasklistId', 'updatedAt', 'updatedBy', 'userPermissions', 'workflowStages']. Per-person counts are likely all 0 -- share this message so the field name can be corrected."
   ]
 }
