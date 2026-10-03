@@ -383,13 +383,11 @@ def milestone_role_team_company_ids(m):
     """
     Returns (companyIds, jobRoleIds, teamIds) sets for a milestone.
     Milestones don't have separate assigneeJobRoleIds/assigneeTeamIds/
-    assigneeCompanyIds fields like tasks do -- instead, role/team/company
-    assignments appear to be mixed into responsibleParties itself,
-    distinguished by each entry's "type" field (confirmed shape for a user
-    entry: {"id": N, "type": "users"} -- role/team/company entries are
-    expected to use "type": "jobRoles" / "teams" / "companies" by the same
-    convention seen elsewhere in this API, but this hasn't been confirmed
-    against a real role-assigned milestone yet).
+    assigneeCompanyIds fields like tasks do -- role/team/company
+    assignments are mixed into responsibleParties itself, distinguished by
+    each entry's "type" field. Confirmed via a real example: a team
+    assignment appears as {"id": 43743, "type": "teams"} in the same list
+    as user entries ({"id": N, "type": "users"}).
     """
     company_ids, job_role_ids, team_ids = set(), set(), set()
     val = m.get("responsibleParties")
@@ -418,12 +416,10 @@ def fetch_incomplete_milestones():
     this endpoint (confirmed: a request with completed=false returned a
     milestone from 2015 with "completed": true).
 
-    Verified definition (against a real CSV export, exact match for one
+    Verified definition (exact match against a real CSV export for one
     person: 12 total, 2-3 late depending on cutoff): a milestone counts for
     a person if they're DIRECTLY assigned (responsiblePartyIds) OR assigned
-    via a role/team/company they belong to (see
-    milestone_role_team_company_ids -- shape not yet confirmed against a
-    real example, see result['debug']['sample_role_assigned_milestone']).
+    via a role/team/company they belong to (see milestone_role_team_company_ids).
 
     Due date field is "deadline", NOT "dueDate" (which tasks use).
     """
@@ -578,16 +574,6 @@ def main():
                     )
                     if matched:
                         milestones_by_assignee.setdefault(uid, []).append(m)
-
-        if all_milestones:
-            role_assigned_example = next(
-                (m for m in all_milestones if any(milestone_role_team_company_ids(m))), None
-            )
-            result["debug"] = {
-                "sample_milestone": all_milestones[0],
-                "sample_role_assigned_milestone": role_assigned_example,
-                "role_assigned_milestone_count": sum(1 for m in all_milestones if any(milestone_role_team_company_ids(m))),
-            }
 
         for key, info in PEOPLE.items():
             tasks = by_assignee.get(info["user_id"], [])
