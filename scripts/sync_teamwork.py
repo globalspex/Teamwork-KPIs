@@ -126,17 +126,71 @@ def task_assignee_ids(task):
     return ids
 
 
-def fetch_all_open_tasks():
+def fetch_active_project_ids():
+    """
+    Returns the set of project IDs whose status is 'active' (i.e. not
+    archived, not deleted). Used to filter tasks down to active projects
+    only, matching what Teamwork's UI shows by default.
+    """
+    active_ids = set()
+    status_counts = {}
+    page = 1
+    page_size = 200
+    while True:
+        params = {"page": page, "pageSize": page_size}
+        data = api_get("/projects/api/v3/projects.json", params)
+        batch = data.get("projects", [])
+        for p in batch:
+            status = p.get("status", "unknown")
+            status_counts[status] = status_counts.get(status, 0) + 1
+            if status == "active":
+                active_ids.add(int(p["id"]))
+        meta = data.get("meta", {}).get("page", {})
+        total_pages = meta.get("pageCount") or meta.get("pages")
+        if not batch or (total_pages and page >= total_pages) or len(batch) < page_size:
+            break
+        page += 1
+        if page > 50:
+            break
+    print(f"Projects by status: {status_counts}. Active project count: {len(active_ids)}.")
+    return active_ids
+
+
+def task_project_id(task, tasklists_by_id):
+    """
+    Resolves a task's project ID via its tasklist (tasks don't carry a
+    projectId directly; tasklists do). tasklists_by_id is the 'included'
+    tasklists data keyed by string ID, the same dict-of-dicts-by-type
+    shape this Teamwork account's API has consistently used elsewhere.
+    Returns None if it can't be resolved, rather than guessing.
+    """
+    tasklist_id = task.get("tasklistId")
+    if tasklist_id is None:
+        return None
+    tasklist = tasklists_by_id.get(str(tasklist_id))
+    if not tasklist:
+        return None
+    # Try a couple of plausible shapes for where the project id lives.
+    if "projectId" in tasklist:
+        return int(tasklist["projectId"])
+    project_rel = tasklist.get("project")
+    if isinstance(project_rel, dict) and "id" in project_rel:
+        return int(project_rel["id"])
+    return None
+
+
+def fetch_all_open_tasks(active_project_ids):
     """
     Fetches every incomplete task company-wide, paginating until exhausted,
-    then excludes soft-deleted tasks and tasks in archived projects -- the
-    raw API includes these even with completed=false, but Teamwork's own UI
-    hides them from a normal "open tasks" view, which is what we're trying
-    to match. (Found via a real discrepancy: the API said 327/44 for a
-    person whose Teamwork UI showed 151/37 -- deletedAt/isArchived were the
-    two fields that stood out as the likely explanation.)
+    then excludes: soft-deleted tasks, tasks marked isArchived, and --
+    the actual fix for the real discrepancy found this session (API said
+    327/44 for a person whose Teamwork UI showed 151/37) -- tasks whose
+    PROJECT isn't active. Task-level isArchived/deletedAt turned out NOT
+    to explain that gap (numbers were unchanged after adding that filter),
+    which is what pointed at project-level archival instead.
     """
     tasks = []
+    tasklists_by_id = {}
     page = 1
     page_size = 200
     while True:
@@ -144,31 +198,51 @@ def fetch_all_open_tasks():
             "page": page,
             "pageSize": page_size,
             "completed": "false",
-            "include": "assignees",
+            "include": "assignees,tasklists",
         }
         data = api_get("/projects/api/v3/tasks.json", params)
         batch = data.get("tasks", [])
         tasks.extend(batch)
+        included = data.get("included", {})
+        if isinstance(included, dict):
+            tasklists_by_id.update(included.get("tasklists", {}) or {})
         meta = data.get("meta", {}).get("page", {})
         total_pages = meta.get("pageCount") or meta.get("pages")
         if not batch or (total_pages and page >= total_pages) or len(batch) < page_size:
             break
         page += 1
-        if page > 50:  # safety valve against an unexpected infinite loop
+        if page > 50:
             print(f"WARNING: stopped paginating tasks after 50 pages (page={page})", file=sys.stderr)
             break
 
     raw_count = len(tasks)
     deleted_count = sum(1 for t in tasks if t.get("deletedAt"))
-    archived_count = sum(1 for t in tasks if t.get("isArchived") and not t.get("deletedAt"))
+    task_archived_count = sum(1 for t in tasks if t.get("isArchived") and not t.get("deletedAt"))
 
     tasks = [t for t in tasks if not t.get("deletedAt") and not t.get("isArchived")]
 
+    unresolved_project = 0
+    inactive_project_count = 0
+    kept = []
+    for t in tasks:
+        pid = task_project_id(t, tasklists_by_id)
+        if pid is None:
+            unresolved_project += 1
+            kept.append(t)  # can't verify -> keep rather than silently drop
+            continue
+        if pid in active_project_ids:
+            kept.append(t)
+        else:
+            inactive_project_count += 1
+
     print(
-        f"Raw fetch: {raw_count} tasks. Excluded {deleted_count} soft-deleted "
-        f"and {archived_count} archived (non-deleted). Remaining: {len(tasks)}."
+        f"Raw fetch: {raw_count} tasks. Excluded {deleted_count} soft-deleted, "
+        f"{task_archived_count} task-level archived, {inactive_project_count} "
+        f"in inactive/archived projects. {unresolved_project} tasks had an "
+        f"unresolvable project (kept, not excluded -- see tasklistId mapping "
+        f"if this number is large). Remaining: {len(kept)}."
     )
-    return tasks
+    return kept
 
 
 def classify_tasks(tasks, today_str):
@@ -229,8 +303,9 @@ def main():
     }
 
     try:
-        all_open = fetch_all_open_tasks()
-        print(f"Fetched {len(all_open)} open tasks company-wide.")
+        active_project_ids = fetch_active_project_ids()
+        all_open = fetch_all_open_tasks(active_project_ids)
+        print(f"Fetched {len(all_open)} open tasks company-wide (active projects only).")
 
         total, overdue, due_today = classify_tasks(all_open, today_str)
         completed_today = fetch_completed_today_count(today_str)
