@@ -363,55 +363,75 @@ def fetch_all_open_tasks(active_project_ids, status_field_id):
 
 
 def milestone_assignee_ids(m):
-    """Returns the set of user IDs directly assigned to this milestone."""
+    """
+    Returns the set of user IDs directly assigned to this milestone.
+    Confirmed field: responsiblePartyIds (NOT assigneeUserIds, which tasks
+    use but milestones don't have).
+    """
     ids = set()
-    for key in ("assigneeUserIds", "responsiblePartyIds"):
-        val = m.get(key)
-        if isinstance(val, list):
-            for v in val:
-                try:
-                    ids.add(int(v))
-                except (TypeError, ValueError):
-                    pass
+    val = m.get("responsiblePartyIds")
+    if isinstance(val, list):
+        for v in val:
+            try:
+                ids.add(int(v))
+            except (TypeError, ValueError):
+                pass
     return ids
 
 
 def milestone_role_team_company_ids(m):
-    """Returns (companyIds, jobRoleIds, teamIds) sets found directly on a milestone."""
-    def _ids(key):
-        val = m.get(key)
-        out = set()
-        if isinstance(val, list):
-            for v in val:
-                try:
-                    out.add(int(v["id"] if isinstance(v, dict) else v))
-                except (TypeError, ValueError, KeyError):
-                    pass
-        return out
-
-    return (
-        _ids("assigneeCompanyIds"),
-        _ids("assigneeJobRoleIds"),
-        _ids("assigneeTeamIds"),
-    )
+    """
+    Returns (companyIds, jobRoleIds, teamIds) sets for a milestone.
+    Milestones don't have separate assigneeJobRoleIds/assigneeTeamIds/
+    assigneeCompanyIds fields like tasks do -- instead, role/team/company
+    assignments appear to be mixed into responsibleParties itself,
+    distinguished by each entry's "type" field (confirmed shape for a user
+    entry: {"id": N, "type": "users"} -- role/team/company entries are
+    expected to use "type": "jobRoles" / "teams" / "companies" by the same
+    convention seen elsewhere in this API, but this hasn't been confirmed
+    against a real role-assigned milestone yet).
+    """
+    company_ids, job_role_ids, team_ids = set(), set(), set()
+    val = m.get("responsibleParties")
+    if isinstance(val, list):
+        for entry in val:
+            if not isinstance(entry, dict):
+                continue
+            etype = (entry.get("type") or "").lower()
+            try:
+                eid = int(entry.get("id"))
+            except (TypeError, ValueError):
+                continue
+            if etype == "companies":
+                company_ids.add(eid)
+            elif etype == "jobroles":
+                job_role_ids.add(eid)
+            elif etype == "teams":
+                team_ids.add(eid)
+    return company_ids, job_role_ids, team_ids
 
 
 def fetch_incomplete_milestones():
     """
-    Fetches every incomplete milestone company-wide. Verified definition
-    (against a real CSV export, exact match for one person: 12 total, 2-3
-    late depending on cutoff): a milestone counts for a person if they're
-    DIRECTLY assigned OR assigned via a role/team/company they belong to --
-    same pattern as tasks. Field names are a best guess by analogy to the
-    tasks endpoint (not independently confirmed); if counts come out wrong,
-    check result['debug']['sample_milestone'] in the output JSON for the
-    actual field names Teamwork returns here.
+    Fetches every milestone company-wide, then filters to incomplete ones
+    client-side -- the completed=false query param is silently ignored by
+    this endpoint (confirmed: a request with completed=false returned a
+    milestone from 2015 with "completed": true).
+
+    Verified definition (against a real CSV export, exact match for one
+    person: 12 total, 2-3 late depending on cutoff): a milestone counts for
+    a person if they're DIRECTLY assigned (responsiblePartyIds) OR assigned
+    via a role/team/company they belong to (see
+    milestone_role_team_company_ids -- shape not yet confirmed against a
+    real example, see result['debug']['sample_role_assigned_milestone']).
+
+    Due date field is "deadline", NOT "dueDate" (which tasks use).
     """
     milestones = []
     page = 1
     page_size = 200
     while True:
-        params = {"page": page, "pageSize": page_size, "completed": "false"}
+        params = {"page": page, "pageSize": page_size}
         data = api_get("/projects/api/v3/milestones.json", params)
         batch = data.get("milestones", [])
         milestones.extend(batch)
@@ -422,8 +442,11 @@ def fetch_incomplete_milestones():
         page += 1
         if page > 20:
             break
-    print(f"Fetched {len(milestones)} incomplete milestones company-wide.")
-    return milestones
+
+    raw_count = len(milestones)
+    incomplete = [m for m in milestones if m.get("completed") is False]
+    print(f"Fetched {raw_count} milestones company-wide; {len(incomplete)} are incomplete (completed=False).")
+    return incomplete
 
 
 def classify_tasks(tasks, today_str):
@@ -557,7 +580,14 @@ def main():
                         milestones_by_assignee.setdefault(uid, []).append(m)
 
         if all_milestones:
-            result["debug"] = {"sample_milestone": all_milestones[0]}
+            role_assigned_example = next(
+                (m for m in all_milestones if any(milestone_role_team_company_ids(m))), None
+            )
+            result["debug"] = {
+                "sample_milestone": all_milestones[0],
+                "sample_role_assigned_milestone": role_assigned_example,
+                "role_assigned_milestone_count": sum(1 for m in all_milestones if any(milestone_role_team_company_ids(m))),
+            }
 
         for key, info in PEOPLE.items():
             tasks = by_assignee.get(info["user_id"], [])
@@ -565,7 +595,7 @@ def main():
 
             m_list = milestones_by_assignee.get(info["user_id"], [])
             m_total = len(m_list)
-            m_late = sum(1 for m in m_list if (m.get("dueDate") or "")[:10] and (m.get("dueDate") or "")[:10] < today_str)
+            m_late = sum(1 for m in m_list if (m.get("deadline") or "")[:10] and (m.get("deadline") or "")[:10] < today_str)
 
             result["people"][key] = {
                 "name": info["name"],
