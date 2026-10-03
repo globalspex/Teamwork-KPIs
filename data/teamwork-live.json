@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-03T15:17:26.825845-05:00",
+  "generated_at": "2026-10-03T15:20:34.240799-05:00",
   "timezone": "America/Chicago",
   "company": {
     "total_open_tasks": 5762,
@@ -487,46 +487,6 @@
     }
   },
   "errors": [],
-  "time_debug": {
-    "logs_fetched": 2954,
-    "fields": [
-      "billable",
-      "billableRate",
-      "costRate",
-      "createdAt",
-      "dateCreated",
-      "dateDeleted",
-      "dateEdited",
-      "deleted",
-      "deletedAt",
-      "deletedBy",
-      "deletedByUserId",
-      "description",
-      "deskTicketId",
-      "editedByUserId",
-      "hasStartTime",
-      "id",
-      "isBillable",
-      "isLocked",
-      "loggedBy",
-      "loggedByUserId",
-      "minutes",
-      "project",
-      "projectBillingInvoice",
-      "projectBillingInvoiceId",
-      "projectId",
-      "task",
-      "taskId",
-      "taskIdPreMove",
-      "taskPreMove",
-      "timeLogged",
-      "updatedAt",
-      "updatedBy",
-      "user",
-      "userId",
-      "verified"
-    ]
-  },
   "snapshots": [
     {
       "date": "2026-10-02",
