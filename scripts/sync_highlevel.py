@@ -41,19 +41,24 @@ ONBOARDING_PIPELINE = "U2rdmyCuXA37fuAV1tP7"
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_FILE = os.path.join(ROOT, "data", "highlevel-live.json")
-ACCEPTED_FILE = os.path.join(ROOT, "data", "proposals-accepted.json")
+PROPOSALS_FILE = os.path.join(ROOT, "data", "proposals.json")
 # HighLevel's Onboarding pipeline is the source for Converted from this month on.
 # Before it, Onboarding wasn't used consistently, so accepted proposals stand in.
 CONVERTED_CUTOVER = (2026, 9)
 
 
-def load_accepted_dates():
-    """Signed dates of accepted Better Proposals (manual list for now)."""
+def load_proposals():
+    """Better Proposals history (manual list for now).
+    Returns (sent_dates, accepted_signed_dates). Sent = accepted + lost + outstanding,
+    by date created."""
     try:
-        return [datetime.date.fromisoformat(x) for x in json.load(open(ACCEPTED_FILE)).get("signed", [])]
+        d = json.load(open(PROPOSALS_FILE))
     except Exception:
-        return []
-LOG_FILE = os.path.join(ROOT, "data", "highlevel-proposal-log.json")
+        return [], []
+    f = datetime.date.fromisoformat
+    acc = d.get("accepted", [])
+    sent = [f(x["created"]) for x in acc] + [f(x) for x in d.get("lost", [])] + [f(x) for x in d.get("outstanding", [])]
+    return sent, [f(x["signed"]) for x in acc]
 
 
 def fetch_pipeline(pipeline_id):
@@ -117,10 +122,10 @@ def compute(fu_opps, onboarding_opps, log, today):
 
     lead_dates = [local_date(o["createdAt"]) for o in first_per_contact(fu_opps)]
     conv_dates = [local_date(o["createdAt"]) for o in first_per_contact(onboarding_opps)]
-    # Proposals = accepted proposals by date signed (Better Proposals), per Christina.
+    # Proposals = proposals SENT (accepted + lost + outstanding) by date created, per Christina.
     # The HighLevel Proposal-stage log above is still kept, but no longer displayed.
-    accepted_dates = load_accepted_dates()
-    prop_dates = accepted_dates
+    sent_dates, accepted_dates = load_proposals()
+    prop_dates = sent_dates
 
     leads, props, conv = bucket(lead_dates, weeks), bucket(prop_dates, weeks), bucket(conv_dates, weeks)
 

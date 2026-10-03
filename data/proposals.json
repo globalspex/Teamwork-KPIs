@@ -1,0 +1,21 @@
+{
+  "_note": "Better Proposals history, entered from screenshots Oct 3 2026. Dates only: the repo is public, so client names and values are left out. 'Sent' = accepted + lost (+ outstanding once added), counted by date created. Converted backfill uses accepted signed dates. Lost entries marked 'Not Sent Yet' are excluded. Add new entries here until the Better Proposals API is connected.",
+  "accepted": [
+    {"created": "2026-09-13", "signed": "2026-09-30"}, {"created": "2026-09-24", "signed": "2026-09-27"},
+    {"created": "2026-09-22", "signed": "2026-09-25"}, {"created": "2026-07-23", "signed": "2026-08-17"},
+    {"created": "2026-05-22", "signed": "2026-08-13"}, {"created": "2026-07-31", "signed": "2026-08-06"},
+    {"created": "2026-06-04", "signed": "2026-06-08"}, {"created": "2026-06-04", "signed": "2026-06-08"},
+    {"created": "2026-04-28", "signed": "2026-05-01"}, {"created": "2026-04-28", "signed": "2026-04-29"},
+    {"created": "2026-01-24", "signed": "2026-04-24"}, {"created": "2026-04-03", "signed": "2026-04-22"},
+    {"created": "2026-04-02", "signed": "2026-04-08"}, {"created": "2026-03-19", "signed": "2026-04-06"},
+    {"created": "2026-02-25", "signed": "2026-04-02"}, {"created": "2026-01-27", "signed": "2026-02-12"},
+    {"created": "2025-12-18", "signed": "2026-01-29"}, {"created": "2025-08-08", "signed": "2025-12-04"},
+    {"created": "2025-11-24", "signed": "2025-12-03"}, {"created": "2025-11-05", "signed": "2025-11-10"}
+  ],
+  "lost": [
+    "2026-07-21", "2026-04-25", "2026-04-02", "2026-03-19", "2026-02-04", "2026-01-27",
+    "2025-12-18", "2025-12-11", "2025-12-11", "2025-12-10", "2025-11-08", "2025-10-27",
+    "2025-10-07", "2025-10-02", "2025-08-14", "2025-07-31", "2025-07-10", "2025-07-09", "2025-07-06"
+  ],
+  "outstanding": []
+}

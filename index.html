@@ -219,7 +219,7 @@
     <div class="grid" id="live-christina-sales"></div>
     <div class="section-title">Task Health <span class="source-tag">Teamwork Projects &middot; Live</span></div>
     <div class="grid" id="live-christina"></div>
-    <div class="sample-note">Leads are every FU Leads opportunity in HighLevel, counted the month it was created and once per contact. Proposals are accepted proposals in Better Proposals, counted the month they were signed. Converted comes from the HighLevel Onboarding pipeline starting September 2026; earlier months use accepted proposals, since Onboarding wasn&rsquo;t in use yet. Goals: 4 leads and 1 proposal per month; the badge reads In Progress until the month&rsquo;s goal is hit. Task volume is high for a CEO role, which usually means tasks land on her by default through role, team, or company assignment.</div>
+    <div class="sample-note">Leads are every FU Leads opportunity in HighLevel, counted the month it was created and once per contact. Proposals are proposals sent in Better Proposals (accepted plus lost), counted the month they were created. Converted comes from the HighLevel Onboarding pipeline starting September 2026; earlier months use accepted proposals, since Onboarding wasn&rsquo;t in use yet. Goals: 4 leads and 1 proposal per month; the badge reads In Progress until the month&rsquo;s goal is hit. Task volume is high for a CEO role, which usually means tasks land on her by default through role, team, or company assignment.</div>
 
     <div class="chart-card">
       <h3>Monthly Sales Activity &mdash; Live (HighLevel)</h3>
@@ -709,8 +709,8 @@
       card('Leads This Month', num(L.this_month),
         'Goal: 4 per month &middot; Last month: '+num(L.last_month)+' &middot; Last 12 months: '+num(L.last_12_months),
         monthBadge(L.this_month, 4)) +
-      card('Proposals This Month', num(P.this_month),
-        'Accepted (Better Proposals) &middot; Goal: 1 per month &middot; Last month: '+num(P.last_month)+' &middot; Last 12 months: '+num(P.last_12_months),
+      card('Proposals Sent This Month', num(P.this_month),
+        'Accepted + lost, by date created &middot; Goal: 1 per month &middot; Last month: '+num(P.last_month)+' &middot; Last 12 months: '+num(P.last_12_months),
         monthBadge(P.this_month, 1)) +
       card('Converted This Month', num(V.this_month),
         'Onboarding &middot; Last month: '+num(V.last_month)+' &middot; Last 12 months: '+num(V.last_12_months),
