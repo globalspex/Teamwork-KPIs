@@ -463,13 +463,21 @@
   }
 
   // ---------- card builders ----------
+  function weekEndLabel(){
+    var we = LIVE && LIVE.company && LIVE.company.week_ends;
+    if(!we) return 'Friday';
+    var d = we.split('-'); return 'Fri '+(+d[1])+'/'+(+d[2]);
+  }
+  function dueWeekCard(v){
+    return card('Due This Week', num(v), 'Open tasks due today through '+weekEndLabel()+' (overdue not included)');
+  }
   function taskHealthCards(p, goal){
     var rate = pct(p.overdue_tasks, p.total_open_tasks);
     return card('Total Open Tasks', num(p.total_open_tasks), 'Active, uncompleted tasks') +
       card('Overdue Tasks', num(p.overdue_tasks)+(rate===null?'':' <span class="value-pct">'+rate+'%</span>'),
         num(p.overdue_tasks)+' of '+num(p.total_open_tasks)+' open tasks are late &middot; Goal: under '+goal+'%',
         lateBar(rate, goal) + badge(rate===null?null:rate<=goal)) +
-      card('Due Today', num(p.due_today), 'Tasks with a due date of today');
+      dueWeekCard(p.due_this_week);
   }
 
   function pmCards(p){
@@ -491,7 +499,7 @@
   function devCards(p){
     var rate = pct(p.overdue_tasks, p.total_open_tasks);
     return card('Late Tasks', rate===null?'&mdash;':rate+'%',
-      'Goal: less than 10% &middot; '+num(p.overdue_tasks)+' of '+num(p.total_open_tasks)+' open tasks overdue &middot; '+num(p.due_today)+' due today',
+      'Goal: less than 10% &middot; '+num(p.overdue_tasks)+' of '+num(p.total_open_tasks)+' open tasks overdue &middot; '+num(p.due_this_week)+' due this week',
       lateBar(rate, 10) + badge(rate===null?null:rate<10));
   }
 
@@ -506,7 +514,7 @@
     put('live-company',
       card('Overdue Tasks (site-wide)', num(c.overdue_tasks)+(rate===null?'':' <span class="value-pct">'+rate+'%</span>'),
         num(c.overdue_tasks)+' of '+num(c.total_open_tasks)+' open tasks are late &middot; Goal: under 15%', lateBar(rate,15)+badge(rate===null?null:rate<=15)) +
-      card('Due Today', num(c.due_today), 'Tasks with a due date of today') +
+      dueWeekCard(c.due_this_week) +
       card('Completed Today', num(c.completed_today), 'Tasks marked complete since midnight') +
       card('Total Open Tasks', num(c.total_open_tasks), 'Active, uncompleted tasks across all projects'));
 

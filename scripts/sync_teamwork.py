@@ -485,6 +485,20 @@ def classify_tasks(tasks, today_str):
     return total, overdue, due_today
 
 
+def week_end_str(today_str):
+    """The Friday that closes the current work week. On Saturday/Sunday,
+    that's the coming Friday, so the count stays meaningful on weekends."""
+    d = datetime.date.fromisoformat(today_str)
+    days = (4 - d.weekday()) % 7  # Mon=0 ... Fri=4; Sat -> 6 days, Sun -> 5 days
+    return (d + datetime.timedelta(days=days)).isoformat()
+
+
+def count_due_this_week(tasks, today_str):
+    """Open tasks due from today through this work week's Friday (overdue excluded)."""
+    end = week_end_str(today_str)
+    return sum(1 for t in tasks if (t.get("dueDate") or "")[:10] and today_str <= t["dueDate"][:10] <= end)
+
+
 def fetch_completed_today_count(today_str):
     """Company-wide count of tasks completed today (excluding soft-deleted)."""
     count = 0
@@ -549,6 +563,8 @@ def main():
             "total_open_tasks": total,
             "overdue_tasks": overdue,
             "due_today": due_today,
+            "due_this_week": count_due_this_week(all_open, today_str),
+            "week_ends": week_end_str(today_str),
             "completed_today": completed_today,
         }
 
@@ -639,6 +655,7 @@ def main():
                 "total_open_tasks": p_total,
                 "overdue_tasks": p_overdue,
                 "due_today": p_due_today,
+                "due_this_week": count_due_this_week(tasks, today_str),
                 "total_incomplete_milestones": m_total,
                 "late_milestones": m_late,
                 "active_projects_owned": len(active_owned),
