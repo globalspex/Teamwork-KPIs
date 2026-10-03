@@ -121,8 +121,9 @@ def fetch_all_projects():
 
 def project_owner_id(p):
     """
-    Resolves a project's owner user ID. Field name not yet confirmed --
-    tries a few plausible shapes defensively.
+    Resolves a project's owner user ID. Confirmed field: ownerId (a plain
+    int). projectOwnerId and the nested projectOwner.id also exist and
+    agree with it on this account, but ownerId is tried first.
     """
     for key in ("ownerId", "projectOwnerId"):
         val = p.get(key)
@@ -534,7 +535,6 @@ def main():
             owner_id = project_owner_id(p)
             if owner_id is not None:
                 owned_projects_by_user.setdefault(owner_id, []).append(p)
-        result["debug"] = {"sample_project": all_projects[0] if all_projects else None}
 
         status_field_id = fetch_status_custom_field_id()
         all_open, tasklists_by_id = fetch_all_open_tasks(active_project_ids, status_field_id)
