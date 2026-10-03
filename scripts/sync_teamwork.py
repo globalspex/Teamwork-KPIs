@@ -387,6 +387,14 @@ def fetch_all_open_tasks(active_project_ids):
         else:
             inactive_project_count += 1
 
+    # Diagnostic: dump the raw workflowStages value (and a couple of other
+    # fields for context) from a handful of real tasks, in case the shape
+    # task_workflow_stage_name() assumes is wrong -- same kind of guess
+    # that needed a raw dump to resolve for job roles earlier.
+    print("DIAGNOSTIC -- raw workflowStages field from up to 5 sample tasks:")
+    for t in kept[:5]:
+        print(json.dumps({"id": t.get("id"), "name": t.get("name"), "workflowStages": t.get("workflowStages")}, indent=2))
+
     stage_counts = {}
     for t in kept:
         stage = task_workflow_stage_name(t)
