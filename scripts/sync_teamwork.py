@@ -391,14 +391,22 @@ def fetch_all_open_tasks(active_project_ids, stage_lookup):
     tasklists_by_id = {}
     page = 1
     page_size = 200
+    include_custom_fields = True
     while True:
         params = {
             "page": page,
             "pageSize": page_size,
             "completed": "false",
-            "include": "assignees,tasklists",
+            "include": "assignees,tasklists,customFields" if include_custom_fields else "assignees,tasklists",
         }
-        data = api_get("/projects/api/v3/tasks.json", params)
+        try:
+            data = api_get("/projects/api/v3/tasks.json", params)
+        except RuntimeError as e:
+            if include_custom_fields:
+                print(f"NOTE: tasks.json with include=...,customFields failed ({e}); retrying without it.", file=sys.stderr)
+                include_custom_fields = False
+                continue
+            raise
         batch = data.get("tasks", [])
         tasks.extend(batch)
         included = data.get("included", {})
@@ -440,6 +448,13 @@ def fetch_all_open_tasks(active_project_ids, stage_lookup):
     print("DIAGNOSTIC -- raw workflowStages field from up to 5 sample tasks:")
     for t in kept[:5]:
         print(json.dumps({"id": t.get("id"), "name": t.get("name"), "workflowStages": t.get("workflowStages")}, indent=2))
+
+    print("DIAGNOSTIC -- raw customFields field from up to 5 sample tasks (testing the "
+          "hypothesis that 'Status' is a custom field, not a native workflow stage):")
+    for t in kept[:5]:
+        print(json.dumps({"id": t.get("id"), "name": t.get("name"), "customFields": t.get("customFields")}, indent=2))
+    print(f"DIAGNOSTIC -- does the task dict even have a 'customFields' key at all? {'customFields' in kept[0] if kept else 'N/A'}")
+    print(f"DIAGNOSTIC -- all top-level keys on a sample task now (with customFields include): {sorted(kept[0].keys()) if kept else 'N/A'}")
 
     stage_counts = {}
     for t in kept:
