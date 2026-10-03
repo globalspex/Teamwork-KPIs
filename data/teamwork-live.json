@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-10-02T21:31:39.151130-05:00",
+  "generated_at": "2026-10-02T21:45:48.638761-05:00",
   "timezone": "America/Chicago",
   "company": {
-    "total_open_tasks": 5386,
+    "total_open_tasks": 5387,
     "overdue_tasks": 1013,
     "due_today": 118,
     "completed_today": 957
@@ -12,50 +12,143 @@
       "name": "Christina Hawkins",
       "total_open_tasks": 1321,
       "overdue_tasks": 523,
-      "due_today": 16
+      "due_today": 16,
+      "total_incomplete_milestones": 23,
+      "late_milestones": 0
     },
     "javier": {
       "name": "Javier L\u00f3pez",
       "total_open_tasks": 348,
       "overdue_tasks": 46,
-      "due_today": 31
+      "due_today": 31,
+      "total_incomplete_milestones": 106,
+      "late_milestones": 0
     },
     "jennifer": {
       "name": "Jennifer McNinch",
       "total_open_tasks": 47,
       "overdue_tasks": 9,
-      "due_today": 2
+      "due_today": 2,
+      "total_incomplete_milestones": 22,
+      "late_milestones": 0
     },
     "rebecaq": {
       "name": "Rebeca Queiroz",
       "total_open_tasks": 331,
       "overdue_tasks": 99,
-      "due_today": 14
+      "due_today": 14,
+      "total_incomplete_milestones": 17,
+      "late_milestones": 0
     },
     "juliane": {
       "name": "Juliane Roitmann",
       "total_open_tasks": 705,
       "overdue_tasks": 93,
-      "due_today": 5
+      "due_today": 5,
+      "total_incomplete_milestones": 0,
+      "late_milestones": 0
     },
     "rebecam": {
       "name": "Rebeca Mesquita",
       "total_open_tasks": 41,
       "overdue_tasks": 7,
-      "due_today": 0
+      "due_today": 0,
+      "total_incomplete_milestones": 2,
+      "late_milestones": 0
     },
     "aura": {
       "name": "Aura Celorico",
       "total_open_tasks": 429,
       "overdue_tasks": 31,
-      "due_today": 11
+      "due_today": 11,
+      "total_incomplete_milestones": 0,
+      "late_milestones": 0
     },
     "andressa": {
       "name": "Andressa Alves",
       "total_open_tasks": 220,
       "overdue_tasks": 37,
-      "due_today": 14
+      "due_today": 14,
+      "total_incomplete_milestones": 0,
+      "late_milestones": 0
     }
   },
-  "errors": []
+  "errors": [],
+  "debug": {
+    "sample_milestone": {
+      "id": 171431,
+      "name": "Shut down OilStoneEnergy if not paid",
+      "description": "",
+      "descriptionHTML": "",
+      "deadline": "2015-01-13T00:00:00Z",
+      "originalDueDate": "2015-01-13T00:00:00Z",
+      "completed": true,
+      "projectId": 136325,
+      "project": {
+        "id": 136325,
+        "type": "projects"
+      },
+      "createdOn": "2014-12-17T04:29:32Z",
+      "lastChangedOn": "2023-08-07T17:32:12Z",
+      "updatedBy": 116205,
+      "creatorUserId": 116205,
+      "createdBy": 0,
+      "reminder": true,
+      "private": true,
+      "lockdownId": 200068,
+      "lockdown": {
+        "id": 200068,
+        "type": "lockdowns"
+      },
+      "status": "completed",
+      "completedOn": "2023-08-07T17:32:11Z",
+      "completerId": 116205,
+      "completedBy": 116205,
+      "userFollowingComments": true,
+      "userFollowingChanges": false,
+      "userFollowingComplete": false,
+      "isDeleted": false,
+      "deletedOn": null,
+      "canEdit": true,
+      "canComplete": true,
+      "responsiblePartyIds": [
+        116205
+      ],
+      "responsibleParties": [
+        {
+          "id": 116205,
+          "type": "users"
+        }
+      ],
+      "commentFollowerIds": [
+        116205,
+        127631
+      ],
+      "commentFollowers": [
+        {
+          "id": 116205,
+          "type": "users"
+        },
+        {
+          "id": 127631,
+          "type": "users"
+        }
+      ],
+      "changeFollowerIds": [
+        126957,
+        127631
+      ],
+      "changeFollowers": [
+        {
+          "id": 126957,
+          "type": "users"
+        },
+        {
+          "id": 127631,
+          "type": "users"
+        }
+      ],
+      "commentsCount": 5
+    }
+  }
 }
