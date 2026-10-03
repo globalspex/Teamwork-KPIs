@@ -44,6 +44,7 @@ jobs:
         continue-on-error: true
         env:
           HIGHLEVEL_TOKEN: ${{ secrets.HIGHLEVEL_TOKEN }}
+          HIGHLEVEL_TOKEN_MMR: ${{ secrets.HIGHLEVEL_TOKEN_MMR }}
           HIGHLEVEL_LOCATION_ID: rPYX5zSqcTbMLPgErcSD
           HIGHLEVEL_TIMEZONE: America/Chicago
         run: python scripts/sync_highlevel.py

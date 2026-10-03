@@ -39,6 +39,13 @@ FU_LEADS_PIPELINE = "eRSoddqG3NtcgSzf4ltI"
 PROPOSAL_STAGE = "7ec4c1aa-59e1-482a-959b-ca5d744779ce"
 ONBOARDING_PIPELINE = "U2rdmyCuXA37fuAV1tP7"
 
+# Moving Marketing Results sub-account (separate HighLevel location, separate token).
+# Leads: "1Sales Pipeline". Converted: its "Onboarding" pipeline. IDs confirmed Oct 3, 2026.
+MMR_TOKEN = os.environ.get("HIGHLEVEL_TOKEN_MMR", "")
+MMR_LOCATION_ID = "gz3coyrBX3WCQUp6aG7v"
+MMR_LEAD_PIPELINES = ["bF0uQK83hz9K0w3bnn7O"]
+MMR_ONBOARDING_PIPELINE = "VexBe40zRr1LKdce7ece"
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_FILE = os.path.join(ROOT, "data", "highlevel-live.json")
 PROPOSALS_FILE = os.path.join(ROOT, "data", "proposals.json")
@@ -62,13 +69,15 @@ def load_proposals():
     return sent, [f(x["signed"]) for x in acc]
 
 
-def fetch_pipeline(pipeline_id):
-    """Every opportunity in one pipeline, following HighLevel's cursor paging."""
-    opps, params = [], {"location_id": LOCATION_ID, "pipeline_id": pipeline_id, "limit": 100}
+def fetch_pipeline(pipeline_id, token=None, location_id=None, tag=""):
+    """Every opportunity in one pipeline, following HighLevel's cursor paging.
+    Contact IDs are prefixed with `tag` so contacts from different sub-accounts never collide."""
+    token = token or TOKEN
+    opps, params = [], {"location_id": location_id or LOCATION_ID, "pipeline_id": pipeline_id, "limit": 100}
     for _ in range(100):
         url = f"{BASE}/opportunities/search?{urllib.parse.urlencode(params)}"
         req = urllib.request.Request(url, headers={
-            "Authorization": f"Bearer {TOKEN}", "Version": "2021-07-28",
+            "Authorization": f"Bearer {token}", "Version": "2021-07-28",
             "Accept": "application/json", "User-Agent": "globalspex-kpi-sync"})
         try:
             with urllib.request.urlopen(req, timeout=30) as r:
@@ -81,6 +90,10 @@ def fetch_pipeline(pipeline_id):
         if len(batch) < params["limit"] or not meta.get("startAfterId"):
             break
         params["startAfter"], params["startAfterId"] = meta["startAfter"], meta["startAfterId"]
+    if tag:
+        for o in opps:
+            if o.get("contactId"):
+                o["contactId"] = f"{tag}:{o['contactId']}"
     return opps
 
 
@@ -169,7 +182,7 @@ def compute(fu_opps, onboarding_opps, log, today):
 
 def main():
     now = datetime.datetime.now(TZ)
-    result = {"generated_at": now.isoformat(), "timezone": str(TZ), "christina": None, "errors": []}
+    result = {"generated_at": now.isoformat(), "timezone": str(TZ), "christina": None, "errors": [], "warnings": []}
     try:
         log = json.load(open(LOG_FILE)) if os.path.exists(LOG_FILE) else {}
     except Exception:
@@ -179,7 +192,19 @@ def main():
             raise RuntimeError("HIGHLEVEL_TOKEN secret is not set.")
         fu = fetch_pipeline(FU_LEADS_PIPELINE)
         onb = fetch_pipeline(ONBOARDING_PIPELINE)
-        print(f"Fetched {len(fu)} FU Leads and {len(onb)} Onboarding opportunities.")
+        print(f"GlobalSpex: {len(fu)} FU Leads, {len(onb)} Onboarding opportunities.")
+        result["sources"] = ["GlobalSpex"]
+        if MMR_TOKEN:
+            try:
+                mmr_leads = [o for pid in MMR_LEAD_PIPELINES for o in fetch_pipeline(pid, MMR_TOKEN, MMR_LOCATION_ID, "mmr")]
+                mmr_onb = fetch_pipeline(MMR_ONBOARDING_PIPELINE, MMR_TOKEN, MMR_LOCATION_ID, "mmr")
+                print(f"MMR: {len(mmr_leads)} lead, {len(mmr_onb)} Onboarding opportunities.")
+                fu, onb = fu + mmr_leads, onb + mmr_onb
+                result["sources"].append("Moving Marketing Results")
+            except Exception as e:
+                result["warnings"].append(f"MMR sub-account skipped: {e}")
+        else:
+            result["warnings"].append("MMR not included yet: add the HIGHLEVEL_TOKEN_MMR repo secret.")
         result["christina"] = compute(fu, onb, log, now.date())
         with open(LOG_FILE, "w") as f:
             json.dump(log, f, indent=2, sort_keys=True)
