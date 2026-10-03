@@ -98,44 +98,28 @@ def api_get(path, params=None):
 
 def fetch_all_projects():
     """
-    Fetches every project company-wide. The endpoint only returns active
-    projects by default (confirmed: 35 of 35 fetched showed status=active,
-    only 1 had completedAt set) -- tries a few explicit params to widen
-    that, logging which (if any) actually changes the count.
+    Fetches every project company-wide. Note: this endpoint only returns
+    active projects by default (confirmed: 35 of 35 fetched showed
+    status=active). Getting completed/archived projects would need more
+    investigation -- not pursued further per Christina's direction; this
+    only drives Active Projects Owned and project-task aggregation, both
+    of which only need active projects anyway.
     """
-    param_variants = [
-        {},
-        {"includeCompletedProjects": "true"},
-        {"includeArchivedProjects": "true"},
-        {"includeCompletedProjects": "true", "includeArchivedProjects": "true"},
-    ]
-    best_projects = []
-    for variant in param_variants:
-        projects = []
-        page = 1
-        page_size = 200
-        ok = True
-        while True:
-            try:
-                data = api_get("/projects/api/v3/projects.json", {"page": page, "pageSize": page_size, **variant})
-            except RuntimeError as e:
-                print(f"NOTE: projects.json with {variant} failed ({e}).", file=sys.stderr)
-                ok = False
-                break
-            batch = data.get("projects", [])
-            projects.extend(batch)
-            meta = data.get("meta", {}).get("page", {})
-            total_pages = meta.get("pageCount") or meta.get("pages")
-            if not batch or (total_pages and page >= total_pages) or len(batch) < page_size:
-                break
-            page += 1
-            if page > 50:
-                break
-        if ok:
-            print(f"projects.json with params {variant}: {len(projects)} projects returned.")
-            if len(projects) > len(best_projects):
-                best_projects = projects
-    return best_projects
+    projects = []
+    page = 1
+    page_size = 200
+    while True:
+        data = api_get("/projects/api/v3/projects.json", {"page": page, "pageSize": page_size})
+        batch = data.get("projects", [])
+        projects.extend(batch)
+        meta = data.get("meta", {}).get("page", {})
+        total_pages = meta.get("pageCount") or meta.get("pages")
+        if not batch or (total_pages and page >= total_pages) or len(batch) < page_size:
+            break
+        page += 1
+        if page > 50:
+            break
+    return projects
 
 
 def project_owner_id(p):
@@ -547,28 +531,13 @@ def main():
         for p in all_projects:
             status_counts[p.get("status", "unknown")] = status_counts.get(p.get("status", "unknown"), 0) + 1
         active_project_ids = {int(p["id"]) for p in all_projects if p.get("status") == "active"}
-        completed_at_count = sum(1 for p in all_projects if p.get("completedAt"))
-        archived_at_count = sum(1 for p in all_projects if p.get("archivedAt"))
-        deleted_at_count = sum(1 for p in all_projects if p.get("deletedAt"))
-        print(
-            f"Projects by status: {status_counts}. Active project count: {len(active_project_ids)}. "
-            f"Of {len(all_projects)} fetched projects: {completed_at_count} have completedAt set, "
-            f"{archived_at_count} have archivedAt set, {deleted_at_count} have deletedAt set."
-        )
+        print(f"Projects by status: {status_counts}. Active project count: {len(active_project_ids)}.")
 
         owned_projects_by_user = {}
         for p in all_projects:
             owner_id = project_owner_id(p)
             if owner_id is not None:
                 owned_projects_by_user.setdefault(owner_id, []).append(p)
-
-        result["debug"] = {
-            "total_projects_fetched": len(all_projects),
-            "status_counts": status_counts,
-            "completed_at_count": completed_at_count,
-            "archived_at_count": archived_at_count,
-            "deleted_at_count": deleted_at_count,
-        }
 
         status_field_id = fetch_status_custom_field_id()
         all_open, tasklists_by_id = fetch_all_open_tasks(active_project_ids, status_field_id)
