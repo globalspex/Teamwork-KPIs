@@ -1,0 +1,108 @@
+{
+  "lookups": {
+    "ticketstatuses.json": {
+      "http": 401,
+      "top_keys": [
+        "_error"
+      ],
+      "error": "{\"errors\":[{\"id\":\"7553c384-4d54-45ac-bd4a-7e46ca5b1654\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+    },
+    "tickettypes.json": {
+      "http": 401,
+      "top_keys": [
+        "_error"
+      ],
+      "error": "{\"errors\":[{\"id\":\"405be591-b158-4020-9af7-8ea4c7174883\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+    },
+    "ticketsources.json": {
+      "http": 401,
+      "top_keys": [
+        "_error"
+      ],
+      "error": "{\"errors\":[{\"id\":\"71da9ffb-6be1-43fe-a66c-0caba95ce84f\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+    },
+    "ticketpriorities.json": {
+      "http": 401,
+      "top_keys": [
+        "_error"
+      ],
+      "error": "{\"errors\":[{\"id\":\"dd168784-7864-45fc-ac65-9104f3e646f1\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+    },
+    "inboxes.json": {
+      "http": 401,
+      "top_keys": [
+        "_error"
+      ],
+      "error": "{\"errors\":[{\"id\":\"8d9de100-6f78-4234-bfc5-05c76cb1f190\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+    },
+    "users.json": {
+      "http": 401,
+      "top_keys": [
+        "_error"
+      ],
+      "error": "{\"errors\":[{\"id\":\"643a5c5f-70b6-46bc-8509-5ab40e7a2dfa\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+    },
+    "tags.json": {
+      "http": 401,
+      "top_keys": [
+        "_error"
+      ],
+      "error": "{\"errors\":[{\"id\":\"eb513595-110a-4212-a4ac-f71c2887ec9b\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+    },
+    "customfields.json": {
+      "http": 401,
+      "top_keys": [
+        "_error"
+      ],
+      "error": "{\"errors\":[{\"id\":\"ccd59383-ebfe-4732-9907-b1dbcfb912ae\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+    }
+  },
+  "tickets": {
+    "plain": {
+      "http": 401,
+      "params": {
+        "pageSize": 5
+      },
+      "top_keys": [
+        "_error"
+      ],
+      "error": "{\"errors\":[{\"id\":\"b8e9d2d4-4fe4-4332-bde3-7365313c3409\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+    },
+    "newest": {
+      "http": 401,
+      "params": {
+        "pageSize": 5,
+        "orderBy": "createdAt",
+        "orderMode": "desc"
+      },
+      "top_keys": [
+        "_error"
+      ],
+      "error": "{\"errors\":[{\"id\":\"23cd27db-a36a-4e6e-8ed5-80c0b8428d4e\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+    },
+    "filter_status1": {
+      "http": 401,
+      "params": {
+        "pageSize": 5,
+        "filter": "{\"status\": {\"$in\": [1]}}"
+      },
+      "top_keys": [
+        "_error"
+      ],
+      "error": "{\"errors\":[{\"id\":\"cf82f111-85b8-4718-b825-8771b47ea960\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+    },
+    "include_all": {
+      "http": 401,
+      "params": {
+        "pageSize": 3,
+        "orderBy": "createdAt",
+        "orderMode": "desc",
+        "includes": "ticketstatuses,tickettypes,ticketsources,users,inboxes,tags,messages"
+      },
+      "top_keys": [
+        "_error"
+      ],
+      "error": "{\"errors\":[{\"id\":\"436c0ae2-3bf3-4224-add2-e04156fb87a8\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+    }
+  }
+}
