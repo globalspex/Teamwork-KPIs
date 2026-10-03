@@ -79,6 +79,97 @@ def api_get(path, params=None):
         raise RuntimeError(f"Teamwork API error {e.code} on {url}: {body[:500]}") from e
 
 
+def fetch_person_profiles(user_ids):
+    """
+    Fetches each person's own company/job-role/team membership, so tasks
+    assigned to a ROLE, TEAM, or COMPANY (not just an individual user) can
+    be correctly attributed to anyone who belongs to that role/team/company
+    -- confirmed necessary by a verified CSV export where 25 of one
+    person's real tasks were assigned to "Project Management" (a role) or
+    "GlobalSpex, Inc." (the company) rather than to him individually.
+
+    Returns {user_id: {"companyIds": set(...), "jobRoleIds": set(...),
+    "teamIds": set(...)}}. Field names are guessed defensively (several
+    plausible keys checked per concept) since this can't be tested live;
+    the diagnostic print shows exactly what was found for each person, so
+    a wrong guess here is visible in the log rather than silently wrong.
+    """
+    profiles = {uid: {"companyIds": set(), "jobRoleIds": set(), "teamIds": set()} for uid in user_ids}
+    page = 1
+    page_size = 200
+    people_by_id = {}
+    while True:
+        params = {"page": page, "pageSize": page_size}
+        data = api_get("/projects/api/v3/people.json", params)
+        batch = data.get("people", [])
+        for p in batch:
+            people_by_id[int(p["id"])] = p
+        meta = data.get("meta", {}).get("page", {})
+        total_pages = meta.get("pageCount") or meta.get("pages")
+        if not batch or (total_pages and page >= total_pages) or len(batch) < page_size:
+            break
+        page += 1
+        if page > 20:
+            break
+
+    for uid in user_ids:
+        p = people_by_id.get(uid)
+        if not p:
+            print(f"WARNING: no people.json record found for user id {uid}", file=sys.stderr)
+            continue
+
+        company_id = p.get("companyId")
+        if company_id is not None:
+            profiles[uid]["companyIds"].add(int(company_id))
+
+        for key in ("jobRoleId", "companyRoleId"):
+            val = p.get(key)
+            if val:
+                try:
+                    profiles[uid]["jobRoleIds"].add(int(val))
+                except (TypeError, ValueError):
+                    pass
+
+        for key in ("teamIds", "teams"):
+            val = p.get(key)
+            if isinstance(val, list):
+                for v in val:
+                    try:
+                        tid = v["id"] if isinstance(v, dict) else v
+                        profiles[uid]["teamIds"].add(int(tid))
+                    except (TypeError, ValueError, KeyError):
+                        pass
+
+        print(
+            f"  Profile for user {uid} ({p.get('firstName','?')} {p.get('lastName','?')}): "
+            f"companyIds={profiles[uid]['companyIds']}, "
+            f"jobRoleIds={profiles[uid]['jobRoleIds']}, "
+            f"teamIds={profiles[uid]['teamIds']}"
+        )
+
+    return profiles
+
+
+def task_role_team_company_ids(task):
+    """Returns (companyIds, jobRoleIds, teamIds) sets found directly on a task."""
+    def _ids(key):
+        val = task.get(key)
+        out = set()
+        if isinstance(val, list):
+            for v in val:
+                try:
+                    out.add(int(v["id"] if isinstance(v, dict) else v))
+                except (TypeError, ValueError, KeyError):
+                    pass
+        return out
+
+    return (
+        _ids("assigneeCompanyIds"),
+        _ids("assigneeJobRoleIds"),
+        _ids("assigneeTeamIds"),
+    )
+
+
 def task_assignee_ids(task):
     """
     Returns a set of user IDs assigned to this task. The confirmed-working
@@ -235,12 +326,21 @@ def fetch_all_open_tasks(active_project_ids):
         else:
             inactive_project_count += 1
 
+    # NOTE: subtasks are intentionally NOT excluded. An earlier version of
+    # this script excluded them based on a since-debunked hypothesis (a
+    # person's "open tasks" UI view appeared much smaller than the API
+    # total, which looked like a subtask-counting difference). A verified
+    # CSV export later confirmed the real total DOES include subtasks
+    # (218 of 352 real, confirmed-open tasks for that person were
+    # subtasks) -- the original UI number was just wrong (truncated by
+    # pagination, never actually fully loaded). Leaving this note so the
+    # subtask question doesn't get re-litigated without re-reading this.
+
     print(
         f"Raw fetch: {raw_count} tasks. Excluded {deleted_count} soft-deleted, "
         f"{task_archived_count} task-level archived, {inactive_project_count} "
         f"in inactive/archived projects. {unresolved_project} tasks had an "
-        f"unresolvable project (kept, not excluded -- see tasklistId mapping "
-        f"if this number is large). Remaining: {len(kept)}."
+        f"unresolvable project (kept, not excluded). Remaining: {len(kept)}."
     )
     return kept
 
@@ -316,10 +416,36 @@ def main():
             "completed_today": completed_today,
         }
 
+        print("Resolving each person's role/team/company memberships...")
+        profiles = fetch_person_profiles([info["user_id"] for info in PEOPLE.values()])
+
         by_assignee = {}
+        indirect_credit_count = 0
         for t in all_open:
-            for uid in task_assignee_ids(t):
+            direct_ids = task_assignee_ids(t)
+            t_company_ids, t_role_ids, t_team_ids = task_role_team_company_ids(t)
+
+            for uid in direct_ids:
                 by_assignee.setdefault(uid, []).append(t)
+
+            # Credit this task to anyone whose own company/role/team matches
+            # the task's, even if they're not individually named -- this is
+            # what closed the verified 25-task gap for the person we tested
+            # against (role- and company-assigned tasks).
+            if t_company_ids or t_role_ids or t_team_ids:
+                for uid, prof in profiles.items():
+                    if uid in direct_ids:
+                        continue  # already credited directly, don't double count
+                    matched = (
+                        (prof["companyIds"] & t_company_ids)
+                        or (prof["jobRoleIds"] & t_role_ids)
+                        or (prof["teamIds"] & t_team_ids)
+                    )
+                    if matched:
+                        by_assignee.setdefault(uid, []).append(t)
+                        indirect_credit_count += 1
+
+        print(f"Credited {indirect_credit_count} task-person links via role/team/company matching (not direct assignment).")
 
         # Whole-batch sanity check: if there ARE open tasks but literally none
         # of them produced any assignee link at all, that's the real signal
