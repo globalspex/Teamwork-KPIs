@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-02T20:38:57.719233-05:00",
+  "generated_at": "2026-10-02T20:45:00.112960-05:00",
   "timezone": "America/Chicago",
   "company": {
     "total_open_tasks": 5466,
@@ -16,26 +16,26 @@
     },
     "javier": {
       "name": "Javier L\u00f3pez",
-      "total_open_tasks": 330,
-      "overdue_tasks": 45,
-      "due_today": 30
+      "total_open_tasks": 352,
+      "overdue_tasks": 47,
+      "due_today": 31
     },
     "jennifer": {
       "name": "Jennifer McNinch",
-      "total_open_tasks": 23,
-      "overdue_tasks": 7,
-      "due_today": 1
+      "total_open_tasks": 45,
+      "overdue_tasks": 9,
+      "due_today": 2
     },
     "rebecaq": {
       "name": "Rebeca Queiroz",
-      "total_open_tasks": 279,
-      "overdue_tasks": 99,
+      "total_open_tasks": 333,
+      "overdue_tasks": 100,
       "due_today": 14
     },
     "juliane": {
       "name": "Juliane Roitmann",
-      "total_open_tasks": 657,
-      "overdue_tasks": 95,
+      "total_open_tasks": 711,
+      "overdue_tasks": 96,
       "due_today": 5
     },
     "rebecam": {
