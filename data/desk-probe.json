@@ -1,98 +1,1576 @@
 {
+  "auth_results": {
+    "v2_basic": "401 {\"errors\":[{\"id\":\"f7bab6d4-1d7f-4e4b-85c8-7ac14ccd0cdd\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n",
+    "v2_bearer": "401 {\"errors\":[{\"id\":\"33511760-49ee-45fd-9208-ffa61126bcfa\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n",
+    "v1_basic": 200,
+    "v1_bearer": "401 {\"errors\":[{\"id\":\"747b9d72-5c92-4293-9b5b-789a0b8f0c01\",\"title\":\"Token Provided Is Invalid Or Has Expired\",\"code\":\"G401\",\"detail\":\"token provided is i",
+    "projects_me": {
+      "status": 200,
+      "userType": "account",
+      "isAdmin": true
+    }
+  },
+  "base_used": "/desk/v1",
   "lookups": {
     "ticketstatuses.json": {
-      "http": 401,
+      "http": 200,
       "top_keys": [
-        "_error"
+        "ticketstatuses"
       ],
-      "error": "{\"errors\":[{\"id\":\"7553c384-4d54-45ac-bd4a-7e46ca5b1654\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+      "collection_key": "ticketstatuses",
+      "sample_keys": [
+        "id",
+        "code",
+        "name",
+        "displayOrder",
+        "isCustom",
+        "color",
+        "icon",
+        "createdAt",
+        "updatedAt",
+        "createdByUserId",
+        "updatedByUserId",
+        "numTickets"
+      ],
+      "items": [
+        {
+          "id": 1,
+          "name": "Active",
+          "code": "active"
+        },
+        {
+          "id": 422,
+          "name": "Reports",
+          "code": "technical-report"
+        },
+        {
+          "id": 423,
+          "name": "Care Plan Maintenance",
+          "code": "care-plan-maintenance"
+        },
+        {
+          "id": 433,
+          "name": "Purchase/Payment",
+          "code": "purchase-payment"
+        },
+        {
+          "id": 3,
+          "name": "Waiting on customer",
+          "code": "waiting"
+        },
+        {
+          "id": 4,
+          "name": "On-hold",
+          "code": "on-hold"
+        },
+        {
+          "id": 444,
+          "name": "Wordfence",
+          "code": "wordfence"
+        },
+        {
+          "id": 446,
+          "name": "Website Performace",
+          "code": "website-performace"
+        },
+        {
+          "id": 457,
+          "name": "WPRemote",
+          "code": "wp-remote-notifications"
+        },
+        {
+          "id": 458,
+          "name": "Knownhost",
+          "code": "knowhost-notifications"
+        },
+        {
+          "id": 463,
+          "name": "Close/FollowUp",
+          "code": "close-followup"
+        },
+        {
+          "id": 477,
+          "name": "Pulsetic",
+          "code": "pulsetic"
+        },
+        {
+          "id": 5,
+          "name": "Solved",
+          "code": "solved"
+        },
+        {
+          "id": 6,
+          "name": "Closed",
+          "code": "closed"
+        },
+        {
+          "id": 7,
+          "name": "Spam",
+          "code": "spam"
+        }
+      ]
     },
     "tickettypes.json": {
-      "http": 401,
+      "http": 200,
       "top_keys": [
-        "_error"
+        "tickettypes"
       ],
-      "error": "{\"errors\":[{\"id\":\"405be591-b158-4020-9af7-8ea4c7174883\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+      "collection_key": "tickettypes",
+      "sample_keys": [
+        "id",
+        "default",
+        "isCustom",
+        "name",
+        "displayOrder",
+        "ticketCount",
+        "createdAt",
+        "updatedAt"
+      ],
+      "items": [
+        {
+          "id": 9136,
+          "name": "Unspecified"
+        },
+        {
+          "id": 9136,
+          "name": "Unspecified"
+        },
+        {
+          "id": 9136,
+          "name": "Unspecified"
+        },
+        {
+          "id": 9137,
+          "name": "Question"
+        },
+        {
+          "id": 9137,
+          "name": "Question"
+        },
+        {
+          "id": 9137,
+          "name": "Question"
+        },
+        {
+          "id": 9138,
+          "name": "Problem"
+        },
+        {
+          "id": 9138,
+          "name": "Problem"
+        },
+        {
+          "id": 9138,
+          "name": "Problem"
+        },
+        {
+          "id": 9139,
+          "name": "Request"
+        },
+        {
+          "id": 9139,
+          "name": "Request"
+        },
+        {
+          "id": 9139,
+          "name": "Request"
+        },
+        {
+          "id": 15303,
+          "name": "Marketing/SEO"
+        },
+        {
+          "id": 15303,
+          "name": "Marketing/SEO"
+        },
+        {
+          "id": 15303,
+          "name": "Marketing/SEO"
+        },
+        {
+          "id": 176,
+          "name": "Close Hosting"
+        },
+        {
+          "id": 176,
+          "name": "Close Hosting"
+        },
+        {
+          "id": 176,
+          "name": "Close Hosting"
+        },
+        {
+          "id": 262,
+          "name": "Project"
+        },
+        {
+          "id": 262,
+          "name": "Project"
+        },
+        {
+          "id": 262,
+          "name": "Project"
+        },
+        {
+          "id": 293,
+          "name": "Billing/Purchase"
+        },
+        {
+          "id": 293,
+          "name": "Billing/Purchase"
+        },
+        {
+          "id": 293,
+          "name": "Billing/Purchase"
+        },
+        {
+          "id": 402,
+          "name": "Report"
+        },
+        {
+          "id": 402,
+          "name": "Report"
+        },
+        {
+          "id": 402,
+          "name": "Report"
+        },
+        {
+          "id": 403,
+          "name": "Call/Message"
+        },
+        {
+          "id": 403,
+          "name": "Call/Message"
+        },
+        {
+          "id": 403,
+          "name": "Call/Message"
+        },
+        {
+          "id": 416,
+          "name": "Wordfence"
+        },
+        {
+          "id": 416,
+          "name": "Wordfence"
+        },
+        {
+          "id": 416,
+          "name": "Wordfence"
+        },
+        {
+          "id": 417,
+          "name": "WP Remote"
+        },
+        {
+          "id": 417,
+          "name": "WP Remote"
+        },
+        {
+          "id": 417,
+          "name": "WP Remote"
+        },
+        {
+          "id": 423,
+          "name": "Alerts/Warnings"
+        },
+        {
+          "id": 423,
+          "name": "Alerts/Warnings"
+        },
+        {
+          "id": 423,
+          "name": "Alerts/Warnings"
+        },
+        {
+          "id": 334,
+          "name": "Purchase"
+        },
+        {
+          "id": 334,
+          "name": "Purchase"
+        },
+        {
+          "id": 334,
+          "name": "Purchase"
+        }
+      ]
     },
     "ticketsources.json": {
-      "http": 401,
+      "http": 200,
       "top_keys": [
-        "_error"
+        "ticketsources"
       ],
-      "error": "{\"errors\":[{\"id\":\"71da9ffb-6be1-43fe-a66c-0caba95ce84f\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+      "collection_key": "ticketsources",
+      "sample_keys": [
+        "id",
+        "isCustom",
+        "name",
+        "displayOrder",
+        "skipEmailSending",
+        "icon",
+        "ticketCount",
+        "createdAt",
+        "updatedAt",
+        "deletedAt"
+      ],
+      "items": [
+        {
+          "id": 1,
+          "name": "Email"
+        },
+        {
+          "id": 138,
+          "name": "Portal"
+        },
+        {
+          "id": 2,
+          "name": "Email (Manual)"
+        },
+        {
+          "id": 3,
+          "name": "Phone"
+        },
+        {
+          "id": 4,
+          "name": "Docs"
+        },
+        {
+          "id": 336,
+          "name": "Meeting"
+        }
+      ]
     },
     "ticketpriorities.json": {
-      "http": 401,
+      "http": 200,
       "top_keys": [
-        "_error"
+        "ticketpriorities"
       ],
-      "error": "{\"errors\":[{\"id\":\"dd168784-7864-45fc-ac65-9104f3e646f1\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+      "collection_key": "ticketpriorities",
+      "sample_keys": [
+        "id",
+        "name",
+        "color",
+        "icon",
+        "displayOrder",
+        "createdByUserId",
+        "updatedByUserId",
+        "createdAt",
+        "updatedAt"
+      ],
+      "items": [
+        {
+          "id": 1219,
+          "name": "low"
+        },
+        {
+          "id": 3266,
+          "name": "medium"
+        },
+        {
+          "id": 5313,
+          "name": "high"
+        }
+      ]
     },
     "inboxes.json": {
-      "http": 401,
+      "http": 200,
       "top_keys": [
-        "_error"
+        "inboxes"
       ],
-      "error": "{\"errors\":[{\"id\":\"8d9de100-6f78-4234-bfc5-05c76cb1f190\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+      "collection_key": "inboxes",
+      "sample_keys": [
+        "id",
+        "aliases",
+        "email",
+        "icon",
+        "inUnifiedInbox",
+        "integrations",
+        "languageCode",
+        "name",
+        "ticketCounts",
+        "users",
+        "admins",
+        "onClosedLock",
+        "onClosedWait",
+        "sendEmailsFrom",
+        "happinessRatingMessage",
+        "happinessRatingEnabled",
+        "defaultStatus",
+        "emailForwardingState",
+        "signature",
+        "timeloggingEnabled",
+        "timeloggingProjectId",
+        "autoCC",
+        "autoBCC",
+        "isFreeDomain",
+        "freeDomainEmailAliases",
+        "includeTicketHistoryOnForward",
+        "notificationsOnly",
+        "isAdmin",
+        "type"
+      ],
+      "items": [
+        {
+          "id": 18839,
+          "name": "GlobalSpex Marketing"
+        },
+        {
+          "id": 699,
+          "name": "GlobalSpex Support"
+        },
+        {
+          "id": 18742,
+          "name": "Moving Marketing Support"
+        },
+        {
+          "id": 9999999999,
+          "name": "My Tickets"
+        }
+      ]
     },
     "users.json": {
-      "http": 401,
+      "http": 200,
       "top_keys": [
-        "_error"
+        "users"
       ],
-      "error": "{\"errors\":[{\"id\":\"643a5c5f-70b6-46bc-8509-5ab40e7a2dfa\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+      "collection_key": "users",
+      "sample_keys": [
+        "id",
+        "altEmails",
+        "bookMeetingLink",
+        "cellPhone",
+        "cellPhoneCountry",
+        "cellPhonePrefix",
+        "companyId",
+        "createdAt",
+        "editMethod",
+        "email",
+        "firstName",
+        "gender",
+        "avatarURL",
+        "isAdmin",
+        "isAppOwner",
+        "isDeskAdmin",
+        "isPartTime",
+        "jobTitle",
+        "language",
+        "lastName",
+        "nickName",
+        "officePhone",
+        "officePhoneExt",
+        "permissions",
+        "phone",
+        "reviewer",
+        "reviewEnrollment",
+        "role",
+        "sendPushNotifications",
+        "sendWebNotifications",
+        "autoFollowOnCC",
+        "status",
+        "timeFormatId",
+        "timezoneId",
+        "twoFactorAuthCode",
+        "updatedAt",
+        "updatedByUserId",
+        "useDeskClient"
+      ],
+      "items": [
+        {
+          "id": 604063,
+          "role": "Admin",
+          "firstName": "Andressa",
+          "lastName": "Alves"
+        },
+        {
+          "id": 296553,
+          "role": "Agent",
+          "firstName": "Aura",
+          "lastName": "Celorico"
+        },
+        {
+          "id": 116205,
+          "role": "Admin",
+          "firstName": "Christina",
+          "lastName": "Hawkins"
+        },
+        {
+          "id": 225219,
+          "role": "Agent",
+          "firstName": "Cyndi",
+          "lastName": "Cook"
+        },
+        {
+          "id": 273488,
+          "role": "Admin",
+          "firstName": "Javier",
+          "lastName": "L\u00f3pez"
+        },
+        {
+          "id": 610482,
+          "role": "Agent",
+          "firstName": "Jennifer",
+          "lastName": "McNinch"
+        },
+        {
+          "id": 304707,
+          "role": "Agent",
+          "firstName": "Juliane",
+          "lastName": "Roitmann"
+        },
+        {
+          "id": 602539,
+          "role": "Agent",
+          "firstName": "Lakshmi",
+          "lastName": "Jena"
+        },
+        {
+          "id": 603738,
+          "role": "Agent",
+          "firstName": "Lori",
+          "lastName": "Swanson"
+        },
+        {
+          "id": 605403,
+          "role": "Agent",
+          "firstName": "Rebeca",
+          "lastName": "Mesquita"
+        },
+        {
+          "id": 226032,
+          "role": "Admin",
+          "firstName": "Rebeca",
+          "lastName": "Queiroz"
+        }
+      ]
     },
     "tags.json": {
-      "http": 401,
+      "http": 200,
       "top_keys": [
-        "_error"
+        "tags"
       ],
-      "error": "{\"errors\":[{\"id\":\"eb513595-110a-4212-a4ac-f71c2887ec9b\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+      "collection_key": "tags",
+      "sample_keys": [
+        "id",
+        "name",
+        "color",
+        "createdBy_users_id",
+        "updatedBy_users_id",
+        "updatedAt",
+        "createdAt",
+        "ticketID",
+        "ticketCount",
+        "lastUpdated"
+      ],
+      "items": [
+        {
+          "id": 292855,
+          "name": "CarePlanTech"
+        },
+        {
+          "id": 421864,
+          "name": "CarePlaneExec"
+        },
+        {
+          "id": 463733,
+          "name": "CarePlanPartner"
+        },
+        {
+          "id": 8938,
+          "name": "Billing-Required"
+        },
+        {
+          "id": 83477,
+          "name": "HostOnly"
+        },
+        {
+          "id": 61745,
+          "name": "CarePlanHost"
+        },
+        {
+          "id": 799028,
+          "name": "Marketing"
+        },
+        {
+          "id": 13362,
+          "name": "woocommerce"
+        },
+        {
+          "id": 798901,
+          "name": "GXDomainRenewal"
+        },
+        {
+          "id": 61746,
+          "name": "CarePlanManage"
+        },
+        {
+          "id": 798746,
+          "name": "Project"
+        },
+        {
+          "id": 8940,
+          "name": "updates"
+        },
+        {
+          "id": 798542,
+          "name": "c-justinkconstruction.com"
+        },
+        {
+          "id": 798747,
+          "name": "MMR"
+        },
+        {
+          "id": 798543,
+          "name": "c-bearkatbookkeeping.com"
+        },
+        {
+          "id": 1058,
+          "name": "ecommerce"
+        },
+        {
+          "id": 395099,
+          "name": "ReviewTaskRebeca"
+        },
+        {
+          "id": 395163,
+          "name": "ReviewTaskChristina"
+        },
+        {
+          "id": 798748,
+          "name": "MUP"
+        },
+        {
+          "id": 708895,
+          "name": "ReviewTaskJavier"
+        },
+        {
+          "id": 798915,
+          "name": "DoNOTCountryBlock"
+        },
+        {
+          "id": 799014,
+          "name": "Content"
+        },
+        {
+          "id": 602827,
+          "name": "PPC"
+        },
+        {
+          "id": 798740,
+          "name": "ReviewTaskAndressa"
+        },
+        {
+          "id": 68523,
+          "name": "CarePlanNone"
+        },
+        {
+          "id": 707374,
+          "name": "sendinvoice"
+        },
+        {
+          "id": 773421,
+          "name": "Failed Payment"
+        },
+        {
+          "id": 459038,
+          "name": "HTMLpage"
+        },
+        {
+          "id": 723233,
+          "name": "CarePlanChairman"
+        },
+        {
+          "id": 798563,
+          "name": "CarePlanCancel"
+        },
+        {
+          "id": 8256,
+          "name": "email"
+        },
+        {
+          "id": 14960,
+          "name": "Hacked-Website"
+        },
+        {
+          "id": 178671,
+          "name": "Billing-None"
+        },
+        {
+          "id": 431849,
+          "name": "Legacy"
+        },
+        {
+          "id": 722830,
+          "name": "Care Plan Chairman"
+        },
+        {
+          "id": 1075,
+          "name": "BugReport"
+        },
+        {
+          "id": 63376,
+          "name": "SupportRequested3rdParty"
+        },
+        {
+          "id": 161305,
+          "name": "Billing-Complete"
+        },
+        {
+          "id": 422793,
+          "name": "Status?"
+        },
+        {
+          "id": 716686,
+          "name": "Plugin Update"
+        },
+        {
+          "id": 11458,
+          "name": "plugins"
+        },
+        {
+          "id": 143454,
+          "name": "GoogleVoice"
+        },
+        {
+          "id": 798541,
+          "name": "c-bestechscontracting.com"
+        },
+        {
+          "id": 798735,
+          "name": "Need Call"
+        },
+        {
+          "id": 11455,
+          "name": "gravityform"
+        },
+        {
+          "id": 143073,
+          "name": "Quote Needed"
+        },
+        {
+          "id": 798540,
+          "name": "c-globalspex.com"
+        },
+        {
+          "id": 798729,
+          "name": "QA Needed"
+        },
+        {
+          "id": 10671,
+          "name": "SEO-Issue"
+        },
+        {
+          "id": 60685,
+          "name": "QAReady"
+        },
+        {
+          "id": 142539,
+          "name": "Automated Performance Check"
+        },
+        {
+          "id": 405998,
+          "name": "CloseTicket"
+        },
+        {
+          "id": 693769,
+          "name": "Urgent"
+        },
+        {
+          "id": 798539,
+          "name": "c-southernicecreamtx.com"
+        },
+        {
+          "id": 798711,
+          "name": "ReviewTaskLakshmi"
+        },
+        {
+          "id": 10274,
+          "name": "security-ssl"
+        },
+        {
+          "id": 60684,
+          "name": "QAComplete"
+        },
+        {
+          "id": 141951,
+          "name": "CH Call Back"
+        },
+        {
+          "id": 798710,
+          "name": "ReviewTaskJuliane"
+        },
+        {
+          "id": 16894,
+          "name": "Office365"
+        },
+        {
+          "id": 131732,
+          "name": "Estimate Required"
+        },
+        {
+          "id": 773126,
+          "name": "Check Tomorrow"
+        },
+        {
+          "id": 798684,
+          "name": "KnownHost"
+        },
+        {
+          "id": 16025,
+          "name": "upgrade"
+        }
+      ]
     },
     "customfields.json": {
-      "http": 401,
+      "http": 200,
       "top_keys": [
-        "_error"
+        "fields"
       ],
-      "error": "{\"errors\":[{\"id\":\"ccd59383-ebfe-4732-9907-b1dbcfb912ae\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+      "collection_key": "fields",
+      "sample_keys": [
+        "id",
+        "agentLabel",
+        "customerLabel",
+        "description",
+        "defaultValue",
+        "placeholder",
+        "displayOrder",
+        "kind",
+        "customerRequired",
+        "agentRequired",
+        "addToNewInboxes",
+        "options",
+        "apps",
+        "inboxes",
+        "locked",
+        "enabled",
+        "data"
+      ],
+      "items": [
+        {
+          "id": 35
+        },
+        {
+          "id": 266
+        }
+      ]
     }
   },
   "tickets": {
     "plain": {
-      "http": 401,
+      "http": 200,
       "params": {
         "pageSize": 5
       },
       "top_keys": [
-        "_error"
+        "tickets",
+        "page",
+        "maxPages",
+        "count"
       ],
-      "error": "{\"errors\":[{\"id\":\"b8e9d2d4-4fe4-4332-bde3-7365313c3409\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+      "count_returned": 5,
+      "ticket_keys": [
+        "customer",
+        "responseTimes",
+        "company",
+        "id",
+        "assignedTo",
+        "customFields",
+        "happinessRating",
+        "hasAttachments",
+        "inboxId",
+        "mergedToId",
+        "reviewStatus",
+        "preview",
+        "priorityId",
+        "priorityColor",
+        "priority",
+        "source",
+        "spam_score",
+        "status",
+        "subject",
+        "tags",
+        "type",
+        "businesshoursId",
+        "readonly",
+        "isRead",
+        "numThreads",
+        "numActiveTasks",
+        "numCompletedTasks",
+        "createdAt",
+        "updatedAt",
+        "deletedAt",
+        "deletedByUserId"
+      ],
+      "samples": [
+        {
+          "customer": {
+            "id": 366693,
+            "email": "<str len 24>",
+            "firstName": "<str len 6>",
+            "lastName": "<str len 5>",
+            "avatarURL": "<str len 65>",
+            "type": "<str len 0>"
+          },
+          "responseTimes": {
+            "averageResponseTime": 0,
+            "firstResponseTime": 0,
+            "responseCount": 0,
+            "resolutionTime": 66
+          },
+          "company": null,
+          "id": 89577101,
+          "assignedTo": null,
+          "customFields": null,
+          "happinessRating": null,
+          "hasAttachments": false,
+          "inboxId": 699,
+          "mergedToId": 0,
+          "reviewStatus": "<str len 0>",
+          "preview": "<str len 255>",
+          "priorityId": null,
+          "priorityColor": "<str len 0>",
+          "priority": "<str len 0>",
+          "source": "<str len 5>",
+          "spam_score": -2,
+          "status": "<str len 6>",
+          "subject": "<str len 27>",
+          "tags": null,
+          "type": "<str len 8>",
+          "businesshoursId": 19,
+          "readonly": true,
+          "isRead": false,
+          "numThreads": 2,
+          "numActiveTasks": 0,
+          "numCompletedTasks": 0,
+          "createdAt": "2024-08-08T02:29:18Z",
+          "updatedAt": "2024-08-08T14:06:02Z",
+          "deletedAt": {
+            "Time": "0001-01-01T00:00:00Z",
+            "Valid": false
+          },
+          "deletedByUserId": null
+        },
+        {
+          "customer": {
+            "id": 1172141,
+            "email": "<str len 17>",
+            "firstName": "<str len 8>",
+            "lastName": "<str len 0>",
+            "avatarURL": "<str len 0>",
+            "type": "<str len 0>"
+          },
+          "responseTimes": {
+            "averageResponseTime": 0,
+            "firstResponseTime": 0,
+            "responseCount": 0,
+            "resolutionTime": 75
+          },
+          "company": null,
+          "id": 90190354,
+          "assignedTo": null,
+          "customFields": null,
+          "happinessRating": null,
+          "hasAttachments": false,
+          "inboxId": 699,
+          "mergedToId": 0,
+          "reviewStatus": "<str len 0>",
+          "preview": "<str len 255>",
+          "priorityId": null,
+          "priorityColor": "<str len 0>",
+          "priority": "<str len 0>",
+          "source": "<str len 5>",
+          "spam_score": 0,
+          "status": "<str len 6>",
+          "subject": "<str len 18>",
+          "tags": null,
+          "type": "<str len 7>",
+          "businesshoursId": 19,
+          "readonly": true,
+          "isRead": false,
+          "numThreads": 1,
+          "numActiveTasks": 1,
+          "numCompletedTasks": 0,
+          "createdAt": "2026-02-02T13:09:46Z",
+          "updatedAt": "2026-02-02T15:15:55Z",
+          "deletedAt": {
+            "Time": "0001-01-01T00:00:00Z",
+            "Valid": false
+          },
+          "deletedByUserId": null
+        },
+        {
+          "customer": {
+            "id": 611336,
+            "email": "<str len 20>",
+            "firstName": "<str len 5>",
+            "lastName": "<str len 9>",
+            "avatarURL": "<str len 0>",
+            "type": "<str len 0>"
+          },
+          "responseTimes": {
+            "averageResponseTime": 4,
+            "firstResponseTime": 8,
+            "responseCount": 2,
+            "resolutionTime": 1661
+          },
+          "company": {
+            "id": 598,
+            "name": "<str len 17>",
+            "email": "<str len 0>",
+            "details": "<str len 0>",
+            "industry": "<str len 0>",
+            "website": "<str len 0>",
+            "avatarPath": "<str len 0>",
+            "permission": "<str len 3>",
+            "kind": "<str len 7>",
+            "customersCount": 8,
+            "domains": null,
+            "domainsRel": null,
+            "socialLinks": null,
+            "address": null,
+            "phones": null,
+            "createdAt": "2019-03-21T19:03:02Z",
+            "updatedAt": "2020-10-19T20:26:05Z",
+            "createdBy_users_id": 116205,
+            "updatedBy_users_id": 999999999
+          },
+          "id": 90185158,
+          "assignedTo": {
+            "id": 606138,
+            "email": "<str len 21>",
+            "firstName": "<str len 6>",
+            "lastName": "<str len 4>",
+            "avatarURL": "<str len 0>",
+            "type": "<str len 0>",
+            "notes": "<str len 0>",
+            "gender": "<str len 0>",
+            "state": "<str len 8>"
+          },
+          "customFields": null,
+          "happinessRating": null,
+          "hasAttachments": true,
+          "inboxId": 699,
+          "mergedToId": 0,
+          "reviewStatus": "<str len 0>",
+          "preview": "<str len 255>",
+          "priorityId": null,
+          "priorityColor": "<str len 0>",
+          "priority": "<str len 0>",
+          "source": "<str len 5>",
+          "spam_score": 0,
+          "status": "<str len 6>",
+          "subject": "<str len 27>",
+          "tags": {
+            "_list_len": 1,
+            "first": {
+              "id": 61746,
+              "name": "<str len 14>",
+              "color": "<str len 4>",
+              "createdBy_users_id": 0,
+              "updatedBy_users_id": 0,
+              "updatedAt": "0001-01-01T00:00:00Z",
+              "createdAt": "0001-01-01T00:00:00Z",
+              "ticketID": 90185158,
+              "ticketCount": 0,
+              "lastUpdated": null
+            }
+          },
+          "type": "<str len 7>",
+          "businesshoursId": 19,
+          "readonly": true,
+          "isRead": false,
+          "numThreads": 3,
+          "numActiveTasks": 2,
+          "numCompletedTasks": 0,
+          "createdAt": "2026-01-27T20:30:48Z",
+          "updatedAt": "2026-02-02T15:50:35Z",
+          "deletedAt": {
+            "Time": "0001-01-01T00:00:00Z",
+            "Valid": false
+          },
+          "deletedByUserId": null
+        }
+      ]
     },
     "newest": {
-      "http": 401,
+      "http": 200,
       "params": {
         "pageSize": 5,
         "orderBy": "createdAt",
         "orderMode": "desc"
       },
       "top_keys": [
-        "_error"
+        "tickets",
+        "page",
+        "maxPages",
+        "count"
       ],
-      "error": "{\"errors\":[{\"id\":\"23cd27db-a36a-4e6e-8ed5-80c0b8428d4e\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+      "count_returned": 5,
+      "ticket_keys": [
+        "customer",
+        "responseTimes",
+        "company",
+        "id",
+        "assignedTo",
+        "customFields",
+        "happinessRating",
+        "hasAttachments",
+        "inboxId",
+        "mergedToId",
+        "reviewStatus",
+        "preview",
+        "priorityId",
+        "priorityColor",
+        "priority",
+        "source",
+        "spam_score",
+        "status",
+        "subject",
+        "tags",
+        "type",
+        "businesshoursId",
+        "readonly",
+        "isRead",
+        "numThreads",
+        "numActiveTasks",
+        "numCompletedTasks",
+        "createdAt",
+        "updatedAt",
+        "deletedAt",
+        "deletedByUserId"
+      ],
+      "samples": [
+        {
+          "customer": {
+            "id": 366693,
+            "email": "<str len 24>",
+            "firstName": "<str len 6>",
+            "lastName": "<str len 5>",
+            "avatarURL": "<str len 65>",
+            "type": "<str len 0>"
+          },
+          "responseTimes": {
+            "averageResponseTime": 0,
+            "firstResponseTime": 0,
+            "responseCount": 0,
+            "resolutionTime": 66
+          },
+          "company": null,
+          "id": 89577101,
+          "assignedTo": null,
+          "customFields": null,
+          "happinessRating": null,
+          "hasAttachments": false,
+          "inboxId": 699,
+          "mergedToId": 0,
+          "reviewStatus": "<str len 0>",
+          "preview": "<str len 255>",
+          "priorityId": null,
+          "priorityColor": "<str len 0>",
+          "priority": "<str len 0>",
+          "source": "<str len 5>",
+          "spam_score": -2,
+          "status": "<str len 6>",
+          "subject": "<str len 27>",
+          "tags": null,
+          "type": "<str len 8>",
+          "businesshoursId": 19,
+          "readonly": true,
+          "isRead": false,
+          "numThreads": 2,
+          "numActiveTasks": 0,
+          "numCompletedTasks": 0,
+          "createdAt": "2024-08-08T02:29:18Z",
+          "updatedAt": "2024-08-08T14:06:02Z",
+          "deletedAt": {
+            "Time": "0001-01-01T00:00:00Z",
+            "Valid": false
+          },
+          "deletedByUserId": null
+        },
+        {
+          "customer": {
+            "id": 1172141,
+            "email": "<str len 17>",
+            "firstName": "<str len 8>",
+            "lastName": "<str len 0>",
+            "avatarURL": "<str len 0>",
+            "type": "<str len 0>"
+          },
+          "responseTimes": {
+            "averageResponseTime": 0,
+            "firstResponseTime": 0,
+            "responseCount": 0,
+            "resolutionTime": 75
+          },
+          "company": null,
+          "id": 90190354,
+          "assignedTo": null,
+          "customFields": null,
+          "happinessRating": null,
+          "hasAttachments": false,
+          "inboxId": 699,
+          "mergedToId": 0,
+          "reviewStatus": "<str len 0>",
+          "preview": "<str len 255>",
+          "priorityId": null,
+          "priorityColor": "<str len 0>",
+          "priority": "<str len 0>",
+          "source": "<str len 5>",
+          "spam_score": 0,
+          "status": "<str len 6>",
+          "subject": "<str len 18>",
+          "tags": null,
+          "type": "<str len 7>",
+          "businesshoursId": 19,
+          "readonly": true,
+          "isRead": false,
+          "numThreads": 1,
+          "numActiveTasks": 1,
+          "numCompletedTasks": 0,
+          "createdAt": "2026-02-02T13:09:46Z",
+          "updatedAt": "2026-02-02T15:15:55Z",
+          "deletedAt": {
+            "Time": "0001-01-01T00:00:00Z",
+            "Valid": false
+          },
+          "deletedByUserId": null
+        },
+        {
+          "customer": {
+            "id": 611336,
+            "email": "<str len 20>",
+            "firstName": "<str len 5>",
+            "lastName": "<str len 9>",
+            "avatarURL": "<str len 0>",
+            "type": "<str len 0>"
+          },
+          "responseTimes": {
+            "averageResponseTime": 4,
+            "firstResponseTime": 8,
+            "responseCount": 2,
+            "resolutionTime": 1661
+          },
+          "company": {
+            "id": 598,
+            "name": "<str len 17>",
+            "email": "<str len 0>",
+            "details": "<str len 0>",
+            "industry": "<str len 0>",
+            "website": "<str len 0>",
+            "avatarPath": "<str len 0>",
+            "permission": "<str len 3>",
+            "kind": "<str len 7>",
+            "customersCount": 8,
+            "domains": null,
+            "domainsRel": null,
+            "socialLinks": null,
+            "address": null,
+            "phones": null,
+            "createdAt": "2019-03-21T19:03:02Z",
+            "updatedAt": "2020-10-19T20:26:05Z",
+            "createdBy_users_id": 116205,
+            "updatedBy_users_id": 999999999
+          },
+          "id": 90185158,
+          "assignedTo": {
+            "id": 606138,
+            "email": "<str len 21>",
+            "firstName": "<str len 6>",
+            "lastName": "<str len 4>",
+            "avatarURL": "<str len 0>",
+            "type": "<str len 0>",
+            "notes": "<str len 0>",
+            "gender": "<str len 0>",
+            "state": "<str len 8>"
+          },
+          "customFields": null,
+          "happinessRating": null,
+          "hasAttachments": true,
+          "inboxId": 699,
+          "mergedToId": 0,
+          "reviewStatus": "<str len 0>",
+          "preview": "<str len 255>",
+          "priorityId": null,
+          "priorityColor": "<str len 0>",
+          "priority": "<str len 0>",
+          "source": "<str len 5>",
+          "spam_score": 0,
+          "status": "<str len 6>",
+          "subject": "<str len 27>",
+          "tags": {
+            "_list_len": 1,
+            "first": {
+              "id": 61746,
+              "name": "<str len 14>",
+              "color": "<str len 4>",
+              "createdBy_users_id": 0,
+              "updatedBy_users_id": 0,
+              "updatedAt": "0001-01-01T00:00:00Z",
+              "createdAt": "0001-01-01T00:00:00Z",
+              "ticketID": 90185158,
+              "ticketCount": 0,
+              "lastUpdated": null
+            }
+          },
+          "type": "<str len 7>",
+          "businesshoursId": 19,
+          "readonly": true,
+          "isRead": false,
+          "numThreads": 3,
+          "numActiveTasks": 2,
+          "numCompletedTasks": 0,
+          "createdAt": "2026-01-27T20:30:48Z",
+          "updatedAt": "2026-02-02T15:50:35Z",
+          "deletedAt": {
+            "Time": "0001-01-01T00:00:00Z",
+            "Valid": false
+          },
+          "deletedByUserId": null
+        }
+      ]
     },
     "filter_status1": {
-      "http": 401,
+      "http": 200,
       "params": {
         "pageSize": 5,
         "filter": "{\"status\": {\"$in\": [1]}}"
       },
       "top_keys": [
-        "_error"
+        "tickets",
+        "page",
+        "maxPages",
+        "count"
       ],
-      "error": "{\"errors\":[{\"id\":\"cf82f111-85b8-4718-b825-8771b47ea960\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+      "count_returned": 5,
+      "ticket_keys": [
+        "customer",
+        "responseTimes",
+        "company",
+        "id",
+        "assignedTo",
+        "customFields",
+        "happinessRating",
+        "hasAttachments",
+        "inboxId",
+        "mergedToId",
+        "reviewStatus",
+        "preview",
+        "priorityId",
+        "priorityColor",
+        "priority",
+        "source",
+        "spam_score",
+        "status",
+        "subject",
+        "tags",
+        "type",
+        "businesshoursId",
+        "readonly",
+        "isRead",
+        "numThreads",
+        "numActiveTasks",
+        "numCompletedTasks",
+        "createdAt",
+        "updatedAt",
+        "deletedAt",
+        "deletedByUserId"
+      ],
+      "samples": [
+        {
+          "customer": {
+            "id": 366693,
+            "email": "<str len 24>",
+            "firstName": "<str len 6>",
+            "lastName": "<str len 5>",
+            "avatarURL": "<str len 65>",
+            "type": "<str len 0>"
+          },
+          "responseTimes": {
+            "averageResponseTime": 0,
+            "firstResponseTime": 0,
+            "responseCount": 0,
+            "resolutionTime": 66
+          },
+          "company": null,
+          "id": 89577101,
+          "assignedTo": null,
+          "customFields": null,
+          "happinessRating": null,
+          "hasAttachments": false,
+          "inboxId": 699,
+          "mergedToId": 0,
+          "reviewStatus": "<str len 0>",
+          "preview": "<str len 255>",
+          "priorityId": null,
+          "priorityColor": "<str len 0>",
+          "priority": "<str len 0>",
+          "source": "<str len 5>",
+          "spam_score": -2,
+          "status": "<str len 6>",
+          "subject": "<str len 27>",
+          "tags": null,
+          "type": "<str len 8>",
+          "businesshoursId": 19,
+          "readonly": true,
+          "isRead": false,
+          "numThreads": 2,
+          "numActiveTasks": 0,
+          "numCompletedTasks": 0,
+          "createdAt": "2024-08-08T02:29:18Z",
+          "updatedAt": "2024-08-08T14:06:02Z",
+          "deletedAt": {
+            "Time": "0001-01-01T00:00:00Z",
+            "Valid": false
+          },
+          "deletedByUserId": null
+        },
+        {
+          "customer": {
+            "id": 1172141,
+            "email": "<str len 17>",
+            "firstName": "<str len 8>",
+            "lastName": "<str len 0>",
+            "avatarURL": "<str len 0>",
+            "type": "<str len 0>"
+          },
+          "responseTimes": {
+            "averageResponseTime": 0,
+            "firstResponseTime": 0,
+            "responseCount": 0,
+            "resolutionTime": 75
+          },
+          "company": null,
+          "id": 90190354,
+          "assignedTo": null,
+          "customFields": null,
+          "happinessRating": null,
+          "hasAttachments": false,
+          "inboxId": 699,
+          "mergedToId": 0,
+          "reviewStatus": "<str len 0>",
+          "preview": "<str len 255>",
+          "priorityId": null,
+          "priorityColor": "<str len 0>",
+          "priority": "<str len 0>",
+          "source": "<str len 5>",
+          "spam_score": 0,
+          "status": "<str len 6>",
+          "subject": "<str len 18>",
+          "tags": null,
+          "type": "<str len 7>",
+          "businesshoursId": 19,
+          "readonly": true,
+          "isRead": false,
+          "numThreads": 1,
+          "numActiveTasks": 1,
+          "numCompletedTasks": 0,
+          "createdAt": "2026-02-02T13:09:46Z",
+          "updatedAt": "2026-02-02T15:15:55Z",
+          "deletedAt": {
+            "Time": "0001-01-01T00:00:00Z",
+            "Valid": false
+          },
+          "deletedByUserId": null
+        },
+        {
+          "customer": {
+            "id": 611336,
+            "email": "<str len 20>",
+            "firstName": "<str len 5>",
+            "lastName": "<str len 9>",
+            "avatarURL": "<str len 0>",
+            "type": "<str len 0>"
+          },
+          "responseTimes": {
+            "averageResponseTime": 4,
+            "firstResponseTime": 8,
+            "responseCount": 2,
+            "resolutionTime": 1661
+          },
+          "company": {
+            "id": 598,
+            "name": "<str len 17>",
+            "email": "<str len 0>",
+            "details": "<str len 0>",
+            "industry": "<str len 0>",
+            "website": "<str len 0>",
+            "avatarPath": "<str len 0>",
+            "permission": "<str len 3>",
+            "kind": "<str len 7>",
+            "customersCount": 8,
+            "domains": null,
+            "domainsRel": null,
+            "socialLinks": null,
+            "address": null,
+            "phones": null,
+            "createdAt": "2019-03-21T19:03:02Z",
+            "updatedAt": "2020-10-19T20:26:05Z",
+            "createdBy_users_id": 116205,
+            "updatedBy_users_id": 999999999
+          },
+          "id": 90185158,
+          "assignedTo": {
+            "id": 606138,
+            "email": "<str len 21>",
+            "firstName": "<str len 6>",
+            "lastName": "<str len 4>",
+            "avatarURL": "<str len 0>",
+            "type": "<str len 0>",
+            "notes": "<str len 0>",
+            "gender": "<str len 0>",
+            "state": "<str len 8>"
+          },
+          "customFields": null,
+          "happinessRating": null,
+          "hasAttachments": true,
+          "inboxId": 699,
+          "mergedToId": 0,
+          "reviewStatus": "<str len 0>",
+          "preview": "<str len 255>",
+          "priorityId": null,
+          "priorityColor": "<str len 0>",
+          "priority": "<str len 0>",
+          "source": "<str len 5>",
+          "spam_score": 0,
+          "status": "<str len 6>",
+          "subject": "<str len 27>",
+          "tags": {
+            "_list_len": 1,
+            "first": {
+              "id": 61746,
+              "name": "<str len 14>",
+              "color": "<str len 4>",
+              "createdBy_users_id": 0,
+              "updatedBy_users_id": 0,
+              "updatedAt": "0001-01-01T00:00:00Z",
+              "createdAt": "0001-01-01T00:00:00Z",
+              "ticketID": 90185158,
+              "ticketCount": 0,
+              "lastUpdated": null
+            }
+          },
+          "type": "<str len 7>",
+          "businesshoursId": 19,
+          "readonly": true,
+          "isRead": false,
+          "numThreads": 3,
+          "numActiveTasks": 2,
+          "numCompletedTasks": 0,
+          "createdAt": "2026-01-27T20:30:48Z",
+          "updatedAt": "2026-02-02T15:50:35Z",
+          "deletedAt": {
+            "Time": "0001-01-01T00:00:00Z",
+            "Valid": false
+          },
+          "deletedByUserId": null
+        }
+      ]
     },
     "include_all": {
-      "http": 401,
+      "http": 200,
       "params": {
         "pageSize": 3,
         "orderBy": "createdAt",
@@ -100,9 +1578,392 @@
         "includes": "ticketstatuses,tickettypes,ticketsources,users,inboxes,tags,messages"
       },
       "top_keys": [
-        "_error"
+        "tickets",
+        "page",
+        "maxPages",
+        "count"
       ],
-      "error": "{\"errors\":[{\"id\":\"436c0ae2-3bf3-4224-add2-e04156fb87a8\",\"title\":\"Unauthenticated\",\"code\":\"E5\",\"detail\":\"unauthenticated\"}]}\n"
+      "count_returned": 3,
+      "ticket_keys": [
+        "customer",
+        "responseTimes",
+        "company",
+        "id",
+        "assignedTo",
+        "customFields",
+        "happinessRating",
+        "hasAttachments",
+        "inboxId",
+        "mergedToId",
+        "reviewStatus",
+        "preview",
+        "priorityId",
+        "priorityColor",
+        "priority",
+        "source",
+        "spam_score",
+        "status",
+        "subject",
+        "tags",
+        "type",
+        "businesshoursId",
+        "readonly",
+        "isRead",
+        "numThreads",
+        "numActiveTasks",
+        "numCompletedTasks",
+        "createdAt",
+        "updatedAt",
+        "deletedAt",
+        "deletedByUserId"
+      ],
+      "samples": [
+        {
+          "customer": {
+            "id": 366693,
+            "email": "<str len 24>",
+            "firstName": "<str len 6>",
+            "lastName": "<str len 5>",
+            "avatarURL": "<str len 65>",
+            "type": "<str len 0>"
+          },
+          "responseTimes": {
+            "averageResponseTime": 0,
+            "firstResponseTime": 0,
+            "responseCount": 0,
+            "resolutionTime": 66
+          },
+          "company": null,
+          "id": 89577101,
+          "assignedTo": null,
+          "customFields": null,
+          "happinessRating": null,
+          "hasAttachments": false,
+          "inboxId": 699,
+          "mergedToId": 0,
+          "reviewStatus": "<str len 0>",
+          "preview": "<str len 255>",
+          "priorityId": null,
+          "priorityColor": "<str len 0>",
+          "priority": "<str len 0>",
+          "source": "<str len 5>",
+          "spam_score": -2,
+          "status": "<str len 6>",
+          "subject": "<str len 27>",
+          "tags": null,
+          "type": "<str len 8>",
+          "businesshoursId": 19,
+          "readonly": true,
+          "isRead": false,
+          "numThreads": 2,
+          "numActiveTasks": 0,
+          "numCompletedTasks": 0,
+          "createdAt": "2024-08-08T02:29:18Z",
+          "updatedAt": "2024-08-08T14:06:02Z",
+          "deletedAt": {
+            "Time": "0001-01-01T00:00:00Z",
+            "Valid": false
+          },
+          "deletedByUserId": null
+        },
+        {
+          "customer": {
+            "id": 1172141,
+            "email": "<str len 17>",
+            "firstName": "<str len 8>",
+            "lastName": "<str len 0>",
+            "avatarURL": "<str len 0>",
+            "type": "<str len 0>"
+          },
+          "responseTimes": {
+            "averageResponseTime": 0,
+            "firstResponseTime": 0,
+            "responseCount": 0,
+            "resolutionTime": 75
+          },
+          "company": null,
+          "id": 90190354,
+          "assignedTo": null,
+          "customFields": null,
+          "happinessRating": null,
+          "hasAttachments": false,
+          "inboxId": 699,
+          "mergedToId": 0,
+          "reviewStatus": "<str len 0>",
+          "preview": "<str len 255>",
+          "priorityId": null,
+          "priorityColor": "<str len 0>",
+          "priority": "<str len 0>",
+          "source": "<str len 5>",
+          "spam_score": 0,
+          "status": "<str len 6>",
+          "subject": "<str len 18>",
+          "tags": null,
+          "type": "<str len 7>",
+          "businesshoursId": 19,
+          "readonly": true,
+          "isRead": false,
+          "numThreads": 1,
+          "numActiveTasks": 1,
+          "numCompletedTasks": 0,
+          "createdAt": "2026-02-02T13:09:46Z",
+          "updatedAt": "2026-02-02T15:15:55Z",
+          "deletedAt": {
+            "Time": "0001-01-01T00:00:00Z",
+            "Valid": false
+          },
+          "deletedByUserId": null
+        },
+        {
+          "customer": {
+            "id": 611336,
+            "email": "<str len 20>",
+            "firstName": "<str len 5>",
+            "lastName": "<str len 9>",
+            "avatarURL": "<str len 0>",
+            "type": "<str len 0>"
+          },
+          "responseTimes": {
+            "averageResponseTime": 4,
+            "firstResponseTime": 8,
+            "responseCount": 2,
+            "resolutionTime": 1661
+          },
+          "company": {
+            "id": 598,
+            "name": "<str len 17>",
+            "email": "<str len 0>",
+            "details": "<str len 0>",
+            "industry": "<str len 0>",
+            "website": "<str len 0>",
+            "avatarPath": "<str len 0>",
+            "permission": "<str len 3>",
+            "kind": "<str len 7>",
+            "customersCount": 8,
+            "domains": null,
+            "domainsRel": null,
+            "socialLinks": null,
+            "address": null,
+            "phones": null,
+            "createdAt": "2019-03-21T19:03:02Z",
+            "updatedAt": "2020-10-19T20:26:05Z",
+            "createdBy_users_id": 116205,
+            "updatedBy_users_id": 999999999
+          },
+          "id": 90185158,
+          "assignedTo": {
+            "id": 606138,
+            "email": "<str len 21>",
+            "firstName": "<str len 6>",
+            "lastName": "<str len 4>",
+            "avatarURL": "<str len 0>",
+            "type": "<str len 0>",
+            "notes": "<str len 0>",
+            "gender": "<str len 0>",
+            "state": "<str len 8>"
+          },
+          "customFields": null,
+          "happinessRating": null,
+          "hasAttachments": true,
+          "inboxId": 699,
+          "mergedToId": 0,
+          "reviewStatus": "<str len 0>",
+          "preview": "<str len 255>",
+          "priorityId": null,
+          "priorityColor": "<str len 0>",
+          "priority": "<str len 0>",
+          "source": "<str len 5>",
+          "spam_score": 0,
+          "status": "<str len 6>",
+          "subject": "<str len 27>",
+          "tags": {
+            "_list_len": 1,
+            "first": {
+              "id": 61746,
+              "name": "<str len 14>",
+              "color": "<str len 4>",
+              "createdBy_users_id": 0,
+              "updatedBy_users_id": 0,
+              "updatedAt": "0001-01-01T00:00:00Z",
+              "createdAt": "0001-01-01T00:00:00Z",
+              "ticketID": 90185158,
+              "ticketCount": 0,
+              "lastUpdated": null
+            }
+          },
+          "type": "<str len 7>",
+          "businesshoursId": 19,
+          "readonly": true,
+          "isRead": false,
+          "numThreads": 3,
+          "numActiveTasks": 2,
+          "numCompletedTasks": 0,
+          "createdAt": "2026-01-27T20:30:48Z",
+          "updatedAt": "2026-02-02T15:50:35Z",
+          "deletedAt": {
+            "Time": "0001-01-01T00:00:00Z",
+            "Valid": false
+          },
+          "deletedByUserId": null
+        }
+      ]
+    }
+  },
+  "one_ticket": {
+    "http": 200,
+    "top_keys": [
+      "ticket"
+    ],
+    "body": {
+      "ticket": {
+        "id": 89577101,
+        "assignedTo": null,
+        "BCC": {
+          "_list_len": 0,
+          "first": null
+        },
+        "CC": {
+          "_list_len": 0,
+          "first": null
+        },
+        "companyCustomers": {
+          "_list_len": 0,
+          "first": null
+        },
+        "createdByUser": null,
+        "customer": {
+          "id": 366693,
+          "timezoneId": 0,
+          "avatarURL": "<str len 65>",
+          "email": "<str len 24>",
+          "contacts": {
+            "_list_len": 1,
+            "first": {
+              "_keys": [
+                "id",
+                "value",
+                "type",
+                "isMain",
+                "createdAt"
+              ]
+            }
+          },
+          "externalId": "<str len 0>",
+          "extraData": "<str len 0>",
+          "firstName": "<str len 6>",
+          "jobTitle": "<str len 0>",
+          "language": "<str len 0>",
+          "lastName": "<str len 5>",
+          "address": "<str len 0>",
+          "mobile": "<str len 0>",
+          "notes": "<str len 0>",
+          "organization": "<str len 0>",
+          "phone": "<str len 0>",
+          "trusted": true,
+          "welcomeEmailSent": false,
+          "facebookURL": "<str len 0>",
+          "googlePlusURL": "<str len 0>",
+          "linkedinURL": "<str len 0>",
+          "twitterHandle": "<str len 0>",
+          "createdAt": "2017-12-20T19:39:04Z",
+          "createdBy_users_id": 116205,
+          "updatedAt": "2026-09-23T18:43:31Z",
+          "updatedBy_users_id": 116205,
+          "company": null,
+          "lastTicketDate": null,
+          "numTickets": 612,
+          "numVisibleTickets": 0
+        },
+        "customerContact": {
+          "id": 297914,
+          "value": "<str len 24>",
+          "type": "<str len 5>",
+          "isMain": true,
+          "createdAt": "2017-12-20T19:39:04Z"
+        },
+        "fields": {
+          "_list_len": 0,
+          "first": null
+        },
+        "externalId": 0,
+        "companies_id": {
+          "Int64": 0,
+          "Valid": false
+        },
+        "happinessRating": {
+          "optionId": 0,
+          "name": "<str len 0>",
+          "color": "<str len 0>",
+          "comment": "<str len 0>"
+        },
+        "hasAttachments": false,
+        "hasTimeLogged": false,
+        "imagesHidden": false,
+        "inboxId": 699,
+        "inboxName": "<str len 18>",
+        "isRead": false,
+        "numThreads": 2,
+        "originalRecipient": "<str len 20>",
+        "preview": "<str len 0>",
+        "priority": null,
+        "resolutionTimeMins": 66,
+        "responseTimeMins": 0,
+        "reviewStatus": null,
+        "source": "<str len 5>",
+        "spamScore": -2,
+        "state": "<str len 6>",
+        "status": "<str len 6>",
+        "subject": "<str len 27>",
+        "tags": {
+          "_list_len": 0,
+          "first": null
+        },
+        "type": "<str len 8>",
+        "businesshoursId": 19,
+        "createdAt": "2024-08-08T02:29:18Z",
+        "updatedAt": "2024-08-08T14:06:02Z",
+        "threads": {
+          "_list_len": 3,
+          "first": {
+            "_keys": [
+              "agentsNotified",
+              "attachments",
+              "bcc",
+              "body",
+              "cc",
+              "createdBy",
+              "editMethod",
+              "forwardedThreadIds",
+              "happinessRatingName",
+              "helpdocsarticleId",
+              "id",
+              "likes",
+              "newTicketAssignment",
+              "newTicketStatus",
+              "isPinned",
+              "reviewComments",
+              "s3link",
+              "taskId",
+              "textBody",
+              "to",
+              "type",
+              "deliveryStatus",
+              "deliveryReason",
+              "deliveryMethod",
+              "isDraft",
+              "reviewStatus",
+              "createdAt",
+              "createdByUserId",
+              "createdByCustomerId",
+              "createdByCustomerContactId",
+              "updatedAt",
+              "viewedByCustomerAt",
+              "mergedAt",
+              "state"
+            ]
+          }
+        }
+      }
     }
   }
 }
