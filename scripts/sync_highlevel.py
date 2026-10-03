@@ -109,6 +109,26 @@ def compute(fu_opps, onboarding_opps, log, today):
 
     leads, props, conv = bucket(lead_dates, weeks), bucket(prop_dates, weeks), bucket(conv_dates, weeks)
 
+    # Monthly buckets: last 12 calendar months, current month last.
+    months = []
+    y, m = today.year, today.month
+    for _ in range(12):
+        months.append((y, m))
+        y, m = (y, m - 1) if m > 1 else (y - 1, 12)
+    months.reverse()
+
+    def mbucket(dates):
+        counts = {k: 0 for k in months}
+        for d in dates:
+            if (d.year, d.month) in counts:
+                counts[(d.year, d.month)] += 1
+        return [counts[k] for k in months]
+
+    m_leads, m_props, m_conv = mbucket(lead_dates), mbucket(prop_dates), mbucket(conv_dates)
+
+    def msummary(series):
+        return {"this_month": series[-1], "last_month": series[-2], "last_12_months": sum(series)}
+
     def summary(series):
         return {"this_week": series[-1], "last_week": series[-2], "last_12_months": sum(series),
                 "avg_per_week_last_12_weeks": round(sum(series[-12:]) / 12, 1)}
@@ -118,6 +138,9 @@ def compute(fu_opps, onboarding_opps, log, today):
         "week_start_dates": [w.isoformat() for w in weeks],
         "leads": leads, "proposals": props, "converted": conv,
         "summary": {"leads": summary(leads), "proposals": summary(props), "converted": summary(conv)},
+        "months": [datetime.date(y, m, 1).strftime("%b '%y") for y, m in months],
+        "monthly": {"leads": m_leads, "proposals": m_props, "converted": m_conv},
+        "monthly_summary": {"leads": msummary(m_leads), "proposals": msummary(m_props), "converted": msummary(m_conv)},
     }
 
 

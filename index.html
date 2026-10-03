@@ -112,8 +112,8 @@
 
 <style>
   /* ---- Role colors. To add a role: one line here, then data-role="..." on its tab button and panel. ---- */
-  [data-role="company"]   {--role:#475569;}
-  [data-role="leadership"]{--role:#6d28d9;}
+  [data-role="company"]   {--role:#1e3a8a;}
+  [data-role="leadership"]{--role:#0284c7;}
   [data-role="pm"]        {--role:#0f766e;}
   [data-role="dev"]       {--role:#1d4ed8;}
   [data-role="design"]    {--role:#be185d;}
@@ -121,8 +121,8 @@
   [data-role="support"]   {--role:#15803d;}
   [data-role="content"]   {--role:#a16207;}  /* Content Manager (coming soon) */
   @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]) [data-role="company"]   {--role:#94a3b8;}
-    :root:not([data-theme="light"]) [data-role="leadership"]{--role:#a78bfa;}
+    :root:not([data-theme="light"]) [data-role="company"]   {--role:#7da2e8;}
+    :root:not([data-theme="light"]) [data-role="leadership"]{--role:#7dd3fc;}
     :root:not([data-theme="light"]) [data-role="pm"]        {--role:#2dd4bf;}
     :root:not([data-theme="light"]) [data-role="dev"]       {--role:#60a5fa;}
     :root:not([data-theme="light"]) [data-role="design"]    {--role:#f472b6;}
@@ -219,16 +219,16 @@
     <div class="grid" id="live-christina-sales"></div>
     <div class="section-title">Task Health <span class="source-tag">Teamwork Projects &middot; Live</span></div>
     <div class="grid" id="live-christina"></div>
-    <div class="sample-note">Leads are every FU Leads opportunity, counted the week it was created (wherever it sits today). Converted is every Onboarding opportunity, counted the week it was created. Both count each contact once. Proposals count the week an opportunity moved into the Proposal stage; HighLevel only keeps the most recent stage change, so the sync keeps its own log starting Oct 2026, and earlier proposals that already moved on can't be dated. Weeks run Monday to Sunday. Task volume is high for a CEO role, which usually means tasks land on her by default through role, team, or company assignment.</div>
+    <div class="sample-note">Leads are every FU Leads opportunity, counted the week it was created (wherever it sits today). Converted is every Onboarding opportunity, counted the week it was created. Both count each contact once. Proposals count the week an opportunity moved into the Proposal stage; HighLevel only keeps the most recent stage change, so the sync keeps its own log starting Oct 2026, and earlier proposals that already moved on can't be dated. Goals: 4 leads and 1 proposal per month; the badge reads In Progress until the month&rsquo;s goal is hit. Task volume is high for a CEO role, which usually means tasks land on her by default through role, team, or company assignment.</div>
 
     <div class="chart-card">
-      <h3>Weekly Sales Activity &mdash; Live (HighLevel)</h3>
+      <h3>Monthly Sales Activity &mdash; Live (HighLevel)</h3>
       <div class="chart-wrap"><canvas id="chart-christina-sales"></canvas></div>
     </div>
     <div class="table-scroll">
       <table class="wk nested">
-        <caption>By Week (last 12 months)</caption>
-        <thead><tr><th>Week</th><th>Leads</th><th>Proposals</th><th>Converted</th></tr></thead>
+        <caption>By Month (last 12 months)</caption>
+        <thead><tr><th>Month</th><th>Leads</th><th>Proposals</th><th>Converted</th></tr></thead>
         <tbody id="tbl-christina-sales"></tbody>
       </table>
     </div>
@@ -687,29 +687,33 @@
   }
 
   function renderSalesHistory(){
-    if(!HL || !HL.christina || rendered.sales) return;
+    if(!HL || !HL.christina || !HL.christina.months || rendered.sales) return;
     if(current!=='christina') return;
     rendered.sales = true;
-    var c = HL.christina;
-    makeLineChart('chart-christina-sales', c.weeks, [
-      ds('Leads', c.leads, '#2b4c7e'), ds('Proposals', c.proposals, '#b9860a'), ds('Converted', c.converted, '#1a9e6d'),
-      goalDs('Lead goal (3/wk)', c.weeks.length, 3)]);
-    fillTable('tbl-christina-sales', c.weeks.map(function(w,i){ return [w, c.leads[i], c.proposals[i], c.converted[i]]; }));
+    var c = HL.christina, M = c.monthly;
+    makeComboChart('chart-christina-sales', c.months,
+      [['Leads', M.leads, '#7dd3fc'], ['Proposals', M.proposals, '#fcd34d'], ['Converted', M.converted, '#86efac']],
+      [['Lead goal (4/mo)', c.months.map(function(){ return 4; }), '#0284c7', true],
+       ['Proposal goal (1/mo)', c.months.map(function(){ return 1; }), '#b9860a', true]]);
+    fillTable('tbl-christina-sales', c.months.map(function(m,i){ return [m, M.leads[i], M.proposals[i], M.converted[i]]; }));
   }
 
   function renderSalesCards(){
     var c = HL && HL.christina;
-    if(!c){ put('live-christina-sales', card('HighLevel', '&mdash;', 'No HighLevel data yet', '<span class="badge gray">Needs Data</span>')); return; }
-    var L=c.summary.leads, P=c.summary.proposals, V=c.summary.converted;
+    if(!c || !c.monthly_summary){ put('live-christina-sales', card('HighLevel', '&mdash;', 'No HighLevel data yet', '<span class="badge gray">Needs Data</span>')); return; }
+    var L=c.monthly_summary.leads, P=c.monthly_summary.proposals, V=c.monthly_summary.converted;
+    var monthBadge = function(v, goal){
+      return v>=goal ? '<span class="badge green">On Track</span>' : '<span class="badge yellow">In Progress</span>';
+    };
     put('live-christina-sales',
-      card('Leads This Week', num(L.this_week),
-        'Goal: 3 per week &middot; Last full week: '+num(L.last_week)+' &middot; Last 12 months: '+num(L.last_12_months),
-        badge(L.last_week>=3)) +
-      card('Proposals This Week', num(P.this_week),
-        'Last full week: '+num(P.last_week)+' &middot; Last 12 months: '+num(P.last_12_months),
-        '<span class="badge gray">Tracking</span>') +
-      card('Converted This Week', num(V.this_week),
-        'Onboarding &middot; Last full week: '+num(V.last_week)+' &middot; Last 12 months: '+num(V.last_12_months),
+      card('Leads This Month', num(L.this_month),
+        'Goal: 4 per month &middot; Last month: '+num(L.last_month)+' &middot; Last 12 months: '+num(L.last_12_months),
+        monthBadge(L.this_month, 4)) +
+      card('Proposals This Month', num(P.this_month),
+        'Goal: 1 per month &middot; Last month: '+num(P.last_month)+' &middot; Last 12 months: '+num(P.last_12_months),
+        monthBadge(P.this_month, 1)) +
+      card('Converted This Month', num(V.this_month),
+        'Onboarding &middot; Last month: '+num(V.last_month)+' &middot; Last 12 months: '+num(V.last_12_months),
         '<span class="badge gray">Tracking</span>'));
     if(HL.errors && HL.errors.length){
       var e = document.getElementById('banner-err');
