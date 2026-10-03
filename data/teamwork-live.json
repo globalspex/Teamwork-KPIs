@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-02T19:10:02.412422-05:00",
+  "generated_at": "2026-10-02T19:17:40.336691-05:00",
   "timezone": "America/Chicago",
   "company": {
     "total_open_tasks": 5480,
@@ -57,7 +57,5 @@
       "due_today": 14
     }
   },
-  "errors": [
-    "Could not find assignee data on any task using the known field shapes. Top-level keys on a sample task: ['accumulatedEstimatedMinutes', 'assigneeCompanies', 'assigneeCompanyIds', 'assigneeJobRoleIds', 'assigneeJobRoles', 'assigneeTeamIds', 'assigneeTeams', 'assigneeUserIds', 'assigneeUsers', 'assignees', 'attachments', 'capacities', 'changeFollowers', 'commentFollowers', 'completeFollowers', 'createdAt', 'createdBy', 'createdByUserId', 'crmDealIds', 'dateUpdated', 'decimalDisplayOrder', 'deletedAt', 'deletedBy', 'description', 'descriptionContentType', 'displayOrder', 'dueDate', 'dueDateBase', 'dueDateFromMilestone', 'dueDateOffset', 'estimateMinutes', 'hasDeskTickets', 'id', 'isArchived', 'isPrivate', 'lockdown', 'name', 'notify', 'parentTask', 'parentTaskId', 'priority', 'progress', 'proofs', 'sequence', 'sequenceId', 'startDate', 'startDateOffset', 'status', 'tagIds', 'tags', 'tasklist', 'tasklistId', 'updatedAt', 'updatedBy', 'userPermissions', 'workflowStages']. Per-person counts are likely all 0 -- share this message so the field name can be corrected."
-  ]
+  "errors": []
 }
