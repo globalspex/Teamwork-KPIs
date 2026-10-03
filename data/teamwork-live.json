@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-02T21:49:07.823191-05:00",
+  "generated_at": "2026-10-02T21:54:57.538561-05:00",
   "timezone": "America/Chicago",
   "company": {
     "total_open_tasks": 5387,
@@ -14,7 +14,10 @@
       "overdue_tasks": 523,
       "due_today": 16,
       "total_incomplete_milestones": 4,
-      "late_milestones": 1
+      "late_milestones": 1,
+      "active_projects_owned": 5,
+      "project_tasks_total": 1465,
+      "project_tasks_late": 202
     },
     "javier": {
       "name": "Javier L\u00f3pez",
@@ -22,7 +25,10 @@
       "overdue_tasks": 46,
       "due_today": 31,
       "total_incomplete_milestones": 12,
-      "late_milestones": 2
+      "late_milestones": 2,
+      "active_projects_owned": 18,
+      "project_tasks_total": 2574,
+      "project_tasks_late": 606
     },
     "jennifer": {
       "name": "Jennifer McNinch",
@@ -30,7 +36,10 @@
       "overdue_tasks": 9,
       "due_today": 2,
       "total_incomplete_milestones": 22,
-      "late_milestones": 9
+      "late_milestones": 9,
+      "active_projects_owned": 3,
+      "project_tasks_total": 921,
+      "project_tasks_late": 45
     },
     "rebecaq": {
       "name": "Rebeca Queiroz",
@@ -38,7 +47,10 @@
       "overdue_tasks": 99,
       "due_today": 14,
       "total_incomplete_milestones": 0,
-      "late_milestones": 0
+      "late_milestones": 0,
+      "active_projects_owned": 5,
+      "project_tasks_total": 153,
+      "project_tasks_late": 61
     },
     "juliane": {
       "name": "Juliane Roitmann",
@@ -46,7 +58,10 @@
       "overdue_tasks": 93,
       "due_today": 5,
       "total_incomplete_milestones": 0,
-      "late_milestones": 0
+      "late_milestones": 0,
+      "active_projects_owned": 0,
+      "project_tasks_total": 0,
+      "project_tasks_late": 0
     },
     "rebecam": {
       "name": "Rebeca Mesquita",
@@ -54,7 +69,10 @@
       "overdue_tasks": 7,
       "due_today": 0,
       "total_incomplete_milestones": 0,
-      "late_milestones": 0
+      "late_milestones": 0,
+      "active_projects_owned": 0,
+      "project_tasks_total": 0,
+      "project_tasks_late": 0
     },
     "aura": {
       "name": "Aura Celorico",
@@ -62,7 +80,10 @@
       "overdue_tasks": 31,
       "due_today": 11,
       "total_incomplete_milestones": 0,
-      "late_milestones": 0
+      "late_milestones": 0,
+      "active_projects_owned": 0,
+      "project_tasks_total": 0,
+      "project_tasks_late": 0
     },
     "andressa": {
       "name": "Andressa Alves",
@@ -70,8 +91,200 @@
       "overdue_tasks": 37,
       "due_today": 14,
       "total_incomplete_milestones": 0,
-      "late_milestones": 0
+      "late_milestones": 0,
+      "active_projects_owned": 3,
+      "project_tasks_total": 274,
+      "project_tasks_late": 99
     }
   },
-  "errors": []
+  "errors": [],
+  "debug": {
+    "sample_project": {
+      "id": 510738,
+      "name": "Allegheny Disposal",
+      "description": "Semi-Custom website development",
+      "projectNumber": null,
+      "type": "normal",
+      "status": "active",
+      "subStatus": "late",
+      "company": {
+        "id": 200073,
+        "type": "companies"
+      },
+      "tags": [
+        {
+          "id": 23809,
+          "type": "tags"
+        },
+        {
+          "id": 18001,
+          "type": "tags"
+        },
+        {
+          "id": 50665,
+          "type": "tags"
+        },
+        {
+          "id": 17998,
+          "type": "tags"
+        }
+      ],
+      "startAt": "2007-10-12T00:00:00Z",
+      "endAt": "2026-04-21T00:00:00Z",
+      "category": {
+        "id": 12041,
+        "type": "projectCategories"
+      },
+      "ownedBy": 606138,
+      "update": {
+        "id": 76874,
+        "type": "projectUpdates"
+      },
+      "budgetCount": 1,
+      "timeBudget": null,
+      "financialBudget": {
+        "id": 52156,
+        "type": "projectBudgets"
+      },
+      "createdBy": 273488,
+      "createdAt": "2025-09-17T14:38:31Z",
+      "updatedAt": "2026-09-17T15:29:45Z",
+      "updatedBy": 273488,
+      "completedAt": null,
+      "completedBy": null,
+      "deletedAt": null,
+      "deletedBy": null,
+      "archivedAt": null,
+      "archivedBy": null,
+      "defaultPrivacy": "open",
+      "activePages": {
+        "billing": true,
+        "forms": true,
+        "comments": true,
+        "files": true,
+        "links": true,
+        "messages": true,
+        "milestones": true,
+        "notebooks": true,
+        "riskRegister": true,
+        "tasks": true,
+        "list": true,
+        "board": true,
+        "gantt": true,
+        "table": true,
+        "time": true,
+        "finance": true,
+        "proofs": true,
+        "tickets": true,
+        "schedule": false,
+        "timeline": false
+      },
+      "directFileUploadsEnabled": true,
+      "harvestTimersEnabled": false,
+      "integrations": {
+        "oneDriveBusiness": {
+          "account": "",
+          "enabled": false,
+          "folder": "root",
+          "folderName": "root"
+        },
+        "sharepoint": {
+          "account": "",
+          "enabled": false,
+          "folder": "root",
+          "folderName": "root"
+        },
+        "xero": {
+          "baseCurrency": "",
+          "connected": false,
+          "countryCode": "",
+          "enabled": false,
+          "organisation": ""
+        },
+        "googleDrive": {
+          "access": "",
+          "enabled": false,
+          "folder": "",
+          "folderName": ""
+        }
+      },
+      "isOnBoardingProject": false,
+      "isSampleProject": false,
+      "logo": "",
+      "logoIcon": null,
+      "logoColor": null,
+      "notifyEveryone": false,
+      "allowNotifyAnyone": false,
+      "notifyCommentIncludeCreator": true,
+      "notifyTaskAssignee": false,
+      "overviewStartPage": "default",
+      "privacyEnabled": false,
+      "projectOwner": {
+        "id": 606138,
+        "type": "users"
+      },
+      "replyByEmailEnabled": true,
+      "showAnnouncement": true,
+      "announcement": "**LIVE DATE:**11/20/2025\n**Website:** http://www.alleghenydisposal.com/\n**Staging:** https://gxtesting.com/alleghenydisposal/\n**Notion dashboard:** https://www.notion.so/globalspex/Allegheny-Disposal-LLC-271405fb6782808fb769f84749693ca6?source=copy_link\n**Website Outline:** https://docs.google.com/spreadsheets/d/13ykv4mL44ydEb-EqN1F75zCNh2rbOKcsbps3cDhdahs/edit?gid=1991040175#gid=1991040175\n**Tickets** https://globalspex.teamwork.com/desk/tickets/90094634/messages\n**Markup:** https://app.markup.io/invite/accept/E2kd_2MV\n\n**Business Summary:**\n\n\n**Services:**\nWebsite\n\n**Care Plan:**\nTech",
+      "skipWeekends": false,
+      "startPage": "table",
+      "tasksStartPage": "default",
+      "customfieldValues": [
+        {
+          "id": 124257,
+          "type": "customfieldProjects"
+        },
+        {
+          "id": 124258,
+          "type": "customfieldProjects"
+        }
+      ],
+      "portfolioCards": [
+        {
+          "id": 16160,
+          "type": "portfolioCards"
+        }
+      ],
+      "isBillable": false,
+      "timelogRequiresTask": false,
+      "workflows": [
+        {
+          "id": 21735,
+          "type": "workflows"
+        }
+      ],
+      "customFieldValueIds": [
+        124257,
+        124258
+      ],
+      "customFieldValues": [
+        {
+          "id": 124257,
+          "type": "customfieldProjects"
+        },
+        {
+          "id": 124258,
+          "type": "customfieldProjects"
+        }
+      ],
+      "companyId": 200073,
+      "tagIds": [
+        23809,
+        18001,
+        50665,
+        17998
+      ],
+      "workflowIds": [
+        21735
+      ],
+      "startDate": "2007-10-12T00:00:00Z",
+      "endDate": "2026-04-21T00:00:00Z",
+      "categoryId": 12041,
+      "ownerId": 606138,
+      "updateId": 76874,
+      "timeBudgetId": null,
+      "financialBudgetId": 52156,
+      "projectOwnerId": 606138
+    }
+  }
 }
