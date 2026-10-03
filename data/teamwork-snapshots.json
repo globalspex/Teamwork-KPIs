@@ -13,8 +13,8 @@
   "open": 5762,
   "overdue": 1130,
   "overdue_pct": 19.6,
-  "milestones_open": null,
-  "milestones_late": null,
-  "milestones_late_pct": null
+  "milestones_open": 33,
+  "milestones_late": 11,
+  "milestones_late_pct": 33.3
  }
 ]

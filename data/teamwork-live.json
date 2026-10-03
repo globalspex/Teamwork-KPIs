@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-03T13:49:49.115879-05:00",
+  "generated_at": "2026-10-03T13:57:04.511525-05:00",
   "timezone": "America/Chicago",
   "company": {
     "total_open_tasks": 5762,
@@ -7,7 +7,10 @@
     "due_today": 0,
     "due_this_week": 685,
     "week_ends": "2026-10-09",
-    "completed_today": 22
+    "completed_today": 22,
+    "milestones_open": 33,
+    "milestones_late": 11,
+    "milestones_late_pct": 33.3
   },
   "people": {
     "christina": {
@@ -107,5 +110,25 @@
       "project_tasks_late": 131
     }
   },
-  "errors": []
+  "errors": [],
+  "snapshots": [
+    {
+      "date": "2026-10-02",
+      "open": 5391,
+      "overdue": 1013,
+      "overdue_pct": 18.8,
+      "milestones_open": null,
+      "milestones_late": null,
+      "milestones_late_pct": null
+    },
+    {
+      "date": "2026-10-03",
+      "open": 5762,
+      "overdue": 1130,
+      "overdue_pct": 19.6,
+      "milestones_open": 33,
+      "milestones_late": 11,
+      "milestones_late_pct": 33.3
+    }
+  ]
 }
