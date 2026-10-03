@@ -608,6 +608,26 @@ def main():
 
         # ---- Milestones (same direct + role/team/company matching as tasks) ----
         all_milestones = fetch_incomplete_milestones()
+
+        # Company-wide milestone health, limited to ACTIVE projects.
+        def _milestone_project_id(m):
+            pid = m.get("projectId")
+            if pid is None and isinstance(m.get("project"), dict):
+                pid = m["project"].get("id")
+            try:
+                return int(pid) if pid is not None else None
+            except (TypeError, ValueError):
+                return None
+        active_ms = [m for m in all_milestones if _milestone_project_id(m) in active_project_ids]
+        if not active_ms and all_milestones:
+            # Project field not found on milestones: fall back to all incomplete, and say so.
+            active_ms = all_milestones
+            result["errors"].append("Milestones: couldn't read project IDs; company milestone counts include all projects.")
+        ms_late = sum(1 for m in active_ms if (m.get("deadline") or "")[:10] and m["deadline"][:10] < today_str)
+        result["company"]["milestones_open"] = len(active_ms)
+        result["company"]["milestones_late"] = ms_late
+        result["company"]["milestones_late_pct"] = round(ms_late / len(active_ms) * 100, 1) if active_ms else None
+
         milestones_by_assignee = {}
         for m in all_milestones:
             direct_ids = milestone_assignee_ids(m)
@@ -672,6 +692,26 @@ def main():
         msg = f"task pull/classification failed: {e}"
         print(f"ERROR: {msg}", file=sys.stderr)
         result["errors"].append(msg)
+
+    # Daily snapshot log: Teamwork only reports CURRENT state, so company
+    # totals are saved once per day to build trend charts going forward.
+    snap_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "teamwork-snapshots.json"))
+    try:
+        snaps = json.load(open(snap_path)) if os.path.exists(snap_path) else []
+    except Exception:
+        snaps = []
+    c = result.get("company") or {}
+    if c.get("total_open_tasks"):
+        day = now.strftime("%Y-%m-%d")
+        snaps = [x for x in snaps if x["date"] != day] + [{
+            "date": day, "open": c["total_open_tasks"], "overdue": c["overdue_tasks"],
+            "overdue_pct": round(c["overdue_tasks"] / c["total_open_tasks"] * 100, 1),
+            "milestones_open": c.get("milestones_open"), "milestones_late": c.get("milestones_late"),
+            "milestones_late_pct": c.get("milestones_late_pct")}]
+        snaps = sorted(snaps, key=lambda x: x["date"])[-400:]
+        with open(snap_path, "w") as f:
+            json.dump(snaps, f, indent=1)
+    result["snapshots"] = snaps
 
     out_path = os.path.join(os.path.dirname(__file__), "..", "data", "teamwork-live.json")
     out_path = os.path.abspath(out_path)

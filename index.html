@@ -186,19 +186,30 @@
     <div class="section-title">Task Health <span class="source-tag">Teamwork Projects &middot; Live</span></div>
     <div class="grid" id="live-company"></div>
 
-    <div class="section-title">Milestones <span class="source-tag">Teamwork Projects &middot; Manual</span></div>
-    <div class="grid">
-      <div class="card"><div class="label">Open Milestones</div><div class="value">14</div>
-        <div class="goal">Not yet completed, across all projects</div>
-        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
-      <div class="card"><div class="label">Overdue Milestones</div><div class="value">9</div>
-        <div class="goal">64% of open milestones were late &middot; Goal: 90% on time</div>
-        <span class="badge red">Off Track</span>
-        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
-    </div>
+    <div class="section-title">Milestones <span class="source-tag">Teamwork Projects &middot; Live</span></div>
+    <div class="grid" id="live-company-ms"></div>
 
     <div class="section-title">Support / Desk <span class="source-tag">Teamwork Desk &middot; Live</span></div>
     <div class="grid" id="live-desk-company"></div>
+
+    <div class="section-title">Trends</div>
+    <div class="chart-card">
+      <h3>Milestones &mdash; Open vs Late (active projects)</h3>
+      <div class="chart-wrap"><canvas id="chart-co-ms"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Overdue Tasks &mdash; Count &amp; Late Rate</h3>
+      <div class="chart-wrap"><canvas id="chart-co-overdue"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Support Volume &amp; Responsiveness (weekly)</h3>
+      <div class="chart-wrap"><canvas id="chart-co-desk-weekly"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Support Backlog (daily)</h3>
+      <div class="chart-wrap" id="wrap-co-backlog"><canvas id="chart-co-backlog"></canvas></div>
+    </div>
+    <div class="sample-note">Milestones, overdue tasks, and the support backlog are saved once a day, since Teamwork only reports current status. These charts started Oct 2&ndash;3, 2026 and add a point every morning. Support volume counts real customer tickets (automated senders excluded); responsiveness is the share that got a first reply within 1 business day.</div>
   </div>
 
   <!-- ===== Christina ===== -->
@@ -518,6 +529,12 @@
       card('Completed Today', num(c.completed_today), 'Tasks marked complete since midnight') +
       card('Total Open Tasks', num(c.total_open_tasks), 'Active, uncompleted tasks across all projects'));
 
+    var mo = c.milestones_open, ml = c.milestones_late, mOn = (mo ? Math.round((mo-ml)/mo*1000)/10 : null);
+    put('live-company-ms',
+      card('Open Milestones', num(mo), 'Not yet completed, across active projects') +
+      card('Late Milestones', num(ml)+(c.milestones_late_pct===null||c.milestones_late_pct===undefined?'':' <span class="value-pct">'+c.milestones_late_pct+'%</span>'),
+        (mOn===null?'&mdash;':mOn+'% on time')+' &middot; Goal: 90% on time', badge(mOn===null?null:mOn>=90)));
+
     var empty = {};
     put('live-christina', taskHealthCards(P.christina||empty, 15));
     put('live-andressa',  taskHealthCards(P.andressa||empty, 15));
@@ -567,6 +584,57 @@
         elements:{ point:{radius:2}, line:{tension:0.25} } }
     });
   }
+  function makeComboChart(id, labels, bars, lines, pctAxis){
+    var el = document.getElementById(id);
+    if(!el || charts[id] || typeof Chart==='undefined') return;
+    var sets = bars.map(function(b){ return {type:'bar', label:b[0], data:b[1], backgroundColor:b[2], borderRadius:4, yAxisID:'y', order:2}; })
+      .concat(lines.map(function(l){ return {type:'line', label:l[0], data:l[1], borderColor:l[2], backgroundColor:'transparent',
+        borderDash:l[3]?[5,4]:undefined, pointRadius:l[3]?0:3, yAxisID:pctAxis?'y1':'y', order:1}; }));
+    var scales = { y:{beginAtZero:true, ticks:{font:{size:11}}}, x:{ticks:{font:{size:10}}} };
+    if(pctAxis) scales.y1 = {position:'right', beginAtZero:true, suggestedMax:pctAxis, grid:{drawOnChartArea:false},
+      ticks:{font:{size:11}, callback:function(v){ return v+'%'; }}};
+    charts[id] = new Chart(el, { data:{labels:labels, datasets:sets},
+      options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index', intersect:false},
+        plugins:{ legend:{ position:'bottom', labels:{boxWidth:12, font:{size:11}} } }, scales:scales,
+        elements:{ line:{tension:0.25} } } });
+  }
+  function dayLabel(iso){ var p=iso.split('-'); return (+p[1])+'/'+(+p[2]); }
+  function renderCompanyCharts(){
+    if(current!=='company') return;
+    if(LIVE && LIVE.snapshots && !rendered.coTw){
+      rendered.coTw = true;
+      var S = LIVE.snapshots, L = S.map(function(x){ return dayLabel(x.date); });
+      var M = S.filter(function(x){ return x.milestones_open!==null && x.milestones_open!==undefined; });
+      makeComboChart('chart-co-ms', M.map(function(x){ return dayLabel(x.date); }),
+        [['Open milestones', M.map(function(x){ return x.milestones_open; }), '#94a3b8'],
+         ['Late milestones', M.map(function(x){ return x.milestones_late; }), '#c0392b']],
+        [['Late %', M.map(function(x){ return x.milestones_late_pct; }), '#6d28d9'],
+         ['Goal (10% late)', M.map(function(){ return 10; }), '#9aa4b2', true]], 100);
+      makeComboChart('chart-co-overdue', L,
+        [['Overdue tasks', S.map(function(x){ return x.overdue; }), '#e8a39b']],
+        [['Late rate %', S.map(function(x){ return x.overdue_pct; }), '#c0392b'],
+         ['Goal (15%)', S.map(function(){ return 15; }), '#9aa4b2', true]], 40);
+    }
+    if(DESK && DESK.weeks && !rendered.coDesk){
+      rendered.coDesk = true;
+      var W = DESK.weeks;
+      makeComboChart('chart-co-desk-weekly', W.map(function(x){ return x.week; }),
+        [['Real tickets', W.map(function(x){ return x.tickets; }), '#86b7a0']],
+        [['First reply within 1 day %', W.map(function(x){ return x.followup_1day.pct; }), '#15803d']], 100);
+      var B = DESK.snapshots || [];
+      if(B.length < 2){
+        var w = document.getElementById('wrap-co-backlog'); w.style.height='auto';
+        w.innerHTML = '<div class="empty-state">Tracking started '+(B[0]?B[0].date:'today')+' ('+(B[0]?B[0].open+' open, '+B[0].waiting_stale+' waiting 2+ days':'no data yet')+'). This chart fills in one point per day.</div>';
+      } else {
+        makeLineChart('chart-co-backlog', B.map(function(x){ return dayLabel(x.date); }), [
+          ds('Open', B.map(function(x){ return x.open; }), '#475569'),
+          ds('Waiting on customer', B.map(function(x){ return x.waiting; }), '#b9860a'),
+          ds('Waiting 2+ days', B.map(function(x){ return x.waiting_stale; }), '#c0392b'),
+          ds('On hold', B.map(function(x){ return x.on_hold; }), '#2b4c7e')]);
+      }
+    }
+  }
+
   function ds(label, data, color){ return {label:label, data:data, borderColor:color, backgroundColor:'transparent'}; }
   function goalDs(label, len, v){ return {label:label, data:goalLine(len,v), borderColor:'#9aa4b2', borderDash:[5,4], pointRadius:0}; }
 
@@ -701,19 +769,19 @@
     btn.classList.add('active');
     current = btn.dataset.tab;
     document.getElementById('panel-' + current).classList.add('active');
-    if(current !== 'company') renderHistory(current);
+    if(current !== 'company') renderHistory(current); else renderCompanyCharts();
     if(current === 'christina') renderSalesHistory();
     if(current === 'andressa') renderDeskCharts();
   });
 
   // ---------- load ----------
-  getJSON('teamwork-live.json').then(function(j){ LIVE = j; renderLive(); }).catch(function(err){
+  getJSON('teamwork-live.json').then(function(j){ LIVE = j; renderLive(); renderCompanyCharts(); }).catch(function(err){
     var e = document.getElementById('banner-err');
     e.textContent = 'Could not load live data (' + err.message + '). Live cards are blank until the next successful load.';
     e.classList.add('show');
     document.getElementById('meta').innerHTML = 'GlobalSpex Internet Marketing &middot; Live data unavailable';
   });
-  getJSON('desk-live.json').then(function(j){ DESK = j; renderDesk(); renderDeskCharts(); }).catch(function(){ renderDesk(); });
+  getJSON('desk-live.json').then(function(j){ DESK = j; renderDesk(); renderDeskCharts(); renderCompanyCharts(); }).catch(function(){ renderDesk(); });
   getJSON('highlevel-live.json').then(function(j){ HL = j; renderSalesCards(); renderSalesHistory(); }).catch(function(){ renderSalesCards(); });
   getJSON('weekly-history.json').then(function(j){ WK = j; if(current!=='company') renderHistory(current); }).catch(function(){
     document.querySelectorAll('.chart-wrap').forEach(function(w){ w.innerHTML = '<div class="empty-state">Weekly history couldn\'t be loaded.</div>'; });
