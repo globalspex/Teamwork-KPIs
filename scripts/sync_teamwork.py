@@ -454,6 +454,14 @@ def fetch_all_open_tasks(active_project_ids, stage_lookup):
     for t in kept[:5]:
         print(json.dumps({"id": t.get("id"), "name": t.get("name"), "customFields": t.get("customFields")}, indent=2))
     print(f"DIAGNOSTIC -- does the task dict even have a 'customFields' key at all? {'customFields' in kept[0] if kept else 'N/A'}")
+    print("DIAGNOSTIC -- plain 'status' field value from up to 10 sample tasks (never actually checked this before -- it's been assumed to be the basic new/completed system state, not verified):")
+    for t in kept[:10]:
+        print(f"  task {t.get('id')} ({t.get('name')}): status={t.get('status')!r}")
+    all_status_values = {}
+    for t in kept:
+        s = t.get("status")
+        all_status_values[s] = all_status_values.get(s, 0) + 1
+    print(f"DIAGNOSTIC -- full breakdown of plain 'status' field across all {len(kept)} tasks: {all_status_values}")
     print(f"DIAGNOSTIC -- all top-level keys on a sample task now (with customFields include): {sorted(kept[0].keys()) if kept else 'N/A'}")
 
     stage_counts = {}
