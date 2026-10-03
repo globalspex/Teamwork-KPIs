@@ -128,8 +128,13 @@ def task_assignee_ids(task):
 
 def fetch_all_open_tasks():
     """
-    Fetches every incomplete task company-wide, paginating until exhausted.
-    Includes assignee data so per-person filtering can be done client-side.
+    Fetches every incomplete task company-wide, paginating until exhausted,
+    then excludes soft-deleted tasks and tasks in archived projects -- the
+    raw API includes these even with completed=false, but Teamwork's own UI
+    hides them from a normal "open tasks" view, which is what we're trying
+    to match. (Found via a real discrepancy: the API said 327/44 for a
+    person whose Teamwork UI showed 151/37 -- deletedAt/isArchived were the
+    two fields that stood out as the likely explanation.)
     """
     tasks = []
     page = 1
@@ -152,6 +157,17 @@ def fetch_all_open_tasks():
         if page > 50:  # safety valve against an unexpected infinite loop
             print(f"WARNING: stopped paginating tasks after 50 pages (page={page})", file=sys.stderr)
             break
+
+    raw_count = len(tasks)
+    deleted_count = sum(1 for t in tasks if t.get("deletedAt"))
+    archived_count = sum(1 for t in tasks if t.get("isArchived") and not t.get("deletedAt"))
+
+    tasks = [t for t in tasks if not t.get("deletedAt") and not t.get("isArchived")]
+
+    print(
+        f"Raw fetch: {raw_count} tasks. Excluded {deleted_count} soft-deleted "
+        f"and {archived_count} archived (non-deleted). Remaining: {len(tasks)}."
+    )
     return tasks
 
 
@@ -173,7 +189,7 @@ def classify_tasks(tasks, today_str):
 
 
 def fetch_completed_today_count(today_str):
-    """Company-wide count of tasks completed today."""
+    """Company-wide count of tasks completed today (excluding soft-deleted)."""
     count = 0
     page = 1
     page_size = 200
@@ -186,7 +202,7 @@ def fetch_completed_today_count(today_str):
         }
         data = api_get("/projects/api/v3/tasks.json", params)
         batch = data.get("tasks", [])
-        count += len(batch)
+        count += sum(1 for t in batch if not t.get("deletedAt"))
         meta = data.get("meta", {}).get("page", {})
         total_pages = meta.get("pageCount") or meta.get("pages")
         if not batch or (total_pages and page >= total_pages) or len(batch) < page_size:
