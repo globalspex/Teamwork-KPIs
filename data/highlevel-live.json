@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-03T14:57:00.105223-05:00",
+  "generated_at": "2026-10-03T15:05:27.697289-05:00",
   "timezone": "America/Chicago",
   "christina": {
     "weeks": [
@@ -113,27 +113,27 @@
     "leads": [
       0,
       0,
-      0,
-      1,
-      0,
-      0,
-      0,
-      0,
-      0,
-      1,
-      1,
-      0,
-      0,
-      1,
-      1,
       1,
       1,
       1,
       0,
       0,
       0,
+      1,
+      3,
+      1,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
       0,
       0,
+      3,
+      0,
+      2,
       0,
       0,
       1,
@@ -245,7 +245,7 @@
       0,
       1,
       0,
-      1,
+      2,
       0,
       1,
       0,
@@ -276,7 +276,7 @@
       "leads": {
         "this_week": 0,
         "last_week": 2,
-        "last_12_months": 18,
+        "last_12_months": 29,
         "avg_per_week_last_12_weeks": 0.4
       },
       "proposals": {
@@ -288,7 +288,7 @@
       "converted": {
         "this_week": 3,
         "last_week": 0,
-        "last_12_months": 8,
+        "last_12_months": 9,
         "avg_per_week_last_12_weeks": 0.3
       }
     },
@@ -308,11 +308,11 @@
     ],
     "monthly": {
       "leads": [
-        0,
-        2,
-        4,
         1,
-        0,
+        6,
+        4,
+        4,
+        2,
         2,
         0,
         3,
@@ -354,7 +354,7 @@
       "leads": {
         "this_month": 0,
         "last_month": 3,
-        "last_12_months": 17
+        "last_12_months": 27
       },
       "proposals": {
         "this_month": 0,
@@ -369,10 +369,9 @@
     }
   },
   "errors": [],
-  "warnings": [
-    "MMR not included yet: add the HIGHLEVEL_TOKEN_MMR repo secret."
-  ],
+  "warnings": [],
   "sources": [
-    "GlobalSpex"
+    "GlobalSpex",
+    "Moving Marketing Results"
   ]
 }
