@@ -98,25 +98,44 @@ def api_get(path, params=None):
 
 def fetch_all_projects():
     """
-    Fetches every project company-wide (all statuses), returning the raw
-    list. Used both for the active-project-ID filter and for per-PM
-    project ownership (active-owned / completed-owned counts).
+    Fetches every project company-wide. The endpoint only returns active
+    projects by default (confirmed: 35 of 35 fetched showed status=active,
+    only 1 had completedAt set) -- tries a few explicit params to widen
+    that, logging which (if any) actually changes the count.
     """
-    projects = []
-    page = 1
-    page_size = 200
-    while True:
-        data = api_get("/projects/api/v3/projects.json", {"page": page, "pageSize": page_size})
-        batch = data.get("projects", [])
-        projects.extend(batch)
-        meta = data.get("meta", {}).get("page", {})
-        total_pages = meta.get("pageCount") or meta.get("pages")
-        if not batch or (total_pages and page >= total_pages) or len(batch) < page_size:
-            break
-        page += 1
-        if page > 50:
-            break
-    return projects
+    param_variants = [
+        {},
+        {"includeCompletedProjects": "true"},
+        {"includeArchivedProjects": "true"},
+        {"includeCompletedProjects": "true", "includeArchivedProjects": "true"},
+    ]
+    best_projects = []
+    for variant in param_variants:
+        projects = []
+        page = 1
+        page_size = 200
+        ok = True
+        while True:
+            try:
+                data = api_get("/projects/api/v3/projects.json", {"page": page, "pageSize": page_size, **variant})
+            except RuntimeError as e:
+                print(f"NOTE: projects.json with {variant} failed ({e}).", file=sys.stderr)
+                ok = False
+                break
+            batch = data.get("projects", [])
+            projects.extend(batch)
+            meta = data.get("meta", {}).get("page", {})
+            total_pages = meta.get("pageCount") or meta.get("pages")
+            if not batch or (total_pages and page >= total_pages) or len(batch) < page_size:
+                break
+            page += 1
+            if page > 50:
+                break
+        if ok:
+            print(f"projects.json with params {variant}: {len(projects)} projects returned.")
+            if len(projects) > len(best_projects):
+                best_projects = projects
+    return best_projects
 
 
 def project_owner_id(p):
