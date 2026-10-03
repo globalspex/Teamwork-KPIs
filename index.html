@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GlobalSpex Daily KPI Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#f4f6f9; --card:#ffffff; --ink:#1a2233; --sub:#6b7280;
+    --green:#1a9e6d; --green-bg:#e5f7ef;
+    --yellow:#b9860a; --yellow-bg:#fdf3d9;
+    --red:#c0392b; --red-bg:#fbe6e3;
+    --line:#e6e9ef; --accent:#2b4c7e;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12151c; --card:#1b2029; --ink:#eef1f6; --sub:#9aa4b2;
+      --green:#3fd190; --green-bg:#123326;
+      --yellow:#e0b23b; --yellow-bg:#3a2f10;
+      --red:#f0685f; --red-bg:#3a1613;
+      --line:#2a3040; --accent:#7fa6dd;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12151c; --card:#1b2029; --ink:#eef1f6; --sub:#9aa4b2;
+    --green:#3fd190; --green-bg:#123326;
+    --yellow:#e0b23b; --yellow-bg:#3a2f10;
+    --red:#f0685f; --red-bg:#3a1613;
+    --line:#2a3040; --accent:#7fa6dd;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    padding:32px 20px 60px;
+  }
+  .wrap{max-width:1080px; margin:0 auto;}
+  header{margin-bottom:28px;}
+  h1{font-size:26px; margin:0 0 4px;}
+  .meta{color:var(--sub); font-size:14px;}
+  .section-title{font-size:15px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; color:var(--sub); margin:36px 0 14px;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px;}
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:18px 20px; position:relative; overflow:hidden;
+    display:flex; flex-direction:column;
+  }
+  .card .label{font-size:13px; color:var(--sub); margin-bottom:6px; order:0;}
+  .card .value{font-size:30px; font-weight:700; line-height:1; order:0;}
+  .card .goal{font-size:12.5px; color:var(--sub); margin-top:8px; order:2;}
+  .badge{
+    display:inline-block; font-size:11.5px; font-weight:600; padding:3px 9px;
+    border-radius:999px; margin-top:10px; order:1;
+  }
+  .badge.green{background:var(--green-bg); color:var(--green);}
+  .badge.yellow{background:var(--yellow-bg); color:var(--yellow);}
+  .badge.red{background:var(--red-bg); color:var(--red);}
+  .badge.gray{background:var(--line); color:var(--sub);}
+  .role-kpi-tag{font-size:11px; color:var(--sub); text-transform:uppercase; letter-spacing:.04em; margin:0 0 14px; font-weight:600;}
+  .bar-track{height:8px; border-radius:5px; background:var(--line); margin-top:12px; overflow:hidden;}
+  .bar-fill{height:100%; border-radius:5px;}
+  .bar-fill.green{background:var(--green);}
+  .bar-fill.yellow{background:var(--yellow);}
+  .bar-fill.red{background:var(--red);}
+  .footnote{color:var(--sub); font-size:12.5px; margin-top:40px; border-top:1px solid var(--line); padding-top:16px; line-height:1.6;}
+  .source-tag{font-size:11px; color:var(--sub); background:transparent; border:1px solid var(--line); border-radius:6px; padding:1px 7px; margin-left:6px;}
+
+  .tabs{display:flex; flex-wrap:wrap; gap:6px; border-bottom:1px solid var(--line); padding-bottom:12px; margin-bottom:8px;}
+  .tab-btn{
+    font-family:inherit; font-size:13.5px; font-weight:600; color:var(--sub);
+    background:var(--card); border:1px solid var(--line); border-radius:8px;
+    padding:7px 14px; cursor:pointer;
+  }
+  .tab-btn.active{background:var(--accent); color:#fff; border-color:var(--accent);}
+  .tab-group-label{
+    display:flex; align-items:center; font-size:11px; font-weight:700; color:var(--sub);
+    text-transform:uppercase; letter-spacing:.05em; padding:0 4px 0 10px; align-self:center;
+    border-left:1px solid var(--line); margin-left:4px;
+  }
+  .panel{display:none;}
+  .panel.active{display:block;}
+  .person-head{display:flex; align-items:baseline; gap:10px; margin:28px 0 4px; flex-wrap:wrap;}
+  .person-head h2{font-size:20px; margin:0;}
+  .person-head .role{color:var(--sub); font-size:14px;}
+  .sample-note{color:var(--sub); font-size:12px; margin-top:2px;}
+
+  .chart-card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px 20px; margin-top:24px;}
+  .chart-card h3{font-size:14px; margin:0 0 12px; color:var(--sub); text-transform:uppercase; letter-spacing:.03em; font-weight:600;}
+  .chart-wrap{height:280px; position:relative;}
+  .empty-state{color:var(--sub); font-size:13.5px; padding:18px 4px;}
+
+  table.wk{width:100%; border-collapse:collapse; margin-top:20px; font-size:12.5px;}
+  table.wk caption{text-align:left; font-size:14px; font-weight:600; color:var(--sub); text-transform:uppercase; letter-spacing:.03em; margin-bottom:10px;}
+  table.wk th, table.wk td{border-bottom:1px solid var(--line); padding:7px 10px; text-align:right; white-space:nowrap;}
+  table.wk th:first-child, table.wk td:first-child{text-align:left;}
+  table.wk th{color:var(--sub); font-weight:600; position:sticky; top:0; background:var(--card);}
+  table.wk tbody tr:hover{background:var(--bg);}
+  .table-scroll{max-height:360px; overflow:auto; border:1px solid var(--line); border-radius:12px; margin-top:8px;}
+  table.wk.nested{margin-top:0;}
+</style>
+<style>
+  .banner{border-radius:10px; padding:10px 14px; font-size:13px; margin:0 0 18px; display:none;}
+  .banner.show{display:block;}
+  .banner.warn{background:var(--yellow-bg); color:var(--yellow);}
+  .banner.err{background:var(--red-bg); color:var(--red);}
+  .asof{font-size:11px; color:var(--sub); margin-top:6px; order:3; font-style:italic;}
+  .loading .value{opacity:.35;}
+  .wrap{padding-left:env(safe-area-inset-left,0px); padding-right:env(safe-area-inset-right,0px);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Daily KPI Dashboard</h1>
+    <div class="meta" id="meta">GlobalSpex Internet Marketing &middot; Loading live data&hellip;</div>
+  </header>
+
+  <div class="banner warn" id="banner-stale"></div>
+  <div class="banner err" id="banner-err"></div>
+
+  <nav class="tabs" id="tabs">
+    <button class="tab-btn active" data-tab="company">Company</button>
+    <button class="tab-btn" data-tab="christina">Christina</button>
+    <span class="tab-group-label">Project Managers</span>
+    <button class="tab-btn" data-tab="javier">Javier</button>
+    <button class="tab-btn" data-tab="jennifer">Jennifer</button>
+    <span class="tab-group-label">Developers</span>
+    <button class="tab-btn" data-tab="rebecaq">Rebeca Q.</button>
+    <button class="tab-btn" data-tab="juliane">Juliane</button>
+    <button class="tab-btn" data-tab="rebecam">Rebeca M.</button>
+    <button class="tab-btn" data-tab="aura">Aura</button>
+    <button class="tab-btn" data-tab="andressa">Andressa</button>
+  </nav>
+
+  <!-- ===== Company ===== -->
+  <div class="panel active" id="panel-company">
+    <div class="section-title">Task Health <span class="source-tag">Teamwork Projects &middot; Live</span></div>
+    <div class="grid" id="live-company"></div>
+
+    <div class="section-title">Milestones <span class="source-tag">Teamwork Projects &middot; Manual</span></div>
+    <div class="grid">
+      <div class="card"><div class="label">Open Milestones</div><div class="value">14</div>
+        <div class="goal">Not yet completed, across all projects</div>
+        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
+      <div class="card"><div class="label">Overdue Milestones</div><div class="value">9</div>
+        <div class="goal">64% of open milestones were late &middot; Goal: 90% on time</div>
+        <span class="badge red">Off Track</span>
+        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
+    </div>
+
+    <div class="section-title">Support / Desk <span class="source-tag">Teamwork Desk &middot; Manual</span></div>
+    <div class="grid">
+      <div class="card"><div class="label">Open Tickets</div><div class="value">552</div>
+        <div class="goal">Status: Active</div>
+        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
+      <div class="card"><div class="label">New Tickets Today</div><div class="value">14</div>
+        <div class="goal">Excludes automated alerts (uptime monitor, Wordfence, WP Remote, host/plugin notices) and spam</div>
+        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
+      <div class="card"><div class="label">Waiting on Customer</div><div class="value">29</div>
+        <div class="goal">21 had no follow-up in 2+ days &middot; Goal: zero</div>
+        <span class="badge red">Off Track</span>
+        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
+      <div class="card"><div class="label">On Hold</div><div class="value">10</div>
+        <div class="goal">Status: On-hold</div>
+        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
+    </div>
+  </div>
+
+  <!-- ===== Christina ===== -->
+  <div class="panel" id="panel-christina">
+    <div class="person-head"><h2>Christina Hawkins</h2><span class="role">CEO &amp; Digital Marketing Consultant</span></div>
+    <div class="role-kpi-tag">Role KPIs &middot; CEO</div>
+    <div class="grid">
+      <div class="card"><div class="label"># of Tasks with Tags</div><div class="value">&mdash;</div>
+        <div class="goal">Goal: 3</div><span class="badge gray">Needs Data</span></div>
+      <div class="card"><div class="label">Lead Generation</div><div class="value">&mdash;</div>
+        <div class="goal">Goal: 3 meetings per week</div><span class="badge gray">Needs Data</span></div>
+      <div class="card"><div class="label">New Leads (Last 12 Mo.)</div><div class="value">30</div>
+        <div class="goal">HighLevel via Windsor.ai &middot; all opportunities, any pipeline, deduplicated by contact</div>
+        <span class="badge gray">Tracking</span>
+        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
+    </div>
+    <div class="section-title">Task Health <span class="source-tag">Teamwork Projects &middot; Live</span></div>
+    <div class="grid" id="live-christina"></div>
+    <div class="sample-note">Task volume is high for a CEO role, which usually means many tasks land on her by default (role, team, or company assignment) rather than being actively worked. Leads are deduplicated by contact and counted on the week of each contact's earliest opportunity. Proposals and Calls below are the manual tracker.</div>
+
+    <div class="chart-card">
+      <h3>New Leads Entering Pipeline (HighLevel)</h3>
+      <div class="chart-wrap"><canvas id="chart-christina-leads"></canvas></div>
+    </div>
+    <div class="table-scroll">
+      <table class="wk nested">
+        <caption>New Leads by Week (last 12 months)</caption>
+        <thead><tr><th>Week</th><th>New Leads</th></tr></thead>
+        <tbody id="tbl-christina-leads"></tbody>
+      </table>
+    </div>
+
+    <div class="chart-card">
+      <h3>Weekly Trend &mdash; Proposals / Calls (Manual Tracker)</h3>
+      <div class="chart-wrap"><canvas id="chart-christina"></canvas></div>
+    </div>
+    <div class="table-scroll">
+      <table class="wk nested">
+        <caption>Weekly Breakdown</caption>
+        <thead><tr><th>Week</th><th>Proposals</th><th>Calls</th></tr></thead>
+        <tbody id="tbl-christina"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== Javier ===== -->
+  <div class="panel" id="panel-javier">
+    <div class="person-head"><h2>Javier L&oacute;pez</h2><span class="role">Project Success Manager</span></div>
+    <div class="role-kpi-tag">Role KPIs &middot; Project Manager</div>
+    <div class="grid" id="live-javier">
+      <div class="card" data-slot="manual"><div class="label">Projects Completed</div><div class="value">0</div>
+        <div class="goal">Template: 30 days (Goal: 4) &middot; Custom: 8 weeks (varies by complexity)</div>
+        <span class="badge yellow">Not Synced Yet</span>
+        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
+      <div class="card" data-slot="manual"><div class="label">Utilization</div><div class="value">83.1%</div>
+        <div class="goal">Goal: 55% &middot; 33.25 hrs logged of 40-hr capacity, week of 9/7&ndash;9/13</div>
+        <span class="badge green">On Track</span>
+        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
+    </div>
+    <div class="sample-note">Milestones On Time counts every incomplete milestone across his owned projects (direct assignment plus role/team membership). Projects Completed isn't synced yet, since the projects endpoint only returns active projects. A per-project breakdown to find the biggest late-task outlier isn't part of the automated pull yet.</div>
+
+    <div class="chart-card">
+      <h3>Weekly Trend &mdash; Late Task % (Goal: under 15%)</h3>
+      <div class="chart-wrap"><canvas id="chart-javier"></canvas></div>
+    </div>
+    <div class="table-scroll">
+      <table class="wk nested">
+        <caption>Weekly Breakdown</caption>
+        <thead><tr><th>Week</th><th>Active Proj.</th><th>Completed</th><th>Milestones</th><th>Late Milestones</th><th>Tasks Assigned</th><th>Late Tasks</th><th>Late %</th><th>Proj. Tasks</th><th>Proj. Late Tasks</th><th>Proj. Late %</th></tr></thead>
+        <tbody id="tbl-javier"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== Jennifer ===== -->
+  <div class="panel" id="panel-jennifer">
+    <div class="person-head"><h2>Jennifer McNinch</h2><span class="role">Project Manager</span></div>
+    <div class="role-kpi-tag">Role KPIs &middot; Project Manager</div>
+    <div class="grid" id="live-jennifer">
+      <div class="card" data-slot="manual"><div class="label">Projects Completed</div><div class="value">0</div>
+        <div class="goal">Template: 30 days (Goal: 4) &middot; Custom: 8 weeks (varies by complexity)</div>
+        <span class="badge yellow">Not Synced Yet</span>
+        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
+      <div class="card" data-slot="manual"><div class="label">Utilization</div><div class="value">10.6%</div>
+        <div class="goal">Goal: 55% &middot; 4.25 hrs logged of 40-hr capacity, week of 9/7&ndash;9/13</div>
+        <span class="badge red">Off Track</span>
+        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
+    </div>
+    <div class="sample-note">Milestones On Time counts every incomplete milestone across her owned projects (direct assignment plus role/team membership). When team task completion is strong but milestones lag, that usually points at deadline-setting or milestone tracking rather than overall project health. Low utilization is worth checking against actual workload versus a time-logging gap.</div>
+
+    <div class="chart-card">
+      <h3>Weekly Trend &mdash; Late Task % (Goal: under 15%)</h3>
+      <div class="chart-wrap"><canvas id="chart-jennifer"></canvas></div>
+    </div>
+    <div class="table-scroll">
+      <table class="wk nested">
+        <caption>Weekly Breakdown</caption>
+        <thead><tr><th>Week</th><th>Active Proj.</th><th>Completed</th><th>Milestones</th><th>Late Milestones</th><th>Tasks Assigned</th><th>Late Tasks</th><th>Late %</th><th>Proj. Tasks</th><th>Proj. Late Tasks</th><th>Proj. Late %</th></tr></thead>
+        <tbody id="tbl-jennifer"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== Rebeca Queiroz ===== -->
+  <div class="panel" id="panel-rebecaq">
+    <div class="person-head"><h2>Rebeca Queiroz</h2><span class="role">Lead Developer</span></div>
+    <div class="role-kpi-tag">Role KPIs &middot; Developer</div>
+    <div class="grid" id="live-rebecaq">
+      <div class="card" data-slot="manual"><div class="label">Redo</div><div class="value">0%</div>
+        <div class="goal">Goal: less than 20% &middot; 0 of 94 tasks completed 9/7&ndash;9/13 tagged redo</div>
+        <span class="badge green">On Track</span>
+        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
+      <div class="card" data-slot="manual"><div class="label">Ticket Resolution Time</div><div class="value">100%</div>
+        <div class="goal">Goal: 2 days (max) &middot; 2 of 2 qualifying tickets, week of 9/7&ndash;9/13</div>
+        <span class="badge yellow">Thin Sample</span>
+        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
+    </div>
+    <div class="sample-note">Ticket Resolution Time uses the Desk report filter: types Request + Unspecified, statuses Close/FollowUp, Waiting on Customer, On-hold, Solved, Closed. Support columns for 4/17, 6/19, and 6/26 were backfilled from historical Desk data. Late Tasks for those weeks couldn't be, since task lateness only reflects today's state.</div>
+
+    <div class="chart-card">
+      <h3>Weekly Trend &mdash; Late Task % (Goal: under 10%)</h3>
+      <div class="chart-wrap"><canvas id="chart-rebecaq"></canvas></div>
+    </div>
+    <div class="table-scroll">
+      <table class="wk nested">
+        <caption>Weekly Breakdown</caption>
+        <thead><tr><th>Week</th><th>Total Tasks</th><th>Late Tasks</th><th>Late %</th><th>Support Tasks</th><th>Late Support</th><th>Support Late %</th><th>Redo</th><th>Avg Res. Requests (d)</th><th>Avg Res. Problems (d)</th></tr></thead>
+        <tbody id="tbl-rebecaq"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== Juliane ===== -->
+  <div class="panel" id="panel-juliane">
+    <div class="person-head"><h2>Juliane Roitmann</h2><span class="role">Developer</span></div>
+    <div class="role-kpi-tag">Role KPIs &middot; Developer</div>
+    <div class="grid" id="live-juliane">
+      <div class="card" data-slot="manual"><div class="label">Redo</div><div class="value">0%</div>
+        <div class="goal">Goal: less than 20% &middot; 0 of 105 tasks completed 9/7&ndash;9/13 tagged redo</div>
+        <span class="badge green">On Track</span>
+        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
+      <div class="card" data-slot="manual"><div class="label">Ticket Resolution Time</div><div class="value">100%</div>
+        <div class="goal">Goal: 2 days (max) &middot; 3 of 3 qualifying tickets, week of 9/7&ndash;9/13</div>
+        <span class="badge yellow">Thin Sample</span>
+        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
+    </div>
+    <div class="sample-note">Ticket Resolution Time uses the Desk report filter: types Request + Unspecified, statuses Close/FollowUp, Waiting on Customer, On-hold, Solved, Closed.</div>
+
+    <div class="chart-card">
+      <h3>Weekly Trend &mdash; Late Task % (Goal: under 10%)</h3>
+      <div class="chart-wrap"><canvas id="chart-juliane"></canvas></div>
+    </div>
+    <div class="table-scroll">
+      <table class="wk nested">
+        <caption>Weekly Breakdown</caption>
+        <thead><tr><th>Week</th><th>Total Tasks</th><th>Late Tasks</th><th>Late %</th><th>Redo</th><th>Avg Res. Requests (d)</th><th>Avg Res. Problems (d)</th></tr></thead>
+        <tbody id="tbl-juliane"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== Rebeca Mesquita ===== -->
+  <div class="panel" id="panel-rebecam">
+    <div class="person-head"><h2>Rebeca Mesquita</h2><span class="role">Designer</span></div>
+    <div class="grid" id="live-rebecam"></div>
+
+    <div class="chart-card">
+      <h3>Weekly Trend &mdash; Late Task % (Goal: under 10%)</h3>
+      <div class="chart-wrap"><canvas id="chart-rebecam"></canvas></div>
+    </div>
+    <div class="table-scroll">
+      <table class="wk nested">
+        <caption>Weekly Breakdown</caption>
+        <thead><tr><th>Week</th><th>Total Tasks</th><th>Late Tasks</th><th>Late %</th><th>Avg Res. Requests (d)</th><th>Avg Res. Problems (d)</th></tr></thead>
+        <tbody id="tbl-rebecam"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== Aura ===== -->
+  <div class="panel" id="panel-aura">
+    <div class="person-head"><h2>Aura Celorico</h2><span class="role">Marketing Assistant</span></div>
+    <div class="grid" id="live-aura"></div>
+
+    <div class="chart-card">
+      <h3>Weekly Trend &mdash; Late Task % (Goal: under 10%)</h3>
+      <div class="chart-wrap"><canvas id="chart-aura"></canvas></div>
+    </div>
+    <div class="table-scroll">
+      <table class="wk nested">
+        <caption>Weekly Breakdown</caption>
+        <thead><tr><th>Week</th><th>Total Tasks</th><th>Late Tasks</th><th>Late %</th></tr></thead>
+        <tbody id="tbl-aura"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== Andressa ===== -->
+  <div class="panel" id="panel-andressa">
+    <div class="person-head"><h2>Andressa Alves</h2><span class="role">Support Manager</span></div>
+    <div class="role-kpi-tag">Role KPIs &middot; Support Manager</div>
+    <div class="grid">
+      <div class="card"><div class="label">Avg Hours &mdash; Problem Tickets</div><div class="value">14.8 hrs</div>
+        <div class="goal">Week of 9/7&ndash;9/13 &middot; n = 1 ticket &middot; Wordfence/WP Remote/Alert tickets excluded</div>
+        <span class="badge gray">Thin Sample</span>
+        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
+      <div class="card"><div class="label">Avg Hours &mdash; Total Request Tickets</div><div class="value">24.1 hrs</div>
+        <div class="goal">Week of 9/7&ndash;9/13 &middot; n = 1 ticket &middot; Wordfence/WP Remote/Alert tickets excluded</div>
+        <span class="badge gray">Thin Sample</span>
+        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
+      <div class="card"><div class="label">Follow-Up Emails Within 1 Day</div><div class="value">50%</div>
+        <div class="goal">1 of 2 tickets</div>
+        <span class="badge gray">Thin Sample</span>
+        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
+      <div class="card"><div class="label"># Care Plans Over Time</div><div class="value">&mdash;</div>
+        <div class="goal">Source: Airtable &quot;Time by Website &ndash; Last Week&quot; view</div>
+        <span class="badge gray">Needs Data</span></div>
+      <div class="card"><div class="label">Aging Tickets</div><div class="value">12</div>
+        <div class="goal">Request/Problem &middot; Active/Waiting &middot; 30-day lookback &middot; Assigned agent required</div>
+        <span class="badge gray">Tracking</span>
+        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
+    </div>
+    <div class="section-title">Task Health <span class="source-tag">Teamwork Projects &middot; Live</span></div>
+    <div class="grid" id="live-andressa"></div>
+    <div class="sample-note">Ticket KPIs exclude the uptime-monitoring integration, which was auto-creating hundreds of tickets a week. Aging Tickets excludes Question and Marketing/SEO types and unassigned tickets (years of untriaged automated noise).</div>
+
+    <div class="chart-card">
+      <h3>Weekly Trend &mdash; Avg First-Response Time (minutes)</h3>
+      <div class="chart-wrap"><canvas id="chart-andressa"></canvas></div>
+    </div>
+    <div class="table-scroll">
+      <table class="wk nested">
+        <caption>Weekly Breakdown</caption>
+        <thead><tr><th>Week</th><th>Avg Problem Tickets</th><th>Avg Request Tickets</th><th>NPS</th><th>Follow-ups &lt;1 Day</th><th>Care Plan Overage</th></tr></thead>
+        <tbody id="tbl-andressa"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footnote">
+    Cards tagged <strong>Live</strong> load from <code>data/teamwork-live.json</code>, which a GitHub Action refreshes every morning from Teamwork Projects. Cards marked <em>Manual snapshot</em> aren't automated yet and show the date they were last pulled. Weekly charts and tables load from <code>data/weekly-history.json</code> (the 2026 KPI Scorecard plus later live entries). Blank weeks are omitted rather than shown as zero.
+  </div>
+
+</div>
+<script>
+(function(){
+  // Raw GitHub is tried first so the page always sees the newest commit,
+  // even if the Pages rebuild after the bot's push is slow or skipped.
+  var RAW = 'https://raw.githubusercontent.com/globalspex/Teamwork-KPIs/main/data/';
+  var LOCAL = 'data/';
+  var STALE_HOURS = 30;
+
+  var WK = null, LIVE = null, charts = {}, rendered = {};
+
+  function getJSON(file){
+    var bust = '?t=' + Date.now();
+    return fetch(RAW + file + bust, {cache:'no-store'})
+      .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+      .catch(function(){
+        return fetch(LOCAL + file + bust, {cache:'no-store'})
+          .then(function(r){ if(!r.ok) throw new Error(file + ' HTTP ' + r.status); return r.json(); });
+      });
+  }
+
+  // ---------- helpers ----------
+  function num(v){ return (v===null||v===undefined||isNaN(v)) ? '&mdash;' : Number(v).toLocaleString('en-US'); }
+  function pct(n, d){ return d ? Math.round(n/d*1000)/10 : null; }
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  // Late-rate bar: the goal sits at the halfway mark, full bar = 2x goal.
+  function lateBar(rate, goal){
+    if(rate===null) return '';
+    var w = Math.min(100, Math.round(rate/(goal*2)*100));
+    return '<div class="bar-track"><div class="bar-fill '+(rate<=goal?'green':'red')+'" style="width:'+w+'%"></div></div>';
+  }
+  function badge(ok){
+    if(ok===null) return '<span class="badge gray">No Data</span>';
+    return ok ? '<span class="badge green">On Track</span>' : '<span class="badge red">Off Track</span>';
+  }
+  function card(label, value, goal, extra){
+    return '<div class="card"><div class="label">'+label+'</div><div class="value">'+value+'</div>' +
+      (goal ? '<div class="goal">'+goal+'</div>' : '') + (extra||'') + '</div>';
+  }
+
+  // ---------- card builders ----------
+  function taskHealthCards(p, goal){
+    var rate = pct(p.overdue_tasks, p.total_open_tasks);
+    return card('Total Open Tasks', num(p.total_open_tasks), 'Active, uncompleted tasks') +
+      card('Overdue Tasks', num(p.overdue_tasks),
+        'Late rate: '+(rate===null?'&mdash;':rate+'%')+' &middot; Goal: under '+goal+'%',
+        lateBar(rate, goal) + badge(rate===null?null:rate<=goal)) +
+      card('Due Today', num(p.due_today), 'Tasks with a due date of today');
+  }
+
+  function pmCards(p){
+    var msTot = p.total_incomplete_milestones, msLate = p.late_milestones;
+    var msOn = pct(msTot - msLate, msTot);
+    var tOn = pct(p.total_open_tasks - p.overdue_tasks, p.total_open_tasks);
+    var ptOn = pct(p.project_tasks_total - p.project_tasks_late, p.project_tasks_total);
+    return card('Milestones On Time', msOn===null?'&mdash;':msOn+'%',
+        'Goal: 90% &middot; '+num(msTot-msLate)+' of '+num(msTot)+' incomplete milestones not late',
+        badge(msOn===null?null:msOn>=90)) +
+      card('Assigned Tasks On Time', tOn===null?'&mdash;':tOn+'%',
+        'Goal: 85% &middot; '+num(p.total_open_tasks-p.overdue_tasks)+' of '+num(p.total_open_tasks)+' open tasks not overdue',
+        badge(tOn===null?null:tOn>=85)) +
+      card('Team Project Tasks On Time', ptOn===null?'&mdash;':ptOn+'%',
+        'Goal: 85% &middot; '+num(p.project_tasks_total-p.project_tasks_late)+' of '+num(p.project_tasks_total)+' tasks across '+num(p.active_projects_owned)+' active owned projects',
+        badge(ptOn===null?null:ptOn>=85));
+  }
+
+  function devCards(p){
+    var rate = pct(p.overdue_tasks, p.total_open_tasks);
+    return card('Late Tasks', rate===null?'&mdash;':rate+'%',
+      'Goal: less than 10% &middot; '+num(p.overdue_tasks)+' of '+num(p.total_open_tasks)+' open tasks overdue &middot; '+num(p.due_today)+' due today',
+      lateBar(rate, 10) + badge(rate===null?null:rate<10));
+  }
+
+  function put(id, html, prepend){
+    var el = document.getElementById(id); if(!el) return;
+    if(prepend) el.insertAdjacentHTML('afterbegin', html); else el.innerHTML = html;
+  }
+
+  function renderLive(){
+    var c = LIVE.company || {}, P = LIVE.people || {};
+    var rate = pct(c.overdue_tasks, c.total_open_tasks);
+    put('live-company',
+      card('Overdue Tasks (site-wide)', num(c.overdue_tasks),
+        'Late rate: '+(rate===null?'&mdash;':rate+'%')+' &middot; Goal: under 15%', lateBar(rate,15)+badge(rate===null?null:rate<=15)) +
+      card('Due Today', num(c.due_today), 'Tasks with a due date of today') +
+      card('Completed Today', num(c.completed_today), 'Tasks marked complete since midnight') +
+      card('Total Open Tasks', num(c.total_open_tasks), 'Active, uncompleted tasks across all projects'));
+
+    var empty = {};
+    put('live-christina', taskHealthCards(P.christina||empty, 15));
+    put('live-andressa',  taskHealthCards(P.andressa||empty, 15));
+    put('live-aura',      taskHealthCards(P.aura||empty, 15));
+    put('live-rebecam',   taskHealthCards(P.rebecam||empty, 15));
+    put('live-javier',    pmCards(P.javier||empty), true);
+    put('live-jennifer',  pmCards(P.jennifer||empty), true);
+    put('live-rebecaq',   devCards(P.rebecaq||empty), true);
+    put('live-juliane',   devCards(P.juliane||empty), true);
+
+    // header + freshness
+    var gen = LIVE.generated_at ? new Date(LIVE.generated_at) : null;
+    var when = gen ? gen.toLocaleString('en-US', {month:'short', day:'numeric', year:'numeric', hour:'numeric', minute:'2-digit', timeZone:'America/Chicago'}) + ' CT' : 'unknown';
+    document.getElementById('meta').innerHTML = 'GlobalSpex Internet Marketing &middot; Live data synced ' + when + ' from Teamwork Projects';
+    if(gen && (Date.now() - gen.getTime())/36e5 > STALE_HOURS){
+      var b = document.getElementById('banner-stale');
+      b.textContent = 'Heads up: live data is more than ' + STALE_HOURS + ' hours old. The daily sync may have failed. Check the Actions tab on GitHub.';
+      b.classList.add('show');
+    }
+    if(LIVE.errors && LIVE.errors.length){
+      var e = document.getElementById('banner-err');
+      e.innerHTML = '<strong>The last sync reported '+LIVE.errors.length+' issue(s):</strong> ' + LIVE.errors.map(esc).join(' &middot; ');
+      e.classList.add('show');
+    }
+  }
+
+  // ---------- weekly history (charts + tables) ----------
+  function cell(v, isPct){
+    if(v===null||v===undefined||v==='') return '<td>&mdash;</td>';
+    return '<td>'+v+(isPct?'%':'')+'</td>';
+  }
+  function fillTable(id, rows, pctCols){
+    var tb = document.getElementById(id); if(!tb) return;
+    tb.innerHTML = rows.slice().reverse().map(function(r){
+      return '<tr>' + r.map(function(v,i){ return cell(v, pctCols && pctCols.indexOf(i)>=0); }).join('') + '</tr>';
+    }).join('');
+  }
+  function goalLine(len, v){ var a=[]; for(var i=0;i<len;i++) a.push(v); return a; }
+  function makeLineChart(id, labels, datasets){
+    var el = document.getElementById(id);
+    if(!el || charts[id] || typeof Chart==='undefined') return;
+    charts[id] = new Chart(el, {
+      type:'line', data:{labels:labels, datasets:datasets},
+      options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index', intersect:false},
+        plugins:{ legend:{ position:'bottom', labels:{boxWidth:12, font:{size:11}} } },
+        scales:{ y:{beginAtZero:true, ticks:{font:{size:11}}}, x:{ticks:{font:{size:10}}} },
+        elements:{ point:{radius:2}, line:{tension:0.25} } }
+    });
+  }
+  function ds(label, data, color){ return {label:label, data:data, borderColor:color, backgroundColor:'transparent'}; }
+  function goalDs(label, len, v){ return {label:label, data:goalLine(len,v), borderColor:'#9aa4b2', borderDash:[5,4], pointRadius:0}; }
+
+  function renderHistory(tab){
+    if(!WK || rendered[tab]) return;
+    var d = WK[tab]; if(!d && tab!=='christina') return;
+    rendered[tab] = true;
+    var R='#c0392b', Y='#b9860a', G='#1a9e6d', B='#2b4c7e';
+    if(tab==='christina'){
+      makeLineChart('chart-christina', d.weeks, [ds('Proposals', d.proposals, G), ds('Calls', d.calls, Y)]);
+      fillTable('tbl-christina', d.weeks.map(function(w,i){ return [w, d.proposals[i], d.calls[i]]; }));
+      var dl = WK.christina_leads;
+      if(dl){
+        makeLineChart('chart-christina-leads', dl.weeks, [ds('New Leads', dl.counts, B)]);
+        fillTable('tbl-christina-leads', dl.weeks.map(function(w,i){ return [w, dl.counts[i]]; }));
+      }
+    } else if(tab==='javier' || tab==='jennifer'){
+      makeLineChart('chart-'+tab, d.weeks, [ds('Individual Late %', d.ind_late, R), ds('Project Late %', d.proj_late, Y), goalDs('Goal (15%)', d.weeks.length, 15)]);
+      fillTable('tbl-'+tab, d.rows, [7,10]);
+    } else if(tab==='rebecaq'){
+      makeLineChart('chart-rebecaq', d.weeks, [ds('Late Task %', d.late_pct, R), ds('Late Support %', d.supp_late_pct, Y), goalDs('Goal (10%)', d.weeks.length, 10)]);
+      fillTable('tbl-rebecaq', d.rows, [3,6]);
+    } else if(tab==='aura' || tab==='juliane' || tab==='rebecam'){
+      makeLineChart('chart-'+tab, d.weeks, [ds('Late Task %', d.late_pct, R), goalDs('Goal (10%)', d.weeks.length, 10)]);
+      fillTable('tbl-'+tab, d.rows, [3]);
+    } else if(tab==='andressa'){
+      makeLineChart('chart-andressa', d.weeks, [ds('Avg Problem Tickets (min)', d.prob_min, R), goalDs('Goal (20 min)', d.weeks.length, 20)]);
+      fillTable('tbl-andressa', d.rows);
+    }
+  }
+
+  // ---------- tabs ----------
+  var current = 'company';
+  document.getElementById('tabs').addEventListener('click', function(e){
+    var btn = e.target.closest('.tab-btn'); if(!btn) return;
+    document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+    btn.classList.add('active');
+    current = btn.dataset.tab;
+    document.getElementById('panel-' + current).classList.add('active');
+    if(current !== 'company') renderHistory(current);
+  });
+
+  // ---------- load ----------
+  getJSON('teamwork-live.json').then(function(j){ LIVE = j; renderLive(); }).catch(function(err){
+    var e = document.getElementById('banner-err');
+    e.textContent = 'Could not load live data (' + err.message + '). Live cards are blank until the next successful load.';
+    e.classList.add('show');
+    document.getElementById('meta').innerHTML = 'GlobalSpex Internet Marketing &middot; Live data unavailable';
+  });
+  getJSON('weekly-history.json').then(function(j){ WK = j; if(current!=='company') renderHistory(current); }).catch(function(){
+    document.querySelectorAll('.chart-wrap').forEach(function(w){ w.innerHTML = '<div class="empty-state">Weekly history couldn\'t be loaded.</div>'; });
+  });
+})();
+</script>
+</body>
+</html>
