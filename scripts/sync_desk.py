@@ -84,12 +84,35 @@ def norm(t):
         "merged": bool(t.get("mergedToId")),
         "first_resp": rt.get("firstResponseTime") or 0, "resolution": rt.get("resolutionTime") or 0,
         "responses": rt.get("responseCount") or 0,
+        "customer": (t.get("customer") or {}).get("id"),
     }
 
 
+BOT_CUSTOMERS = set()
+BOT_MIN_TICKETS = 15        # a sender with this many tickets in the window...
+BOT_MAX_REPLY_RATE = 0.10   # ...that almost never get a human reply is automated
+
+
+def find_bots(tickets):
+    """Senders who open lots of tickets that nobody replies to (uptime monitors,
+    plugin/host notices, form-notification relays). Closed alert tickets lose
+    their telltale status, so this is the reliable noise filter."""
+    stats = {}
+    for t in tickets:
+        c = t["customer"]
+        if c is None:
+            continue
+        n, r = stats.get(c, (0, 0))
+        stats[c] = (n + 1, r + (1 if t["responses"] > 0 else 0))
+    return {c for c, (n, r) in stats.items() if n >= BOT_MIN_TICKETS and r / n <= BOT_MAX_REPLY_RATE}
+
+
 def is_real(t):
-    return (t["inbox"] in INBOXES and not t["merged"]
+    return (t["inbox"] in INBOXES and not t["merged"] and t["customer"] not in BOT_CUSTOMERS
             and t["status"] not in NOISE_STATUSES and t["type"] not in NOISE_TYPES)
+
+
+OPEN_STATUSES = {"active", "waiting", "on-hold"}
 
 
 def fetch_recent(since):
@@ -133,13 +156,13 @@ def week_metrics(tickets, start, end):
     req = [t["first_resp"] for t in wk if t["type"] == "request" and t["first_resp"] > 0]
     fu = [t for t in wk if t["type"] in FOLLOWUP_TYPES]
     fu_hit = sum(1 for t in fu if 0 < t["first_resp"] <= BUSINESS_DAY_MIN)
-    fu_n = sum(1 for t in fu if t["first_resp"] > 0 or t["responses"] == 0)
+    fu_n = sum(1 for t in fu if t["first_resp"] > 0 or t["status"] in OPEN_STATUSES)
     devs = {}
     for t in wk:
         key = AGENTS.get(t["assignee"])
         if not key or t["type"] not in DEV_RESOLUTION_TYPES or t["status"] not in DEV_RESOLUTION_STATUSES:
             continue
-        if t["resolution"] <= 0:
+        if t["resolution"] <= 0 or t["responses"] == 0:
             continue
         d = devs.setdefault(key, {"on_time": 0, "n": 0, "res_min": []})
         d["n"] += 1
@@ -169,6 +192,7 @@ def main():
     try:
         recent, pages_read = fetch_recent(since)
         current = {code: fetch_by_status(code) for code in STATUS_IDS}
+        BOT_CUSTOMERS.update(find_bots(recent))
         print(f"Read {len(recent)} recent tickets ({pages_read} pages); "
               + ", ".join(f"{k}: {len(v)}" for k, v in current.items()))
 
@@ -197,6 +221,9 @@ def main():
         result["weeks"] = weeks
         result["last_full_week"] = weeks[-1]
         result["debug"] = {
+            "bot_senders": len(BOT_CUSTOMERS),
+            "bot_tickets_in_window": sum(1 for t in recent if t["customer"] in BOT_CUSTOMERS),
+            "customers_real_in_window": len({t["customer"] for t in recent if is_real(t)}),
             "recent_scanned": len(recent), "recent_real": sum(1 for t in recent if is_real(t)),
             "recent_by_inbox": {str(k): sum(1 for t in recent if t["inbox"] == k) for k in sorted({t["inbox"] for t in recent}, key=str)},
             "recent_by_status": {s: sum(1 for t in recent if t["status"] == s) for s in sorted({t["status"] for t in recent})},
