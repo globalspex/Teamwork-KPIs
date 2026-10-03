@@ -234,6 +234,23 @@ def main():
         result["errors"].append(str(e))
 
     os.makedirs("data", exist_ok=True)
+    # Daily snapshot log: Desk only knows CURRENT status, so point-in-time counts
+    # (aging, open, waiting) are saved once per day to build history going forward.
+    log_path = "data/desk-snapshots.json"
+    try:
+        snaps = json.load(open(log_path)) if os.path.exists(log_path) else []
+    except Exception:
+        snaps = []
+    if "company" in result:
+        day = now.date().isoformat()
+        snaps = [x for x in snaps if x["date"] != day] + [{
+            "date": day, "aging": result["andressa"]["aging_tickets"],
+            "open": result["company"]["open_tickets"], "waiting": result["company"]["waiting_on_customer"],
+            "waiting_stale": result["company"]["waiting_no_update_2d"], "on_hold": result["company"]["on_hold"]}]
+        snaps = sorted(snaps, key=lambda x: x["date"])[-400:]
+        with open(log_path, "w") as f:
+            json.dump(snaps, f, indent=1)
+    result["snapshots"] = snaps
     with open("data/desk-live.json", "w") as f:
         json.dump(result, f, indent=2)
     if result["errors"]:

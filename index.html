@@ -104,6 +104,7 @@
   .banner.show{display:block;}
   .banner.warn{background:var(--yellow-bg); color:var(--yellow);}
   .banner.err{background:var(--red-bg); color:var(--red);}
+  .value-pct{font-size:.55em; font-weight:600; color:var(--sub); margin-left:6px;}
   .asof{font-size:11px; color:var(--sub); margin-top:6px; order:3; font-style:italic;}
   .loading .value{opacity:.35;}
   .wrap{padding-left:env(safe-area-inset-left,0px); padding-right:env(safe-area-inset-right,0px);}
@@ -356,13 +357,23 @@
     </div>
 
     <div class="chart-card">
-      <h3>Historical &mdash; Avg First-Response Time (minutes, manual tracker)</h3>
+      <h3>Avg First Response &mdash; Request &amp; Problem (hours, live)</h3>
+      <div class="chart-wrap"><canvas id="chart-desk-response"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <h3>Aging Tickets (daily, live)</h3>
+      <div class="chart-wrap" id="wrap-desk-aging"><canvas id="chart-desk-aging"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <h3>Historical &mdash; Avg First Response Time (hours, Jan&ndash;Sep 2026)</h3>
       <div class="chart-wrap"><canvas id="chart-andressa"></canvas></div>
     </div>
     <div class="table-scroll">
       <table class="wk nested">
-        <caption>Historical Breakdown (manual tracker)</caption>
-        <thead><tr><th>Week</th><th>Avg Problem Tickets</th><th>Avg Request Tickets</th><th>NPS</th><th>Follow-ups &lt;1 Day</th><th>Care Plan Overage</th></tr></thead>
+        <caption>Historical Breakdown (Jan&ndash;Sep 2026)</caption>
+        <thead><tr><th>Week</th><th>Avg First Response &mdash; Problem</th><th>Avg First Response &mdash; Request</th><th>Follow-ups &lt;1 Day</th><th>Care Plan Overage</th></tr></thead>
         <tbody id="tbl-andressa"></tbody>
       </table>
     </div>
@@ -417,8 +428,8 @@
   function taskHealthCards(p, goal){
     var rate = pct(p.overdue_tasks, p.total_open_tasks);
     return card('Total Open Tasks', num(p.total_open_tasks), 'Active, uncompleted tasks') +
-      card('Overdue Tasks', num(p.overdue_tasks),
-        'Late rate: '+(rate===null?'&mdash;':rate+'%')+' &middot; Goal: under '+goal+'%',
+      card('Overdue Tasks', num(p.overdue_tasks)+(rate===null?'':' <span class="value-pct">'+rate+'%</span>'),
+        num(p.overdue_tasks)+' of '+num(p.total_open_tasks)+' open tasks are late &middot; Goal: under '+goal+'%',
         lateBar(rate, goal) + badge(rate===null?null:rate<=goal)) +
       card('Due Today', num(p.due_today), 'Tasks with a due date of today');
   }
@@ -455,8 +466,8 @@
     var c = LIVE.company || {}, P = LIVE.people || {};
     var rate = pct(c.overdue_tasks, c.total_open_tasks);
     put('live-company',
-      card('Overdue Tasks (site-wide)', num(c.overdue_tasks),
-        'Late rate: '+(rate===null?'&mdash;':rate+'%')+' &middot; Goal: under 15%', lateBar(rate,15)+badge(rate===null?null:rate<=15)) +
+      card('Overdue Tasks (site-wide)', num(c.overdue_tasks)+(rate===null?'':' <span class="value-pct">'+rate+'%</span>'),
+        num(c.overdue_tasks)+' of '+num(c.total_open_tasks)+' open tasks are late &middot; Goal: under 15%', lateBar(rate,15)+badge(rate===null?null:rate<=15)) +
       card('Due Today', num(c.due_today), 'Tasks with a due date of today') +
       card('Completed Today', num(c.completed_today), 'Tasks marked complete since midnight') +
       card('Total Open Tasks', num(c.total_open_tasks), 'Active, uncompleted tasks across all projects'));
@@ -530,9 +541,35 @@
       makeLineChart('chart-'+tab, d.weeks, [ds('Late Task %', d.late_pct, R), goalDs('Goal (10%)', d.weeks.length, 10)]);
       fillTable('tbl-'+tab, d.rows, [3]);
     } else if(tab==='andressa'){
-      makeLineChart('chart-andressa', d.weeks, [ds('Avg Problem Tickets (min)', d.prob_min, R), goalDs('Goal (20 min)', d.weeks.length, 20)]);
-      fillTable('tbl-andressa', d.rows);
+      var toH = function(m){ return m===null||m===undefined ? null : Math.round(m/60*100)/100; };
+      makeLineChart('chart-andressa', d.weeks, [ds('Problem (hrs)', d.prob_min.map(toH), R), ds('Request (hrs)', d.req_min.map(toH), B), goalDs('Problem goal (0.33 hrs)', d.weeks.length, 0.33)]);
+      var strH = function(v){
+        if(v===null||v===undefined||v==='-'||v==='') return null;
+        var h=/(\d+)h/.exec(v), m=/(\d+)m/.exec(v);
+        if(!h && !m) return v;
+        return (Math.round(((h?+h[1]:0)+(m?+m[1]:0)/60)*10)/10) + ' hrs';
+      };
+      fillTable('tbl-andressa', d.rows.map(function(r){ return [r[0], strH(r[1]), strH(r[2]), r[4], r[5]]; }));
     }
+  }
+
+  function renderDeskCharts(){
+    if(!DESK || !DESK.weeks || rendered.desk || current!=='andressa') return;
+    rendered.desk = true;
+    var W = DESK.weeks, labels = W.map(function(x){ return x.week; });
+    makeLineChart('chart-desk-response', labels, [
+      ds('Request (hrs)', W.map(function(x){ return x.request.avg_first_response_hrs; }), '#2b4c7e'),
+      ds('Problem (hrs)', W.map(function(x){ return x.problem.avg_first_response_hrs; }), '#c0392b')]);
+    var S = DESK.snapshots || [];
+    if(S.length < 2){
+      var w = document.getElementById('wrap-desk-aging');
+      w.style.height = 'auto';
+      w.innerHTML = '<div class="empty-state">Tracking started '+(S[0]?S[0].date:'today')+' with '+(S[0]?S[0].aging:'&mdash;')+' aging tickets. Desk only reports current status, so this chart fills in one point per day.</div>';
+      return;
+    }
+    makeLineChart('chart-desk-aging', S.map(function(x){ var p=x.date.split('-'); return (+p[1])+'/'+(+p[2]); }), [
+      ds('Aging tickets', S.map(function(x){ return x.aging; }), '#b9860a'),
+      ds('Waiting 2+ days', S.map(function(x){ return x.waiting_stale; }), '#c0392b')]);
   }
 
   function renderSalesHistory(){
@@ -620,6 +657,7 @@
     document.getElementById('panel-' + current).classList.add('active');
     if(current !== 'company') renderHistory(current);
     if(current === 'christina') renderSalesHistory();
+    if(current === 'andressa') renderDeskCharts();
   });
 
   // ---------- load ----------
@@ -629,7 +667,7 @@
     e.classList.add('show');
     document.getElementById('meta').innerHTML = 'GlobalSpex Internet Marketing &middot; Live data unavailable';
   });
-  getJSON('desk-live.json').then(function(j){ DESK = j; renderDesk(); }).catch(function(){ renderDesk(); });
+  getJSON('desk-live.json').then(function(j){ DESK = j; renderDesk(); renderDeskCharts(); }).catch(function(){ renderDesk(); });
   getJSON('highlevel-live.json').then(function(j){ HL = j; renderSalesCards(); renderSalesHistory(); }).catch(function(){ renderSalesCards(); });
   getJSON('weekly-history.json').then(function(j){ WK = j; if(current!=='company') renderHistory(current); }).catch(function(){
     document.querySelectorAll('.chart-wrap').forEach(function(w){ w.innerHTML = '<div class="empty-state">Weekly history couldn\'t be loaded.</div>'; });
