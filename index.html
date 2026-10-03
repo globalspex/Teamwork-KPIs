@@ -171,41 +171,28 @@
   <!-- ===== Christina ===== -->
   <div class="panel" id="panel-christina">
     <div class="person-head"><h2>Christina Hawkins</h2><span class="role">CEO &amp; Digital Marketing Consultant</span></div>
-    <div class="role-kpi-tag">Role KPIs &middot; CEO</div>
-    <div class="grid">
-      <div class="card"><div class="label"># of Tasks with Tags</div><div class="value">&mdash;</div>
-        <div class="goal">Goal: 3</div><span class="badge gray">Needs Data</span></div>
-      <div class="card"><div class="label">Lead Generation</div><div class="value">&mdash;</div>
-        <div class="goal">Goal: 3 meetings per week</div><span class="badge gray">Needs Data</span></div>
-      <div class="card"><div class="label">New Leads (Last 12 Mo.)</div><div class="value">30</div>
-        <div class="goal">HighLevel via Windsor.ai &middot; all opportunities, any pipeline, deduplicated by contact</div>
-        <span class="badge gray">Tracking</span>
-        <div class="asof">Manual snapshot &middot; Sep 18, 2026</div></div>
-    </div>
+    <div class="role-kpi-tag">Role KPIs &middot; CEO <span class="source-tag">HighLevel &middot; Live</span></div>
+    <div class="grid" id="live-christina-sales"></div>
     <div class="section-title">Task Health <span class="source-tag">Teamwork Projects &middot; Live</span></div>
     <div class="grid" id="live-christina"></div>
-    <div class="sample-note">Task volume is high for a CEO role, which usually means many tasks land on her by default (role, team, or company assignment) rather than being actively worked. Leads are deduplicated by contact and counted on the week of each contact's earliest opportunity. Proposals and Calls below are the manual tracker.</div>
+    <div class="sample-note">Leads are every FU Leads opportunity, counted the week it was created (wherever it sits today). Converted is every Onboarding opportunity, counted the week it was created. Both count each contact once. Proposals count the week an opportunity moved into the Proposal stage; HighLevel only keeps the most recent stage change, so the sync keeps its own log starting Oct 2026, and earlier proposals that already moved on can't be dated. Weeks run Monday to Sunday. Task volume is high for a CEO role, which usually means tasks land on her by default through role, team, or company assignment.</div>
 
     <div class="chart-card">
-      <h3>New Leads Entering Pipeline (HighLevel)</h3>
-      <div class="chart-wrap"><canvas id="chart-christina-leads"></canvas></div>
+      <h3>Weekly Sales Activity &mdash; Live (HighLevel)</h3>
+      <div class="chart-wrap"><canvas id="chart-christina-sales"></canvas></div>
     </div>
     <div class="table-scroll">
       <table class="wk nested">
-        <caption>New Leads by Week (last 12 months)</caption>
-        <thead><tr><th>Week</th><th>New Leads</th></tr></thead>
-        <tbody id="tbl-christina-leads"></tbody>
+        <caption>By Week (last 12 months)</caption>
+        <thead><tr><th>Week</th><th>Leads</th><th>Proposals</th><th>Converted</th></tr></thead>
+        <tbody id="tbl-christina-sales"></tbody>
       </table>
     </div>
 
-    <div class="chart-card">
-      <h3>Weekly Trend &mdash; Proposals / Calls (Manual Tracker)</h3>
-      <div class="chart-wrap"><canvas id="chart-christina"></canvas></div>
-    </div>
     <div class="table-scroll">
       <table class="wk nested">
-        <caption>Weekly Breakdown</caption>
-        <thead><tr><th>Week</th><th>Proposals</th><th>Calls</th></tr></thead>
+        <caption>Proposals &mdash; Manual Tracker (Jan&ndash;Aug 2026)</caption>
+        <thead><tr><th>Week</th><th>Proposals</th></tr></thead>
         <tbody id="tbl-christina"></tbody>
       </table>
     </div>
@@ -406,7 +393,7 @@
   </div>
 
   <div class="footnote">
-    Cards tagged <strong>Live</strong> load from <code>data/teamwork-live.json</code>, which a GitHub Action refreshes every morning from Teamwork Projects. Cards marked <em>Manual snapshot</em> aren't automated yet and show the date they were last pulled. Weekly charts and tables load from <code>data/weekly-history.json</code> (the 2026 KPI Scorecard plus later live entries). Blank weeks are omitted rather than shown as zero.
+    Cards tagged <strong>Live</strong> load from <code>data/teamwork-live.json</code>, which a GitHub Action refreshes every morning from Teamwork Projects. Cards marked <em>Manual snapshot</em> aren't automated yet and show the date they were last pulled. HighLevel cards load from <code>data/highlevel-live.json</code>, refreshed by the same Action. Other weekly charts and tables load from <code>data/weekly-history.json</code> (the 2026 KPI Scorecard plus later live entries). Blank weeks are omitted rather than shown as zero.
   </div>
 
 </div>
@@ -418,7 +405,7 @@
   var LOCAL = 'data/';
   var STALE_HOURS = 30;
 
-  var WK = null, LIVE = null, charts = {}, rendered = {};
+  var WK = null, LIVE = null, HL = null, charts = {}, rendered = {};
 
   function getJSON(file){
     var bust = '?t=' + Date.now();
@@ -556,14 +543,8 @@
     rendered[tab] = true;
     var R='#c0392b', Y='#b9860a', G='#1a9e6d', B='#2b4c7e';
     if(tab==='christina'){
-      makeLineChart('chart-christina', d.weeks, [ds('Proposals', d.proposals, G), ds('Calls', d.calls, Y)]);
-      fillTable('tbl-christina', d.weeks.map(function(w,i){ return [w, d.proposals[i], d.calls[i]]; }));
-      var dl = WK.christina_leads;
-      if(dl){
-        makeLineChart('chart-christina-leads', dl.weeks, [ds('New Leads', dl.counts, B)]);
-        fillTable('tbl-christina-leads', dl.weeks.map(function(w,i){ return [w, dl.counts[i]]; }));
-      }
-    } else if(tab==='javier' || tab==='jennifer'){
+      fillTable('tbl-christina', d.weeks.map(function(w,i){ return [w, d.proposals[i]]; }).filter(function(r){ return r[1]!==null; }));
+        } else if(tab==='javier' || tab==='jennifer'){
       makeLineChart('chart-'+tab, d.weeks, [ds('Individual Late %', d.ind_late, R), ds('Project Late %', d.proj_late, Y), goalDs('Goal (15%)', d.weeks.length, 15)]);
       fillTable('tbl-'+tab, d.rows, [7,10]);
     } else if(tab==='rebecaq'){
@@ -578,6 +559,38 @@
     }
   }
 
+  function renderSalesHistory(){
+    if(!HL || !HL.christina || rendered.sales) return;
+    if(current!=='christina') return;
+    rendered.sales = true;
+    var c = HL.christina;
+    makeLineChart('chart-christina-sales', c.weeks, [
+      ds('Leads', c.leads, '#2b4c7e'), ds('Proposals', c.proposals, '#b9860a'), ds('Converted', c.converted, '#1a9e6d'),
+      goalDs('Lead goal (3/wk)', c.weeks.length, 3)]);
+    fillTable('tbl-christina-sales', c.weeks.map(function(w,i){ return [w, c.leads[i], c.proposals[i], c.converted[i]]; }));
+  }
+
+  function renderSalesCards(){
+    var c = HL && HL.christina;
+    if(!c){ put('live-christina-sales', card('HighLevel', '&mdash;', 'No HighLevel data yet', '<span class="badge gray">Needs Data</span>')); return; }
+    var L=c.summary.leads, P=c.summary.proposals, V=c.summary.converted;
+    put('live-christina-sales',
+      card('Leads This Week', num(L.this_week),
+        'Goal: 3 per week &middot; Last full week: '+num(L.last_week)+' &middot; Last 12 months: '+num(L.last_12_months),
+        badge(L.last_week>=3)) +
+      card('Proposals This Week', num(P.this_week),
+        'Last full week: '+num(P.last_week)+' &middot; Last 12 months: '+num(P.last_12_months),
+        '<span class="badge gray">Tracking</span>') +
+      card('Converted This Week', num(V.this_week),
+        'Onboarding &middot; Last full week: '+num(V.last_week)+' &middot; Last 12 months: '+num(V.last_12_months),
+        '<span class="badge gray">Tracking</span>'));
+    if(HL.errors && HL.errors.length){
+      var e = document.getElementById('banner-err');
+      e.innerHTML += (e.innerHTML ? '<br>' : '') + '<strong>HighLevel sync issue:</strong> ' + HL.errors.map(esc).join(' &middot; ') + ' (showing last good numbers)';
+      e.classList.add('show');
+    }
+  }
+
   // ---------- tabs ----------
   var current = 'company';
   document.getElementById('tabs').addEventListener('click', function(e){
@@ -588,6 +601,7 @@
     current = btn.dataset.tab;
     document.getElementById('panel-' + current).classList.add('active');
     if(current !== 'company') renderHistory(current);
+    if(current === 'christina') renderSalesHistory();
   });
 
   // ---------- load ----------
@@ -597,6 +611,7 @@
     e.classList.add('show');
     document.getElementById('meta').innerHTML = 'GlobalSpex Internet Marketing &middot; Live data unavailable';
   });
+  getJSON('highlevel-live.json').then(function(j){ HL = j; renderSalesCards(); renderSalesHistory(); }).catch(function(){ renderSalesCards(); });
   getJSON('weekly-history.json').then(function(j){ WK = j; if(current!=='company') renderHistory(current); }).catch(function(){
     document.querySelectorAll('.chart-wrap').forEach(function(w){ w.innerHTML = '<div class="empty-state">Weekly history couldn\'t be loaded.</div>'; });
   });
