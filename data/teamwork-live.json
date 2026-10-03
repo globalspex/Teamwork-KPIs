@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-02T21:56:35.328246-05:00",
+  "generated_at": "2026-10-02T22:00:47.312814-05:00",
   "timezone": "America/Chicago",
   "company": {
     "total_open_tasks": 5387,
@@ -97,5 +97,14 @@
       "project_tasks_late": 99
     }
   },
-  "errors": []
+  "errors": [],
+  "debug": {
+    "total_projects_fetched": 35,
+    "status_counts": {
+      "active": 35
+    },
+    "completed_at_count": 1,
+    "archived_at_count": 0,
+    "deleted_at_count": 0
+  }
 }
