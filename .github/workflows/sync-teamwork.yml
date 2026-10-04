@@ -2,9 +2,11 @@ name: Sync Teamwork KPIs
 
 on:
   schedule:
-    # 11:00 UTC daily ~= 5-6am Central depending on DST. Adjust as you like --
-    # this just needs to run sometime before the morning dashboard check.
-    - cron: '0 11 * * *'
+    # Mondays at 8 AM Central. GitHub cron is UTC-only and ignores daylight saving,
+    # so it fires at both 13:00 UTC (8 AM CDT) and 14:00 UTC (8 AM CST); the
+    # "Monday 8 AM check" step below lets only the right one through.
+    - cron: '0 13 * * 1'
+    - cron: '0 14 * * 1'
   workflow_dispatch: {}   # lets you trigger it manually from the Actions tab
 
 permissions:
@@ -17,12 +19,28 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v4
 
+      - name: Monday 8 AM check
+        id: gate
+        run: |
+          # Manual runs always go. Scheduled runs go only if it's 8 AM or later in
+          # Central time AND today's sync hasn't already happened.
+          if [ "${{ github.event_name }}" != "schedule" ]; then echo "go=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          HOUR=$(TZ=America/Chicago date +%H); TODAY=$(TZ=America/Chicago date +%F)
+          LAST=$(python3 -c "import json;print(json.load(open('data/teamwork-live.json')).get('generated_at','')[:10])" 2>/dev/null || echo "")
+          if [ "$HOUR" -lt 8 ] || [ "$LAST" = "$TODAY" ]; then
+            echo "Skipping: Central hour $HOUR, last sync $LAST"; echo "go=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "go=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Set up Python
+        if: steps.gate.outputs.go == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
       - name: Run Teamwork sync
+        if: steps.gate.outputs.go == 'true'
         env:
           TEAMWORK_USERNAME: ${{ secrets.TEAMWORK_USERNAME }}
           TEAMWORK_PASSWORD: ${{ secrets.TEAMWORK_PASSWORD }}
@@ -31,6 +49,7 @@ jobs:
         run: python scripts/sync_teamwork.py
 
       - name: Run Teamwork Desk sync
+        if: steps.gate.outputs.go == 'true'
         # If Desk fails, still commit everything else below.
         continue-on-error: true
         env:
@@ -40,6 +59,7 @@ jobs:
         run: python scripts/sync_desk.py
 
       - name: Run HighLevel sync
+        if: steps.gate.outputs.go == 'true'
         # If HighLevel fails, still commit the Teamwork numbers below.
         continue-on-error: true
         env:
@@ -50,7 +70,7 @@ jobs:
         run: python scripts/sync_highlevel.py
 
       - name: Commit updated data files
-        if: always()
+        if: always() && steps.gate.outputs.go == 'true'
         run: |
           git config user.name "teamwork-kpi-bot"
           git config user.email "actions@users.noreply.github.com"
