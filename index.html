@@ -211,10 +211,10 @@
       <div class="chart-wrap"><canvas id="chart-co-desk-weekly"></canvas></div>
     </div>
     <div class="chart-card">
-      <h3>Support Backlog (daily)</h3>
+      <h3>Support Backlog (weekly snapshots)</h3>
       <div class="chart-wrap" id="wrap-co-backlog"><canvas id="chart-co-backlog"></canvas></div>
     </div>
-    <div class="sample-note">Milestones, overdue tasks, and the support backlog are saved once a day, since Teamwork only reports current status. These charts started Oct 2&ndash;3, 2026 and add a point every morning. Support volume counts real customer tickets (automated senders excluded); responsiveness is the share that got a first reply within 1 business day.</div>
+    <div class="sample-note">Milestones, overdue tasks, and the support backlog are saved each time the sync runs (Mondays at 8 AM Central), since Teamwork only reports current status. These charts started Oct 2&ndash;3, 2026 and add a point every week. Support volume counts real customer tickets (automated senders excluded); responsiveness is the share that got a first reply within 1 business day.</div>
   </div>
 
   <!-- ===== Christina ===== -->
@@ -423,7 +423,7 @@
     </div>
 
     <div class="chart-card">
-      <h3>Aging Tickets (daily, live)</h3>
+      <h3>Aging Tickets (weekly snapshots)</h3>
       <div class="chart-wrap" id="wrap-desk-aging"><canvas id="chart-desk-aging"></canvas></div>
     </div>
 
@@ -441,7 +441,7 @@
   </div>
 
   <div class="footnote">
-    Cards tagged <strong>Live</strong> load from <code>data/teamwork-live.json</code>, which a GitHub Action refreshes every morning from Teamwork Projects. Cards marked <em>Manual snapshot</em> aren't automated yet and show the date they were last pulled. Desk cards load from <code>data/desk-live.json</code> and HighLevel cards from <code>data/highlevel-live.json</code>, both, refreshed by the same Action. Other weekly charts and tables load from <code>data/weekly-history.json</code> (the 2026 KPI Scorecard plus later live entries). Blank weeks are omitted rather than shown as zero.
+    Cards tagged <strong>Live</strong> load from <code>data/teamwork-live.json</code>, which a GitHub Action refreshes every Monday at 8 AM Central. Cards marked <em>Manual snapshot</em> aren't automated yet and show the date they were last pulled. Desk cards load from <code>data/desk-live.json</code> and HighLevel cards from <code>data/highlevel-live.json</code>, both, refreshed by the same Action. Other weekly charts and tables load from <code>data/weekly-history.json</code> (the 2026 KPI Scorecard plus later live entries). Blank weeks are omitted rather than shown as zero.
   </div>
 
 </div>
@@ -451,7 +451,7 @@
   // even if the Pages rebuild after the bot's push is slow or skipped.
   var RAW = 'https://raw.githubusercontent.com/globalspex/Teamwork-KPIs/main/data/';
   var LOCAL = 'data/';
-  var STALE_HOURS = 30;
+  var STALE_HOURS = 8*24 + 6;   // weekly sync (Mondays 8 AM CT) plus a small buffer
 
   var WK = null, LIVE = null, HL = null, DESK = null, charts = {}, rendered = {};
 
@@ -572,7 +572,7 @@
     document.getElementById('meta').innerHTML = 'GlobalSpex Internet Marketing &middot; Live data synced ' + when + ' from Teamwork Projects';
     if(gen && (Date.now() - gen.getTime())/36e5 > STALE_HOURS){
       var b = document.getElementById('banner-stale');
-      b.textContent = 'Heads up: live data is more than ' + STALE_HOURS + ' hours old. The daily sync may have failed. Check the Actions tab on GitHub.';
+      b.textContent = 'Heads up: live data is more than a week old. The Monday sync may have failed. Check the Actions tab on GitHub.';
       b.classList.add('show');
     }
     if(LIVE.errors && LIVE.errors.length){
@@ -645,7 +645,7 @@
       var B = DESK.snapshots || [];
       if(B.length < 2){
         var w = document.getElementById('wrap-co-backlog'); w.style.height='auto';
-        w.innerHTML = '<div class="empty-state">Tracking started '+(B[0]?B[0].date:'today')+' ('+(B[0]?B[0].open+' open, '+B[0].waiting_stale+' waiting 2+ days':'no data yet')+'). This chart fills in one point per day.</div>';
+        w.innerHTML = '<div class="empty-state">Tracking started '+(B[0]?B[0].date:'today')+' ('+(B[0]?B[0].open+' open, '+B[0].waiting_stale+' waiting 2+ days':'no data yet')+'). This chart adds one point per weekly sync.</div>';
       } else {
         makeLineChart('chart-co-backlog', B.map(function(x){ return dayLabel(x.date); }), [
           ds('Open', B.map(function(x){ return x.open; }), '#475569'),
@@ -704,7 +704,7 @@
     if(S.length < 2){
       var w = document.getElementById('wrap-desk-aging');
       w.style.height = 'auto';
-      w.innerHTML = '<div class="empty-state">Tracking started '+(S[0]?S[0].date:'today')+' with '+(S[0]?S[0].aging:'&mdash;')+' aging tickets. Desk only reports current status, so this chart fills in one point per day.</div>';
+      w.innerHTML = '<div class="empty-state">Tracking started '+(S[0]?S[0].date:'today')+' with '+(S[0]?S[0].aging:'&mdash;')+' aging tickets. Desk only reports current status, so this chart adds one point per weekly sync.</div>';
       return;
     }
     makeLineChart('chart-desk-aging', S.map(function(x){ var p=x.date.split('-'); return (+p[1])+'/'+(+p[2]); }), [
