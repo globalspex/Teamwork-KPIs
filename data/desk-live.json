@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-10-03T15:20:38.291678-05:00",
+  "generated_at": "2026-10-04T07:50:54.401008-05:00",
   "errors": [],
   "company": {
-    "open_tickets": 44,
-    "new_today": 7,
+    "open_tickets": 47,
+    "new_today": 1,
     "waiting_on_customer": 19,
-    "waiting_no_update_2d": 10,
+    "waiting_no_update_2d": 11,
     "on_hold": 11
   },
   "andressa": {
@@ -359,27 +359,27 @@
   },
   "debug": {
     "bot_senders": 20,
-    "bot_tickets_in_window": 9663,
+    "bot_tickets_in_window": 9793,
     "customers_real_in_window": 309,
-    "recent_scanned": 10785,
-    "recent_real": 825,
+    "recent_scanned": 10920,
+    "recent_real": 828,
     "recent_by_inbox": {
       "18742": 56,
       "18839": 89,
-      "699": 10640
+      "699": 10775
     },
     "recent_by_status": {
-      "active": 278,
+      "active": 389,
       "close-followup": 1,
       "closed": 10282,
-      "knowhost-notifications": 125,
+      "knowhost-notifications": 130,
       "on-hold": 7,
-      "solved": 2,
+      "solved": 5,
       "spam": 4,
       "technical-report": 14,
       "waiting": 18,
-      "wordfence": 22,
-      "wp-remote-notifications": 32
+      "wordfence": 36,
+      "wp-remote-notifications": 34
     },
     "real_by_type": {
       "billing/purchase": 21,
@@ -387,7 +387,7 @@
       "problem": 17,
       "project": 8,
       "question": 12,
-      "request": 582
+      "request": 585
     }
   },
   "snapshots": [
@@ -397,6 +397,14 @@
       "open": 44,
       "waiting": 19,
       "waiting_stale": 10,
+      "on_hold": 11
+    },
+    {
+      "date": "2026-10-04",
+      "aging": 18,
+      "open": 47,
+      "waiting": 19,
+      "waiting_stale": 11,
       "on_hold": 11
     }
   ]

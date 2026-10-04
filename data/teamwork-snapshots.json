@@ -16,5 +16,14 @@
   "milestones_open": 33,
   "milestones_late": 11,
   "milestones_late_pct": 33.3
+ },
+ {
+  "date": "2026-10-04",
+  "open": 5990,
+  "overdue": 1130,
+  "overdue_pct": 18.9,
+  "milestones_open": 33,
+  "milestones_late": 11,
+  "milestones_late_pct": 33.3
  }
 ]
