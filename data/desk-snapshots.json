@@ -9,10 +9,10 @@
  },
  {
   "date": "2026-10-04",
-  "aging": 18,
-  "open": 47,
-  "waiting": 19,
-  "waiting_stale": 11,
+  "aging": 17,
+  "open": 46,
+  "waiting": 18,
+  "waiting_stale": 18,
   "on_hold": 11
  }
 ]

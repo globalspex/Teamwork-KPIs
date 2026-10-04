@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-10-04T07:50:54.401008-05:00",
+  "generated_at": "2026-10-04T18:25:39.550781-05:00",
   "errors": [],
   "company": {
-    "open_tickets": 47,
+    "open_tickets": 46,
     "new_today": 1,
-    "waiting_on_customer": 19,
-    "waiting_no_update_2d": 11,
+    "waiting_on_customer": 18,
+    "waiting_no_update_2d": 18,
     "on_hold": 11
   },
   "andressa": {
-    "aging_tickets": 18
+    "aging_tickets": 17
   },
   "weeks": [
     {
@@ -268,8 +268,8 @@
       },
       "followup_1day": {
         "hit": 39,
-        "n": 46,
-        "pct": 84.8
+        "n": 45,
+        "pct": 86.7
       },
       "resolution_by_agent": {
         "andressa": {
@@ -319,8 +319,8 @@
     },
     "followup_1day": {
       "hit": 39,
-      "n": 46,
-      "pct": 84.8
+      "n": 45,
+      "pct": 86.7
     },
     "resolution_by_agent": {
       "andressa": {
@@ -359,27 +359,27 @@
   },
   "debug": {
     "bot_senders": 20,
-    "bot_tickets_in_window": 9793,
+    "bot_tickets_in_window": 9802,
     "customers_real_in_window": 309,
-    "recent_scanned": 10920,
+    "recent_scanned": 10931,
     "recent_real": 828,
     "recent_by_inbox": {
       "18742": 56,
       "18839": 89,
-      "699": 10775
+      "699": 10786
     },
     "recent_by_status": {
-      "active": 389,
+      "active": 391,
       "close-followup": 1,
-      "closed": 10282,
+      "closed": 10283,
       "knowhost-notifications": 130,
       "on-hold": 7,
       "solved": 5,
-      "spam": 4,
+      "spam": 5,
       "technical-report": 14,
       "waiting": 18,
-      "wordfence": 36,
-      "wp-remote-notifications": 34
+      "wordfence": 39,
+      "wp-remote-notifications": 38
     },
     "real_by_type": {
       "billing/purchase": 21,
@@ -401,10 +401,10 @@
     },
     {
       "date": "2026-10-04",
-      "aging": 18,
-      "open": 47,
-      "waiting": 19,
-      "waiting_stale": 11,
+      "aging": 17,
+      "open": 46,
+      "waiting": 18,
+      "waiting_stale": 18,
       "on_hold": 11
     }
   ]
