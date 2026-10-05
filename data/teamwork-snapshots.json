@@ -28,11 +28,11 @@
  },
  {
   "date": "2026-10-05",
-  "open": 6854,
-  "overdue": 1133,
-  "overdue_pct": 16.5,
-  "milestones_open": 43,
-  "milestones_late": 11,
-  "milestones_late_pct": 25.6
+  "open": 6004,
+  "overdue": 1068,
+  "overdue_pct": 17.8,
+  "milestones_open": 41,
+  "milestones_late": 10,
+  "milestones_late_pct": 24.4
  }
 ]

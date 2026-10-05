@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-10-05T08:24:06.650509-05:00",
+  "generated_at": "2026-10-05T12:11:37.977950-05:00",
   "errors": [],
   "company": {
-    "open_tickets": 45,
-    "new_today": 4,
-    "waiting_on_customer": 18,
-    "waiting_no_update_2d": 18,
+    "open_tickets": 27,
+    "new_today": 14,
+    "waiting_on_customer": 15,
+    "waiting_no_update_2d": 2,
     "on_hold": 11
   },
   "andressa": {
-    "aging_tickets": 16
+    "aging_tickets": 21
   },
   "weeks": [
     {
@@ -86,9 +86,9 @@
         },
         "juliane": {
           "on_time": 10,
-          "n": 11,
-          "pct_on_time": 90.9,
-          "avg_resolution_hrs": 6.7
+          "n": 12,
+          "pct_on_time": 83.3,
+          "avg_resolution_hrs": 19.4
         },
         "andressa": {
           "on_time": 3,
@@ -190,6 +190,12 @@
           "pct_on_time": 33.3,
           "avg_resolution_hrs": 18.8
         },
+        "andressa": {
+          "on_time": 0,
+          "n": 1,
+          "pct_on_time": 0.0,
+          "avg_resolution_hrs": 35.5
+        },
         "juliane": {
           "on_time": 6,
           "n": 8,
@@ -263,26 +269,32 @@
       "range": "9/21\u20139/27"
     },
     {
-      "tickets": 120,
+      "tickets": 121,
       "problem": {
-        "avg_first_response_hrs": 0.2,
-        "n": 2
+        "avg_first_response_hrs": 0.8,
+        "n": 4
       },
       "request": {
-        "avg_first_response_hrs": 0.2,
-        "n": 8
+        "avg_first_response_hrs": 0.4,
+        "n": 10
       },
       "followup_1day": {
-        "hit": 32,
-        "n": 58,
-        "pct": 55.2
+        "hit": 37,
+        "n": 43,
+        "pct": 86.0
       },
       "resolution_by_agent": {
-        "juliane": {
+        "andressa": {
           "on_time": 1,
           "n": 1,
           "pct_on_time": 100.0,
-          "avg_resolution_hrs": 2.0
+          "avg_resolution_hrs": 1.3
+        },
+        "juliane": {
+          "on_time": 2,
+          "n": 2,
+          "pct_on_time": 100.0,
+          "avg_resolution_hrs": 7.3
         },
         "rebecaq": {
           "on_time": 1,
@@ -296,26 +308,32 @@
     }
   ],
   "last_full_week": {
-    "tickets": 120,
+    "tickets": 121,
     "problem": {
-      "avg_first_response_hrs": 0.2,
-      "n": 2
+      "avg_first_response_hrs": 0.8,
+      "n": 4
     },
     "request": {
-      "avg_first_response_hrs": 0.2,
-      "n": 8
+      "avg_first_response_hrs": 0.4,
+      "n": 10
     },
     "followup_1day": {
-      "hit": 32,
-      "n": 58,
-      "pct": 55.2
+      "hit": 37,
+      "n": 43,
+      "pct": 86.0
     },
     "resolution_by_agent": {
-      "juliane": {
+      "andressa": {
         "on_time": 1,
         "n": 1,
         "pct_on_time": 100.0,
-        "avg_resolution_hrs": 2.0
+        "avg_resolution_hrs": 1.3
+      },
+      "juliane": {
+        "on_time": 2,
+        "n": 2,
+        "pct_on_time": 100.0,
+        "avg_resolution_hrs": 7.3
       },
       "rebecaq": {
         "on_time": 1,
@@ -329,35 +347,33 @@
   },
   "debug": {
     "bot_senders": 20,
-    "bot_tickets_in_window": 8959,
-    "customers_real_in_window": 283,
-    "recent_scanned": 9919,
-    "recent_real": 689,
+    "bot_tickets_in_window": 9017,
+    "customers_real_in_window": 289,
+    "recent_scanned": 9989,
+    "recent_real": 700,
     "recent_by_inbox": {
       "18742": 55,
       "18839": 80,
-      "699": 9784
+      "699": 9854
     },
     "recent_by_status": {
-      "active": 497,
-      "close-followup": 1,
-      "closed": 9147,
-      "knowhost-notifications": 130,
+      "active": 104,
+      "closed": 9796,
+      "knowhost-notifications": 5,
       "on-hold": 6,
-      "solved": 10,
-      "spam": 5,
-      "technical-report": 14,
-      "waiting": 18,
-      "wordfence": 47,
-      "wp-remote-notifications": 44
+      "spam": 4,
+      "technical-report": 15,
+      "waiting": 14,
+      "wordfence": 44,
+      "wp-remote-notifications": 1
     },
     "real_by_type": {
-      "billing/purchase": 15,
-      "marketing/seo": 162,
-      "problem": 13,
+      "billing/purchase": 16,
+      "marketing/seo": 163,
+      "problem": 15,
       "project": 7,
       "question": 10,
-      "request": 482
+      "request": 489
     }
   },
   "snapshots": [
@@ -379,10 +395,10 @@
     },
     {
       "date": "2026-10-05",
-      "aging": 16,
-      "open": 45,
-      "waiting": 18,
-      "waiting_stale": 18,
+      "aging": 21,
+      "open": 27,
+      "waiting": 15,
+      "waiting_stale": 2,
       "on_hold": 11
     }
   ]
