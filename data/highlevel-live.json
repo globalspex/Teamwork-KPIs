@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-05T12:13:57.435152-05:00",
+  "generated_at": "2026-10-08T09:55:42.849063-05:00",
   "timezone": "America/Chicago",
   "christina": {
     "weeks": [
@@ -162,7 +162,7 @@
       0,
       2,
       0,
-      0
+      1
     ],
     "proposals": [
       0,
@@ -274,10 +274,10 @@
     ],
     "summary": {
       "leads": {
-        "this_week": 0,
+        "this_week": 1,
         "last_week": 0,
-        "last_12_months": 29,
-        "avg_per_week_last_12_weeks": 0.4
+        "last_12_months": 30,
+        "avg_per_week_last_12_weeks": 0.5
       },
       "proposals": {
         "this_week": 0,
@@ -319,7 +319,7 @@
         2,
         0,
         3,
-        0
+        1
       ],
       "proposals": [
         3,
@@ -352,9 +352,9 @@
     },
     "monthly_summary": {
       "leads": {
-        "this_month": 0,
+        "this_month": 1,
         "last_month": 3,
-        "last_12_months": 27
+        "last_12_months": 28
       },
       "proposals": {
         "this_month": 0,

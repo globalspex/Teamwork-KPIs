@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-10-05T12:11:37.977950-05:00",
+  "generated_at": "2026-10-08T09:53:12.200046-05:00",
   "errors": [],
   "company": {
-    "open_tickets": 27,
-    "new_today": 14,
-    "waiting_on_customer": 15,
-    "waiting_no_update_2d": 2,
-    "on_hold": 11
+    "open_tickets": 23,
+    "new_today": 6,
+    "waiting_on_customer": 17,
+    "waiting_no_update_2d": 0,
+    "on_hold": 7
   },
   "andressa": {
-    "aging_tickets": 21
+    "aging_tickets": 11
   },
   "weeks": [
     {
@@ -35,10 +35,10 @@
           "avg_resolution_hrs": 9.5
         },
         "andressa": {
-          "on_time": 1,
-          "n": 5,
-          "pct_on_time": 20.0,
-          "avg_resolution_hrs": 60.4
+          "on_time": 2,
+          "n": 6,
+          "pct_on_time": 33.3,
+          "avg_resolution_hrs": 50.4
         },
         "jennifer": {
           "on_time": 1,
@@ -241,10 +241,10 @@
           "avg_resolution_hrs": 14.2
         },
         "rebecaq": {
-          "on_time": 2,
-          "n": 6,
-          "pct_on_time": 33.3,
-          "avg_resolution_hrs": 22.2
+          "on_time": 3,
+          "n": 7,
+          "pct_on_time": 42.9,
+          "avg_resolution_hrs": 19.0
         },
         "juliane": {
           "on_time": 5,
@@ -254,9 +254,9 @@
         },
         "jennifer": {
           "on_time": 1,
-          "n": 1,
-          "pct_on_time": 100.0,
-          "avg_resolution_hrs": 0.0
+          "n": 2,
+          "pct_on_time": 50.0,
+          "avg_resolution_hrs": 47.6
         },
         "javier": {
           "on_time": 0,
@@ -280,8 +280,8 @@
       },
       "followup_1day": {
         "hit": 37,
-        "n": 43,
-        "pct": 86.0
+        "n": 38,
+        "pct": 97.4
       },
       "resolution_by_agent": {
         "andressa": {
@@ -291,16 +291,22 @@
           "avg_resolution_hrs": 1.3
         },
         "juliane": {
-          "on_time": 2,
-          "n": 2,
+          "on_time": 3,
+          "n": 3,
           "pct_on_time": 100.0,
-          "avg_resolution_hrs": 7.3
+          "avg_resolution_hrs": 5.5
+        },
+        "christina": {
+          "on_time": 0,
+          "n": 2,
+          "pct_on_time": 0.0,
+          "avg_resolution_hrs": 34.5
         },
         "rebecaq": {
           "on_time": 1,
-          "n": 1,
-          "pct_on_time": 100.0,
-          "avg_resolution_hrs": 2.4
+          "n": 3,
+          "pct_on_time": 33.3,
+          "avg_resolution_hrs": 24.4
         }
       },
       "week": "9/28",
@@ -319,8 +325,8 @@
     },
     "followup_1day": {
       "hit": 37,
-      "n": 43,
-      "pct": 86.0
+      "n": 38,
+      "pct": 97.4
     },
     "resolution_by_agent": {
       "andressa": {
@@ -330,50 +336,57 @@
         "avg_resolution_hrs": 1.3
       },
       "juliane": {
-        "on_time": 2,
-        "n": 2,
+        "on_time": 3,
+        "n": 3,
         "pct_on_time": 100.0,
-        "avg_resolution_hrs": 7.3
+        "avg_resolution_hrs": 5.5
+      },
+      "christina": {
+        "on_time": 0,
+        "n": 2,
+        "pct_on_time": 0.0,
+        "avg_resolution_hrs": 34.5
       },
       "rebecaq": {
         "on_time": 1,
-        "n": 1,
-        "pct_on_time": 100.0,
-        "avg_resolution_hrs": 2.4
+        "n": 3,
+        "pct_on_time": 33.3,
+        "avg_resolution_hrs": 24.4
       }
     },
     "week": "9/28",
     "range": "9/28\u201310/4"
   },
   "debug": {
-    "bot_senders": 20,
-    "bot_tickets_in_window": 9017,
-    "customers_real_in_window": 289,
-    "recent_scanned": 9989,
-    "recent_real": 700,
+    "bot_senders": 21,
+    "bot_tickets_in_window": 10109,
+    "customers_real_in_window": 313,
+    "recent_scanned": 11163,
+    "recent_real": 772,
     "recent_by_inbox": {
-      "18742": 55,
-      "18839": 80,
-      "699": 9854
+      "18742": 62,
+      "18839": 92,
+      "699": 11009
     },
     "recent_by_status": {
-      "active": 104,
-      "closed": 9796,
-      "knowhost-notifications": 5,
-      "on-hold": 6,
+      "active": 107,
+      "closed": 10935,
+      "knowhost-notifications": 36,
+      "on-hold": 3,
+      "solved": 2,
       "spam": 4,
-      "technical-report": 15,
-      "waiting": 14,
-      "wordfence": 44,
-      "wp-remote-notifications": 1
+      "technical-report": 9,
+      "waiting": 15,
+      "wordfence": 40,
+      "wp-remote-notifications": 12
     },
     "real_by_type": {
-      "billing/purchase": 16,
-      "marketing/seo": 163,
-      "problem": 15,
+      "billing/purchase": 18,
+      "marketing/seo": 187,
+      "problem": 18,
       "project": 7,
-      "question": 10,
-      "request": 489
+      "question": 13,
+      "request": 529
     }
   },
   "snapshots": [
@@ -400,6 +413,14 @@
       "waiting": 15,
       "waiting_stale": 2,
       "on_hold": 11
+    },
+    {
+      "date": "2026-10-08",
+      "aging": 11,
+      "open": 23,
+      "waiting": 17,
+      "waiting_stale": 0,
+      "on_hold": 7
     }
   ]
 }

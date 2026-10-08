@@ -1,29 +1,29 @@
 {
-  "generated_at": "2026-10-05T12:11:00.585435-05:00",
+  "generated_at": "2026-10-08T09:52:42.727285-05:00",
   "timezone": "America/Chicago",
   "company": {
-    "total_open_tasks": 6004,
-    "overdue_tasks": 1068,
-    "due_today": 82,
-    "due_this_week": 480,
+    "total_open_tasks": 5747,
+    "overdue_tasks": 1095,
+    "due_today": 133,
+    "due_this_week": 239,
     "week_ends": "2026-10-09",
-    "completed_today": 1277,
-    "milestones_open": 41,
-    "milestones_late": 10,
-    "milestones_late_pct": 24.4
+    "completed_today": 25,
+    "milestones_open": 40,
+    "milestones_late": 11,
+    "milestones_late_pct": 27.5
   },
   "people": {
     "christina": {
       "name": "Christina Hawkins",
-      "total_open_tasks": 1346,
-      "overdue_tasks": 527,
-      "due_today": 13,
-      "due_this_week": 56,
+      "total_open_tasks": 1366,
+      "overdue_tasks": 504,
+      "due_today": 12,
+      "due_this_week": 17,
       "total_incomplete_milestones": 4,
       "late_milestones": 1,
       "active_projects_owned": 5,
-      "project_tasks_total": 1462,
-      "project_tasks_late": 218,
+      "project_tasks_total": 1455,
+      "project_tasks_late": 228,
       "utilization": {
         "capacity_hours": 40,
         "last_week": {
@@ -74,15 +74,15 @@
     },
     "javier": {
       "name": "Javier L\u00f3pez",
-      "total_open_tasks": 368,
-      "overdue_tasks": 72,
-      "due_today": 26,
-      "due_this_week": 97,
+      "total_open_tasks": 344,
+      "overdue_tasks": 70,
+      "due_today": 15,
+      "due_this_week": 34,
       "total_incomplete_milestones": 19,
-      "late_milestones": 1,
+      "late_milestones": 3,
       "active_projects_owned": 17,
-      "project_tasks_total": 2573,
-      "project_tasks_late": 636,
+      "project_tasks_total": 2585,
+      "project_tasks_late": 618,
       "utilization": {
         "capacity_hours": 40,
         "last_week": {
@@ -133,15 +133,15 @@
     },
     "jennifer": {
       "name": "Jennifer McNinch",
-      "total_open_tasks": 128,
-      "overdue_tasks": 12,
-      "due_today": 23,
-      "due_this_week": 45,
-      "total_incomplete_milestones": 22,
+      "total_open_tasks": 129,
+      "overdue_tasks": 4,
+      "due_today": 2,
+      "due_this_week": 30,
+      "total_incomplete_milestones": 21,
       "late_milestones": 9,
       "active_projects_owned": 4,
-      "project_tasks_total": 1525,
-      "project_tasks_late": 44,
+      "project_tasks_total": 1344,
+      "project_tasks_late": 102,
       "utilization": {
         "capacity_hours": 40,
         "last_week": {
@@ -192,15 +192,15 @@
     },
     "rebecaq": {
       "name": "Rebeca Queiroz",
-      "total_open_tasks": 348,
-      "overdue_tasks": 110,
-      "due_today": 10,
-      "due_this_week": 69,
+      "total_open_tasks": 364,
+      "overdue_tasks": 141,
+      "due_today": 13,
+      "due_this_week": 20,
       "total_incomplete_milestones": 0,
       "late_milestones": 0,
       "active_projects_owned": 5,
-      "project_tasks_total": 145,
-      "project_tasks_late": 60,
+      "project_tasks_total": 149,
+      "project_tasks_late": 77,
       "utilization": {
         "capacity_hours": 40,
         "last_week": {
@@ -251,10 +251,10 @@
     },
     "juliane": {
       "name": "Juliane Roitmann",
-      "total_open_tasks": 843,
-      "overdue_tasks": 90,
-      "due_today": 4,
-      "due_this_week": 90,
+      "total_open_tasks": 846,
+      "overdue_tasks": 140,
+      "due_today": 11,
+      "due_this_week": 18,
       "total_incomplete_milestones": 0,
       "late_milestones": 0,
       "active_projects_owned": 0,
@@ -265,15 +265,15 @@
         "last_week": {
           "week": "9/28",
           "range": "9/28\u201310/4",
-          "hours": 45.2,
-          "pct": 113.0
+          "hours": 38.85,
+          "pct": 97.1
         },
         "weeks": [
           {
             "week": "8/24",
             "range": "8/24\u20138/30",
-            "hours": 46.87,
-            "pct": 117.2
+            "hours": 46.25,
+            "pct": 115.6
           },
           {
             "week": "8/31",
@@ -296,22 +296,22 @@
           {
             "week": "9/21",
             "range": "9/21\u20139/27",
-            "hours": 41.53,
-            "pct": 103.8
+            "hours": 38.37,
+            "pct": 95.9
           },
           {
             "week": "9/28",
             "range": "9/28\u201310/4",
-            "hours": 45.2,
-            "pct": 113.0
+            "hours": 38.85,
+            "pct": 97.1
           }
         ]
       }
     },
     "rebecam": {
       "name": "Rebeca Mesquita",
-      "total_open_tasks": 40,
-      "overdue_tasks": 7,
+      "total_open_tasks": 39,
+      "overdue_tasks": 6,
       "due_today": 0,
       "due_this_week": 0,
       "total_incomplete_milestones": 0,
@@ -369,10 +369,10 @@
     },
     "aura": {
       "name": "Aura Celorico",
-      "total_open_tasks": 443,
-      "overdue_tasks": 39,
-      "due_today": 4,
-      "due_this_week": 49,
+      "total_open_tasks": 449,
+      "overdue_tasks": 33,
+      "due_today": 18,
+      "due_this_week": 43,
       "total_incomplete_milestones": 0,
       "late_milestones": 0,
       "active_projects_owned": 0,
@@ -383,8 +383,8 @@
         "last_week": {
           "week": "9/28",
           "range": "9/28\u201310/4",
-          "hours": 14.85,
-          "pct": 37.1
+          "hours": 17.15,
+          "pct": 42.9
         },
         "weeks": [
           {
@@ -420,23 +420,23 @@
           {
             "week": "9/28",
             "range": "9/28\u201310/4",
-            "hours": 14.85,
-            "pct": 37.1
+            "hours": 17.15,
+            "pct": 42.9
           }
         ]
       }
     },
     "andressa": {
       "name": "Andressa Alves",
-      "total_open_tasks": 278,
-      "overdue_tasks": 50,
-      "due_today": 11,
-      "due_this_week": 35,
+      "total_open_tasks": 264,
+      "overdue_tasks": 27,
+      "due_today": 12,
+      "due_this_week": 25,
       "total_incomplete_milestones": 0,
       "late_milestones": 0,
       "active_projects_owned": 3,
-      "project_tasks_total": 299,
-      "project_tasks_late": 110,
+      "project_tasks_total": 214,
+      "project_tasks_late": 70,
       "utilization": {
         "capacity_hours": 40,
         "last_week": {
@@ -523,6 +523,15 @@
       "milestones_open": 41,
       "milestones_late": 10,
       "milestones_late_pct": 24.4
+    },
+    {
+      "date": "2026-10-08",
+      "open": 5747,
+      "overdue": 1095,
+      "overdue_pct": 19.1,
+      "milestones_open": 40,
+      "milestones_late": 11,
+      "milestones_late_pct": 27.5
     }
   ]
 }
