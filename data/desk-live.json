@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-10-08T09:53:12.200046-05:00",
+  "generated_at": "2026-10-10T11:59:08.091007-05:00",
   "errors": [],
   "company": {
-    "open_tickets": 23,
-    "new_today": 6,
-    "waiting_on_customer": 17,
-    "waiting_no_update_2d": 0,
-    "on_hold": 7
+    "open_tickets": 25,
+    "new_today": 1,
+    "waiting_on_customer": 21,
+    "waiting_no_update_2d": 10,
+    "on_hold": 6
   },
   "andressa": {
-    "aging_tickets": 11
+    "aging_tickets": 14
   },
   "weeks": [
     {
@@ -35,10 +35,10 @@
           "avg_resolution_hrs": 9.5
         },
         "andressa": {
-          "on_time": 2,
-          "n": 6,
-          "pct_on_time": 33.3,
-          "avg_resolution_hrs": 50.4
+          "on_time": 1,
+          "n": 5,
+          "pct_on_time": 20.0,
+          "avg_resolution_hrs": 60.4
         },
         "jennifer": {
           "on_time": 1,
@@ -198,9 +198,9 @@
         },
         "juliane": {
           "on_time": 6,
-          "n": 8,
-          "pct_on_time": 75.0,
-          "avg_resolution_hrs": 9.6
+          "n": 9,
+          "pct_on_time": 66.7,
+          "avg_resolution_hrs": 21.0
         },
         "rebecaq": {
           "on_time": 3,
@@ -284,17 +284,17 @@
         "pct": 97.4
       },
       "resolution_by_agent": {
+        "juliane": {
+          "on_time": 4,
+          "n": 4,
+          "pct_on_time": 100.0,
+          "avg_resolution_hrs": 6.1
+        },
         "andressa": {
           "on_time": 1,
           "n": 1,
           "pct_on_time": 100.0,
           "avg_resolution_hrs": 1.3
-        },
-        "juliane": {
-          "on_time": 3,
-          "n": 3,
-          "pct_on_time": 100.0,
-          "avg_resolution_hrs": 5.5
         },
         "christina": {
           "on_time": 0,
@@ -329,17 +329,17 @@
       "pct": 97.4
     },
     "resolution_by_agent": {
+      "juliane": {
+        "on_time": 4,
+        "n": 4,
+        "pct_on_time": 100.0,
+        "avg_resolution_hrs": 6.1
+      },
       "andressa": {
         "on_time": 1,
         "n": 1,
         "pct_on_time": 100.0,
         "avg_resolution_hrs": 1.3
-      },
-      "juliane": {
-        "on_time": 3,
-        "n": 3,
-        "pct_on_time": 100.0,
-        "avg_resolution_hrs": 5.5
       },
       "christina": {
         "on_time": 0,
@@ -359,34 +359,34 @@
   },
   "debug": {
     "bot_senders": 21,
-    "bot_tickets_in_window": 10109,
-    "customers_real_in_window": 313,
-    "recent_scanned": 11163,
-    "recent_real": 772,
+    "bot_tickets_in_window": 10287,
+    "customers_real_in_window": 322,
+    "recent_scanned": 11373,
+    "recent_real": 801,
     "recent_by_inbox": {
-      "18742": 62,
-      "18839": 92,
-      "699": 11009
+      "18742": 63,
+      "18839": 94,
+      "699": 11216
     },
     "recent_by_status": {
-      "active": 107,
-      "closed": 10935,
-      "knowhost-notifications": 36,
+      "active": 183,
+      "closed": 11015,
+      "knowhost-notifications": 42,
       "on-hold": 3,
       "solved": 2,
       "spam": 4,
       "technical-report": 9,
-      "waiting": 15,
-      "wordfence": 40,
-      "wp-remote-notifications": 12
+      "waiting": 19,
+      "wordfence": 68,
+      "wp-remote-notifications": 28
     },
     "real_by_type": {
-      "billing/purchase": 18,
-      "marketing/seo": 187,
-      "problem": 18,
+      "billing/purchase": 19,
+      "marketing/seo": 191,
+      "problem": 20,
       "project": 7,
-      "question": 13,
-      "request": 529
+      "question": 14,
+      "request": 550
     }
   },
   "snapshots": [
@@ -421,6 +421,14 @@
       "waiting": 17,
       "waiting_stale": 0,
       "on_hold": 7
+    },
+    {
+      "date": "2026-10-10",
+      "aging": 14,
+      "open": 25,
+      "waiting": 21,
+      "waiting_stale": 10,
+      "on_hold": 6
     }
   ]
 }
