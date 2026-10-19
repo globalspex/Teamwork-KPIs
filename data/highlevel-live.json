@@ -1,9 +1,8 @@
 {
-  "generated_at": "2026-10-12T08:40:48.910491-05:00",
+  "generated_at": "2026-10-19T08:22:08.633326-05:00",
   "timezone": "America/Chicago",
   "christina": {
     "weeks": [
-      "10/20",
       "10/27",
       "11/3",
       "11/10",
@@ -54,10 +53,10 @@
       "9/21",
       "9/28",
       "10/5",
-      "10/12"
+      "10/12",
+      "10/19"
     ],
     "week_start_dates": [
-      "2025-10-20",
       "2025-10-27",
       "2025-11-03",
       "2025-11-10",
@@ -108,12 +107,12 @@
       "2026-09-21",
       "2026-09-28",
       "2026-10-05",
-      "2026-10-12"
+      "2026-10-12",
+      "2026-10-19"
     ],
     "leads": [
       1,
       1,
-      1,
       0,
       0,
       0,
@@ -161,11 +160,11 @@
       0,
       2,
       0,
+      1,
       1,
       0
     ],
     "proposals": [
-      0,
       1,
       2,
       0,
@@ -214,6 +213,7 @@
       1,
       0,
       2,
+      0,
       0,
       0,
       0
@@ -240,7 +240,6 @@
       0,
       0,
       0,
-      0,
       1,
       0,
       2,
@@ -270,6 +269,7 @@
       0,
       3,
       0,
+      0,
       0
     ],
     "summary": {
@@ -277,13 +277,13 @@
         "this_week": 0,
         "last_week": 1,
         "last_12_months": 30,
-        "avg_per_week_last_12_weeks": 0.5
+        "avg_per_week_last_12_weeks": 0.4
       },
       "proposals": {
         "this_week": 0,
         "last_week": 0,
         "last_12_months": 31,
-        "avg_per_week_last_12_weeks": 0.3
+        "avg_per_week_last_12_weeks": 0.2
       },
       "converted": {
         "this_week": 0,
@@ -319,7 +319,7 @@
         2,
         0,
         3,
-        1
+        2
       ],
       "proposals": [
         3,
@@ -352,9 +352,9 @@
     },
     "monthly_summary": {
       "leads": {
-        "this_month": 1,
+        "this_month": 2,
         "last_month": 3,
-        "last_12_months": 28
+        "last_12_months": 29
       },
       "proposals": {
         "this_month": 0,

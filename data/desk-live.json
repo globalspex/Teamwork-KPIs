@@ -1,67 +1,17 @@
 {
-  "generated_at": "2026-10-12T08:38:08.380609-05:00",
+  "generated_at": "2026-10-19T08:19:26.962630-05:00",
   "errors": [],
   "company": {
-    "open_tickets": 35,
+    "open_tickets": 38,
     "new_today": 5,
-    "waiting_on_customer": 17,
-    "waiting_no_update_2d": 17,
+    "waiting_on_customer": 25,
+    "waiting_no_update_2d": 23,
     "on_hold": 6
   },
   "andressa": {
-    "aging_tickets": 14
+    "aging_tickets": 20
   },
   "weeks": [
-    {
-      "tickets": 106,
-      "problem": {
-        "avg_first_response_hrs": 0.8,
-        "n": 2
-      },
-      "request": {
-        "avg_first_response_hrs": 12.5,
-        "n": 20
-      },
-      "followup_1day": {
-        "hit": 30,
-        "n": 36,
-        "pct": 83.3
-      },
-      "resolution_by_agent": {
-        "christina": {
-          "on_time": 1,
-          "n": 4,
-          "pct_on_time": 25.0,
-          "avg_resolution_hrs": 73.4
-        },
-        "juliane": {
-          "on_time": 10,
-          "n": 12,
-          "pct_on_time": 83.3,
-          "avg_resolution_hrs": 19.4
-        },
-        "andressa": {
-          "on_time": 3,
-          "n": 6,
-          "pct_on_time": 50.0,
-          "avg_resolution_hrs": 30.4
-        },
-        "jennifer": {
-          "on_time": 2,
-          "n": 2,
-          "pct_on_time": 100.0,
-          "avg_resolution_hrs": 5.7
-        },
-        "rebecaq": {
-          "on_time": 0,
-          "n": 3,
-          "pct_on_time": 0.0,
-          "avg_resolution_hrs": 52.8
-        }
-      },
-      "week": "8/31",
-      "range": "8/31\u20139/6"
-    },
     {
       "tickets": 90,
       "problem": {
@@ -180,8 +130,8 @@
       },
       "followup_1day": {
         "hit": 39,
-        "n": 44,
-        "pct": 88.6
+        "n": 45,
+        "pct": 86.7
       },
       "resolution_by_agent": {
         "andressa": {
@@ -219,14 +169,14 @@
       "range": "9/21\u20139/27"
     },
     {
-      "tickets": 121,
+      "tickets": 122,
       "problem": {
         "avg_first_response_hrs": 0.8,
         "n": 4
       },
       "request": {
-        "avg_first_response_hrs": 0.4,
-        "n": 10
+        "avg_first_response_hrs": 7.6,
+        "n": 11
       },
       "followup_1day": {
         "hit": 37,
@@ -263,26 +213,26 @@
       "range": "9/28\u201310/4"
     },
     {
-      "tickets": 122,
+      "tickets": 123,
       "problem": {
-        "avg_first_response_hrs": 0.3,
-        "n": 5
+        "avg_first_response_hrs": 0.5,
+        "n": 6
       },
       "request": {
         "avg_first_response_hrs": 0.8,
-        "n": 11
+        "n": 12
       },
       "followup_1day": {
-        "hit": 34,
-        "n": 56,
-        "pct": 60.7
+        "hit": 37,
+        "n": 47,
+        "pct": 78.7
       },
       "resolution_by_agent": {
         "juliane": {
-          "on_time": 5,
-          "n": 5,
-          "pct_on_time": 100.0,
-          "avg_resolution_hrs": 4.8
+          "on_time": 7,
+          "n": 8,
+          "pct_on_time": 87.5,
+          "avg_resolution_hrs": 7.3
         },
         "rebecaq": {
           "on_time": 1,
@@ -299,77 +249,127 @@
       },
       "week": "10/5",
       "range": "10/5\u201310/11"
+    },
+    {
+      "tickets": 111,
+      "problem": {
+        "avg_first_response_hrs": 1.0,
+        "n": 3
+      },
+      "request": {
+        "avg_first_response_hrs": 1.0,
+        "n": 10
+      },
+      "followup_1day": {
+        "hit": 24,
+        "n": 49,
+        "pct": 49.0
+      },
+      "resolution_by_agent": {
+        "juliane": {
+          "on_time": 2,
+          "n": 2,
+          "pct_on_time": 100.0,
+          "avg_resolution_hrs": 2.8
+        },
+        "rebecaq": {
+          "on_time": 2,
+          "n": 2,
+          "pct_on_time": 100.0,
+          "avg_resolution_hrs": 3.8
+        },
+        "jennifer": {
+          "on_time": 3,
+          "n": 3,
+          "pct_on_time": 100.0,
+          "avg_resolution_hrs": 1.9
+        },
+        "andressa": {
+          "on_time": 0,
+          "n": 1,
+          "pct_on_time": 0.0,
+          "avg_resolution_hrs": 27.2
+        }
+      },
+      "week": "10/12",
+      "range": "10/12\u201310/18"
     }
   ],
   "last_full_week": {
-    "tickets": 122,
+    "tickets": 111,
     "problem": {
-      "avg_first_response_hrs": 0.3,
-      "n": 5
+      "avg_first_response_hrs": 1.0,
+      "n": 3
     },
     "request": {
-      "avg_first_response_hrs": 0.8,
-      "n": 11
+      "avg_first_response_hrs": 1.0,
+      "n": 10
     },
     "followup_1day": {
-      "hit": 34,
-      "n": 56,
-      "pct": 60.7
+      "hit": 24,
+      "n": 49,
+      "pct": 49.0
     },
     "resolution_by_agent": {
       "juliane": {
-        "on_time": 5,
-        "n": 5,
+        "on_time": 2,
+        "n": 2,
         "pct_on_time": 100.0,
-        "avg_resolution_hrs": 4.8
+        "avg_resolution_hrs": 2.8
       },
       "rebecaq": {
-        "on_time": 1,
+        "on_time": 2,
         "n": 2,
-        "pct_on_time": 50.0,
-        "avg_resolution_hrs": 18.6
-      },
-      "christina": {
-        "on_time": 1,
-        "n": 1,
         "pct_on_time": 100.0,
-        "avg_resolution_hrs": 14.9
+        "avg_resolution_hrs": 3.8
+      },
+      "jennifer": {
+        "on_time": 3,
+        "n": 3,
+        "pct_on_time": 100.0,
+        "avg_resolution_hrs": 1.9
+      },
+      "andressa": {
+        "on_time": 0,
+        "n": 1,
+        "pct_on_time": 0.0,
+        "avg_resolution_hrs": 27.2
       }
     },
-    "week": "10/5",
-    "range": "10/5\u201310/11"
+    "week": "10/12",
+    "range": "10/12\u201310/18"
   },
   "debug": {
     "bot_senders": 21,
-    "bot_tickets_in_window": 9972,
-    "customers_real_in_window": 304,
-    "recent_scanned": 10930,
-    "recent_real": 702,
+    "bot_tickets_in_window": 10885,
+    "customers_real_in_window": 307,
+    "recent_scanned": 11790,
+    "recent_real": 709,
     "recent_by_inbox": {
-      "18742": 65,
-      "18839": 81,
-      "699": 10784
+      "18742": 73,
+      "18839": 78,
+      "699": 11639
     },
     "recent_by_status": {
-      "active": 601,
-      "close-followup": 3,
-      "closed": 9956,
-      "knowhost-notifications": 159,
-      "on-hold": 3,
+      "active": 534,
+      "close-followup": 2,
+      "closed": 11043,
+      "knowhost-notifications": 47,
+      "on-hold": 2,
       "solved": 5,
-      "spam": 5,
-      "technical-report": 9,
-      "waiting": 15,
-      "wordfence": 97,
-      "wp-remote-notifications": 77
+      "spam": 8,
+      "technical-report": 8,
+      "waiting": 24,
+      "wordfence": 63,
+      "wp-remote-notifications": 54
     },
     "real_by_type": {
-      "billing/purchase": 18,
-      "marketing/seo": 168,
-      "problem": 19,
-      "project": 4,
+      "billing/purchase": 16,
+      "marketing/seo": 173,
+      "problem": 21,
+      "project": 5,
       "question": 14,
-      "request": 479
+      "request": 480
     }
   },
   "snapshots": [
@@ -419,6 +419,14 @@
       "open": 35,
       "waiting": 17,
       "waiting_stale": 17,
+      "on_hold": 6
+    },
+    {
+      "date": "2026-10-19",
+      "aging": 20,
+      "open": 38,
+      "waiting": 25,
+      "waiting_stale": 23,
       "on_hold": 6
     }
   ]
