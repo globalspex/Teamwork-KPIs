@@ -1,29 +1,29 @@
 {
-  "generated_at": "2026-10-19T08:18:56.823700-05:00",
+  "generated_at": "2026-10-25T15:14:41.872208-05:00",
   "timezone": "America/Chicago",
   "company": {
-    "total_open_tasks": 5223,
-    "overdue_tasks": 859,
-    "due_today": 50,
-    "due_this_week": 186,
-    "week_ends": "2026-10-23",
-    "completed_today": 3,
+    "total_open_tasks": 4891,
+    "overdue_tasks": 875,
+    "due_today": 0,
+    "due_this_week": 417,
+    "week_ends": "2026-10-30",
+    "completed_today": 0,
     "milestones_open": 30,
-    "milestones_late": 5,
-    "milestones_late_pct": 16.7
+    "milestones_late": 11,
+    "milestones_late_pct": 36.7
   },
   "people": {
     "christina": {
       "name": "Christina Hawkins",
-      "total_open_tasks": 1166,
-      "overdue_tasks": 372,
-      "due_today": 7,
-      "due_this_week": 44,
+      "total_open_tasks": 1161,
+      "overdue_tasks": 365,
+      "due_today": 0,
+      "due_this_week": 84,
       "total_incomplete_milestones": 2,
       "late_milestones": 1,
       "active_projects_owned": 5,
-      "project_tasks_total": 1424,
-      "project_tasks_late": 196,
+      "project_tasks_total": 1419,
+      "project_tasks_late": 211,
       "utilization": {
         "capacity_hours": 40,
         "last_week": {
@@ -74,15 +74,15 @@
     },
     "javier": {
       "name": "Javier L\u00f3pez",
-      "total_open_tasks": 328,
-      "overdue_tasks": 86,
-      "due_today": 16,
-      "due_this_week": 68,
+      "total_open_tasks": 323,
+      "overdue_tasks": 76,
+      "due_today": 0,
+      "due_this_week": 67,
       "total_incomplete_milestones": 19,
-      "late_milestones": 3,
+      "late_milestones": 7,
       "active_projects_owned": 16,
-      "project_tasks_total": 1335,
-      "project_tasks_late": 352,
+      "project_tasks_total": 1348,
+      "project_tasks_late": 347,
       "utilization": {
         "capacity_hours": 40,
         "last_week": {
@@ -133,15 +133,15 @@
     },
     "jennifer": {
       "name": "Jennifer McNinch",
-      "total_open_tasks": 111,
-      "overdue_tasks": 13,
-      "due_today": 12,
-      "due_this_week": 16,
+      "total_open_tasks": 104,
+      "overdue_tasks": 23,
+      "due_today": 0,
+      "due_this_week": 17,
       "total_incomplete_milestones": 12,
-      "late_milestones": 3,
+      "late_milestones": 5,
       "active_projects_owned": 3,
-      "project_tasks_total": 1233,
-      "project_tasks_late": 157,
+      "project_tasks_total": 1174,
+      "project_tasks_late": 155,
       "utilization": {
         "capacity_hours": 40,
         "last_week": {
@@ -192,15 +192,15 @@
     },
     "rebecaq": {
       "name": "Rebeca Queiroz",
-      "total_open_tasks": 356,
-      "overdue_tasks": 152,
-      "due_today": 10,
-      "due_this_week": 14,
+      "total_open_tasks": 390,
+      "overdue_tasks": 153,
+      "due_today": 0,
+      "due_this_week": 47,
       "total_incomplete_milestones": 0,
       "late_milestones": 0,
       "active_projects_owned": 5,
-      "project_tasks_total": 149,
-      "project_tasks_late": 83,
+      "project_tasks_total": 153,
+      "project_tasks_late": 82,
       "utilization": {
         "capacity_hours": 40,
         "last_week": {
@@ -251,10 +251,10 @@
     },
     "juliane": {
       "name": "Juliane Roitmann",
-      "total_open_tasks": 895,
+      "total_open_tasks": 921,
       "overdue_tasks": 177,
-      "due_today": 9,
-      "due_this_week": 23,
+      "due_today": 0,
+      "due_this_week": 139,
       "total_incomplete_milestones": 0,
       "late_milestones": 0,
       "active_projects_owned": 0,
@@ -312,8 +312,8 @@
       "name": "Rebeca Mesquita",
       "total_open_tasks": 15,
       "overdue_tasks": 2,
-      "due_today": 1,
-      "due_this_week": 1,
+      "due_today": 0,
+      "due_this_week": 2,
       "total_incomplete_milestones": 0,
       "late_milestones": 0,
       "active_projects_owned": 0,
@@ -369,10 +369,10 @@
     },
     "aura": {
       "name": "Aura Celorico",
-      "total_open_tasks": 357,
-      "overdue_tasks": 10,
-      "due_today": 4,
-      "due_this_week": 25,
+      "total_open_tasks": 382,
+      "overdue_tasks": 31,
+      "due_today": 0,
+      "due_this_week": 31,
       "total_incomplete_milestones": 0,
       "late_milestones": 0,
       "active_projects_owned": 0,
@@ -383,8 +383,8 @@
         "last_week": {
           "week": "10/12",
           "range": "10/12\u201310/18",
-          "hours": 25.9,
-          "pct": 64.8
+          "hours": 29.12,
+          "pct": 72.8
         },
         "weeks": [
           {
@@ -408,35 +408,35 @@
           {
             "week": "9/28",
             "range": "9/28\u201310/4",
-            "hours": 16.95,
-            "pct": 42.4
+            "hours": 21.78,
+            "pct": 54.4
           },
           {
             "week": "10/5",
             "range": "10/5\u201310/11",
-            "hours": 22.38,
-            "pct": 56.0
+            "hours": 26.88,
+            "pct": 67.2
           },
           {
             "week": "10/12",
             "range": "10/12\u201310/18",
-            "hours": 25.9,
-            "pct": 64.8
+            "hours": 29.12,
+            "pct": 72.8
           }
         ]
       }
     },
     "andressa": {
       "name": "Andressa Alves",
-      "total_open_tasks": 261,
-      "overdue_tasks": 40,
-      "due_today": 10,
-      "due_this_week": 12,
+      "total_open_tasks": 299,
+      "overdue_tasks": 47,
+      "due_today": 0,
+      "due_this_week": 9,
       "total_incomplete_milestones": 0,
       "late_milestones": 0,
       "active_projects_owned": 3,
-      "project_tasks_total": 1082,
-      "project_tasks_late": 71,
+      "project_tasks_total": 797,
+      "project_tasks_late": 80,
       "utilization": {
         "capacity_hours": 40,
         "last_week": {
@@ -559,6 +559,15 @@
       "milestones_open": 30,
       "milestones_late": 5,
       "milestones_late_pct": 16.7
+    },
+    {
+      "date": "2026-10-25",
+      "open": 4891,
+      "overdue": 875,
+      "overdue_pct": 17.9,
+      "milestones_open": 30,
+      "milestones_late": 11,
+      "milestones_late_pct": 36.7
     }
   ]
 }
