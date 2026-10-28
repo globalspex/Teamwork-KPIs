@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-10-27T21:10:00.030990-05:00",
+  "generated_at": "2026-10-27T21:17:43.863953-05:00",
   "timezone": "America/Chicago",
   "company": {
-    "total_open_tasks": 4352,
+    "total_open_tasks": 4354,
     "overdue_tasks": 826,
     "due_today": 173,
     "due_this_week": 399,
@@ -308,65 +308,6 @@
         ]
       }
     },
-    "rebecam": {
-      "name": "Rebeca Mesquita",
-      "total_open_tasks": 14,
-      "overdue_tasks": 2,
-      "due_today": 0,
-      "due_this_week": 1,
-      "total_incomplete_milestones": 0,
-      "late_milestones": 0,
-      "active_projects_owned": 0,
-      "project_tasks_total": 0,
-      "project_tasks_late": 0,
-      "utilization": {
-        "capacity_hours": 40,
-        "last_week": {
-          "week": "10/19",
-          "range": "10/19\u201310/25",
-          "hours": 0.0,
-          "pct": 0.0
-        },
-        "weeks": [
-          {
-            "week": "9/14",
-            "range": "9/14\u20139/20",
-            "hours": 4.68,
-            "pct": 11.7
-          },
-          {
-            "week": "9/21",
-            "range": "9/21\u20139/27",
-            "hours": 0.28,
-            "pct": 0.7
-          },
-          {
-            "week": "9/28",
-            "range": "9/28\u201310/4",
-            "hours": 0.93,
-            "pct": 2.3
-          },
-          {
-            "week": "10/5",
-            "range": "10/5\u201310/11",
-            "hours": 0.0,
-            "pct": 0.0
-          },
-          {
-            "week": "10/12",
-            "range": "10/12\u201310/18",
-            "hours": 0.0,
-            "pct": 0.0
-          },
-          {
-            "week": "10/19",
-            "range": "10/19\u201310/25",
-            "hours": 0.0,
-            "pct": 0.0
-          }
-        ]
-      }
-    },
     "aura": {
       "name": "Aura Celorico",
       "total_open_tasks": 340,
@@ -435,7 +376,7 @@
       "total_incomplete_milestones": 0,
       "late_milestones": 0,
       "active_projects_owned": 3,
-      "project_tasks_total": 319,
+      "project_tasks_total": 321,
       "project_tasks_late": 71,
       "utilization": {
         "capacity_hours": 40,
@@ -698,7 +639,7 @@
     },
     {
       "date": "2026-10-27",
-      "open": 4352,
+      "open": 4354,
       "overdue": 826,
       "overdue_pct": 19.0,
       "milestones_open": 29,

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-27T21:10:39.382303-05:00",
+  "generated_at": "2026-10-27T21:18:09.215045-05:00",
   "errors": [],
   "company": {
     "open_tickets": 48,
@@ -353,17 +353,17 @@
   },
   "debug": {
     "bot_senders": 19,
-    "bot_tickets_in_window": 12585,
+    "bot_tickets_in_window": 12586,
     "customers_real_in_window": 321,
-    "recent_scanned": 13629,
+    "recent_scanned": 13630,
     "recent_real": 794,
     "recent_by_inbox": {
       "18742": 84,
       "18839": 86,
-      "699": 13459
+      "699": 13460
     },
     "recent_by_status": {
-      "active": 127,
+      "active": 128,
       "closed": 13382,
       "knowhost-notifications": 13,
       "on-hold": 2,
