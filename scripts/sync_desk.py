@@ -47,7 +47,8 @@ STATUS_IDS = {"active": 1, "waiting": 3, "on-hold": 4}
 
 # Desk user IDs (from /desk/v1/users.json) -> dashboard keys.
 AGENTS = {226032: "rebecaq", 304707: "juliane", 605403: "rebecam", 604063: "andressa",
-          296553: "aura", 273488: "javier", 610482: "jennifer", 116205: "christina"}
+          296553: "aura", 273488: "javier", 610482: "jennifer", 116205: "christina",
+          610995: "luiza", 611005: "ana"}
 
 FOLLOWUP_TYPES = {"problem", "question", "request", "marketing/seo"}
 DEV_RESOLUTION_TYPES = {"request", "unspecified"}

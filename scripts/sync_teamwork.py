@@ -73,6 +73,8 @@ PEOPLE = {
     "rebecam":   {"name": "Rebeca Mesquita",     "user_id": 605403},
     "aura":      {"name": "Aura Celorico",       "user_id": 296553},
     "andressa":  {"name": "Andressa Alves",      "user_id": 604063},
+    "luiza":     {"name": "Luíza Bessa",         "user_id": 610995},
+    "ana":       {"name": "Ana Cristina Rabelo", "user_id": 611005},
 }
 
 

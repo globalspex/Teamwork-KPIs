@@ -178,8 +178,10 @@
       <button class="tab-btn" data-tab="rebecaq" data-role="dev">Rebeca Q.</button>
       <button class="tab-btn" data-tab="juliane" data-role="dev">Juliane</button>
     </div></div>
-    <div class="tab-group"><div class="tab-group-label">Design, Marketing &amp; Support</div><div class="tab-row">
+    <div class="tab-group"><div class="tab-group-label">Design, Content, Marketing &amp; Support</div><div class="tab-row">
       <button class="tab-btn" data-tab="rebecam" data-role="design">Rebeca M.</button>
+      <button class="tab-btn" data-tab="luiza" data-role="design">Luiza</button>
+      <button class="tab-btn" data-tab="ana" data-role="dev">Ana</button>
       <button class="tab-btn" data-tab="aura" data-role="marketing">Aura</button>
       <button class="tab-btn" data-tab="andressa" data-role="support">Andressa</button>
     </div></div>
@@ -382,6 +384,27 @@
     </div>
   </div>
 
+  <!-- ===== Luiza Bessa ===== -->
+  <div class="panel" id="panel-luiza" data-role="design">
+    <div class="person-head"><h2>Luíza Bessa</h2><span class="role">Graphic Designer</span></div>
+    <div class="grid" id="live-luiza"></div>
+    <div class="sample-note">New to the team in October 2026. Weekly trend and breakdown start once she has a few full weeks of history.</div>
+  </div>
+
+  <!-- ===== Ana Cristina Rabelo ===== -->
+  <div class="panel" id="panel-ana" data-role="dev">
+    <div class="person-head"><h2>Ana Cristina Rabelo</h2><span class="role">Content Manager</span></div>
+    <div class="role-kpi-tag">Role KPIs &middot; Same as Developers</div>
+    <div class="grid" id="live-ana">
+      <div class="card" data-slot="manual"><div class="label">Redo</div><div class="value">&mdash;</div>
+        <div class="goal">Goal: less than 20% &middot; redo-tagged tasks divided by tasks completed in the week</div>
+        <span class="badge gray">No Data</span>
+        <div class="asof">Manual pull &middot; first snapshot pending</div></div>
+      <div class="card" id="desk-res-ana"><div class="label">Ticket Resolution Time</div><div class="value">&mdash;</div><div class="goal">Loading&hellip;</div></div>
+    </div>
+    <div class="sample-note">Ticket Resolution Time is live from Teamwork Desk, same rules as the developers. New to the team in October 2026, so weekly trend and breakdown start once she has a few full weeks of history.</div>
+  </div>
+
   <!-- ===== Aura ===== -->
   <div class="panel" id="panel-aura" data-role="marketing">
     <div class="person-head"><h2>Aura Celorico</h2><span class="role">Marketing Assistant</span></div>
@@ -561,10 +584,12 @@
     put('live-andressa',  taskHealthCards(P.andressa||empty, 15));
     put('live-aura',      taskHealthCards(P.aura||empty, 15));
     put('live-rebecam',   taskHealthCards(P.rebecam||empty, 15));
+    put('live-luiza',     taskHealthCards(P.luiza||empty, 15));
     put('live-javier',    pmCards(P.javier||empty), true);
     put('live-jennifer',  pmCards(P.jennifer||empty), true);
     put('live-rebecaq',   devCards(P.rebecaq||empty), true);
     put('live-juliane',   devCards(P.juliane||empty), true);
+    put('live-ana',       devCards(P.ana||empty), true);
 
     // header + freshness
     var gen = LIVE.generated_at ? new Date(LIVE.generated_at) : null;
@@ -801,7 +826,7 @@
     if(tb) tb.innerHTML = D.weeks.slice().reverse().map(function(x){
       return '<tr><td>'+x.week+'</td><td>'+num(x.tickets)+'</td><td>'+hrs(x.problem.avg_first_response_hrs)+' (n='+x.problem.n+')</td><td>'+hrs(x.request.avg_first_response_hrs)+' (n='+x.request.n+')</td><td>'+(x.followup_1day.pct===null?'&mdash;':x.followup_1day.pct+'%')+' ('+x.followup_1day.hit+'/'+x.followup_1day.n+')</td></tr>';
     }).join('');
-    ['rebecaq','juliane'].forEach(function(who){
+    ['rebecaq','juliane','ana'].forEach(function(who){
       var el = document.getElementById('desk-res-'+who); if(!el) return;
       var r = (w.resolution_by_agent||{})[who];
       var b = !r ? '<span class="badge gray">No Tickets</span>' : r.n<5 ? '<span class="badge yellow">Thin Sample</span>' : badge(r.pct_on_time>=90);
