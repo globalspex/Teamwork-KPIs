@@ -179,7 +179,6 @@
       <button class="tab-btn" data-tab="juliane" data-role="dev">Juliane</button>
     </div></div>
     <div class="tab-group"><div class="tab-group-label">Design, Content, Marketing &amp; Support</div><div class="tab-row">
-      <button class="tab-btn" data-tab="rebecam" data-role="design">Rebeca M.</button>
       <button class="tab-btn" data-tab="luiza" data-role="design">Luiza</button>
       <button class="tab-btn" data-tab="ana" data-role="dev">Ana</button>
       <button class="tab-btn" data-tab="aura" data-role="marketing">Aura</button>
@@ -362,24 +361,6 @@
         <caption>Weekly Breakdown</caption>
         <thead><tr><th>Week</th><th>Total Tasks</th><th>Late Tasks</th><th>Late %</th><th>Redo</th><th>Avg Res. Requests (d)</th><th>Avg Res. Problems (d)</th></tr></thead>
         <tbody id="tbl-juliane"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- ===== Rebeca Mesquita ===== -->
-  <div class="panel" id="panel-rebecam" data-role="design">
-    <div class="person-head"><h2>Rebeca Mesquita</h2><span class="role">Designer</span></div>
-    <div class="grid" id="live-rebecam"></div>
-
-    <div class="chart-card">
-      <h3>Weekly Trend &mdash; Late Task % (Goal: under 10%)</h3>
-      <div class="chart-wrap"><canvas id="chart-rebecam"></canvas></div>
-    </div>
-    <div class="table-scroll">
-      <table class="wk nested">
-        <caption>Weekly Breakdown</caption>
-        <thead><tr><th>Week</th><th>Total Tasks</th><th>Late Tasks</th><th>Late %</th><th>Avg Res. Requests (d)</th><th>Avg Res. Problems (d)</th></tr></thead>
-        <tbody id="tbl-rebecam"></tbody>
       </table>
     </div>
   </div>
@@ -583,7 +564,6 @@
     put('live-christina', taskHealthCards(P.christina||empty, 15));
     put('live-andressa',  taskHealthCards(P.andressa||empty, 15));
     put('live-aura',      taskHealthCards(P.aura||empty, 15));
-    put('live-rebecam',   taskHealthCards(P.rebecam||empty, 15));
     put('live-luiza',     taskHealthCards(P.luiza||empty, 15));
     put('live-javier',    pmCards(P.javier||empty), true);
     put('live-jennifer',  pmCards(P.jennifer||empty), true);
@@ -702,7 +682,7 @@
     } else if(tab==='rebecaq'){
       makeLineChart('chart-rebecaq', d.weeks, [ds('Late Task %', d.late_pct, R), ds('Late Support %', d.supp_late_pct, Y), goalDs('Goal (10%)', d.weeks.length, 10)]);
       fillTable('tbl-rebecaq', d.rows, [3,6]);
-    } else if(tab==='aura' || tab==='juliane' || tab==='rebecam'){
+    } else if(tab==='aura' || tab==='juliane'){
       makeLineChart('chart-'+tab, d.weeks, [ds('Late Task %', d.late_pct, R), goalDs('Goal (10%)', d.weeks.length, 10)]);
       fillTable('tbl-'+tab, d.rows, [3]);
     } else if(tab==='andressa'){

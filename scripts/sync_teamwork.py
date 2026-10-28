@@ -70,7 +70,6 @@ PEOPLE = {
     "jennifer":  {"name": "Jennifer McNinch",    "user_id": 610482},
     "rebecaq":   {"name": "Rebeca Queiroz",      "user_id": 226032},
     "juliane":   {"name": "Juliane Roitmann",    "user_id": 304707},
-    "rebecam":   {"name": "Rebeca Mesquita",     "user_id": 605403},
     "aura":      {"name": "Aura Celorico",       "user_id": 296553},
     "andressa":  {"name": "Andressa Alves",      "user_id": 604063},
     "luiza":     {"name": "Luíza Bessa",         "user_id": 610995},
