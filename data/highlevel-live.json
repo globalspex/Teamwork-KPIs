@@ -1,9 +1,8 @@
 {
-  "generated_at": "2026-10-27T21:20:58.005535-05:00",
+  "generated_at": "2026-11-02T08:11:46.706291-06:00",
   "timezone": "America/Chicago",
   "christina": {
     "weeks": [
-      "11/3",
       "11/10",
       "11/17",
       "11/24",
@@ -54,10 +53,10 @@
       "10/5",
       "10/12",
       "10/19",
-      "10/26"
+      "10/26",
+      "11/2"
     ],
     "week_start_dates": [
-      "2025-11-03",
       "2025-11-10",
       "2025-11-17",
       "2025-11-24",
@@ -108,10 +107,10 @@
       "2026-10-05",
       "2026-10-12",
       "2026-10-19",
-      "2026-10-26"
+      "2026-10-26",
+      "2026-11-02"
     ],
     "leads": [
-      1,
       0,
       0,
       0,
@@ -162,10 +161,10 @@
       1,
       0,
       1,
+      2,
       0
     ],
     "proposals": [
-      2,
       0,
       0,
       1,
@@ -212,6 +211,7 @@
       1,
       0,
       2,
+      0,
       0,
       0,
       0,
@@ -240,7 +240,6 @@
       0,
       0,
       0,
-      0,
       1,
       0,
       0,
@@ -268,6 +267,7 @@
       0,
       1,
       1,
+      0,
       0,
       0,
       0
@@ -275,14 +275,14 @@
     "summary": {
       "leads": {
         "this_week": 0,
-        "last_week": 1,
-        "last_12_months": 29,
-        "avg_per_week_last_12_weeks": 0.4
+        "last_week": 2,
+        "last_12_months": 30,
+        "avg_per_week_last_12_weeks": 0.6
       },
       "proposals": {
         "this_week": 0,
         "last_week": 0,
-        "last_12_months": 30,
+        "last_12_months": 28,
         "avg_per_week_last_12_weeks": 0.2
       },
       "converted": {
@@ -293,7 +293,6 @@
       }
     },
     "months": [
-      "Nov '25",
       "Dec '25",
       "Jan '26",
       "Feb '26",
@@ -304,11 +303,11 @@
       "Jul '26",
       "Aug '26",
       "Sep '26",
-      "Oct '26"
+      "Oct '26",
+      "Nov '26"
     ],
     "monthly": {
       "leads": [
-        1,
         6,
         4,
         4,
@@ -319,10 +318,10 @@
         2,
         0,
         3,
-        2
+        3,
+        1
       ],
       "proposals": [
-        3,
         5,
         3,
         2,
@@ -333,10 +332,10 @@
         3,
         0,
         3,
+        0,
         0
       ],
       "converted": [
-        1,
         2,
         1,
         1,
@@ -347,24 +346,25 @@
         0,
         3,
         1,
-        1
+        1,
+        0
       ]
     },
     "monthly_summary": {
       "leads": {
-        "this_month": 2,
-        "last_month": 3,
-        "last_12_months": 29
-      },
-      "proposals": {
-        "this_month": 0,
+        "this_month": 1,
         "last_month": 3,
         "last_12_months": 30
       },
+      "proposals": {
+        "this_month": 0,
+        "last_month": 0,
+        "last_12_months": 27
+      },
       "converted": {
-        "this_month": 1,
+        "this_month": 0,
         "last_month": 1,
-        "last_12_months": 19
+        "last_12_months": 18
       }
     }
   },
