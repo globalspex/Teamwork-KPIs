@@ -94,5 +94,13 @@
   "waiting": 12,
   "waiting_stale": 2,
   "on_hold": 10
+ },
+ {
+  "date": "2026-11-16",
+  "aging": 24,
+  "open": 53,
+  "waiting": 15,
+  "waiting_stale": 1,
+  "on_hold": 11
  }
 ]
